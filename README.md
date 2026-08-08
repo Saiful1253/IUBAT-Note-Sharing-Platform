@@ -17,4 +17,4 @@ A platform for sharing academic notes at IUBAT.
 ## Tech Stack
 - Frontend: React / HTML / CSS / JavaScript
 - Backend: Node.js / Express
-- Database: MongoDB / MySQL
+- Database:  MySQL
