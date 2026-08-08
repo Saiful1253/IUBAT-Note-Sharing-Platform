@@ -4,9 +4,9 @@ A platform for sharing academic notes at IUBAT.
 
 ## Team
 - Saiful1253
-- hamida222
+- Abu Bakar Rakib
 - farhannirzohor
-- abu-bakar-rakib
+- hamida222 
 
 ## Setup
 1. Clone the repo
