@@ -1,4 +1,4 @@
-# IUBAT Note Sharing Platform
+# IUBAT--Note Sharing Platform
 
 A platform for sharing academic notes at IUBAT.
 
