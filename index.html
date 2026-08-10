@@ -32,6 +32,7 @@
         .signin-btn:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(15,23,42,0.2); }
         .signin-btn svg { width: 16px; height: 16px; fill: none; stroke: #ffffff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
         .divider { display: flex; align-items: center; gap: 12px; margin: 22px 0 16px; }
+        .divider.hidden { display: none; }
         .divider-line { flex: 1; height: 1px; background: #e2e8f0; }
         .divider-text { font-size: 0.8rem; color: #64748b; white-space: nowrap; }
         .divider-text a { color: #0f172a; text-decoration: none; font-weight: 600; }
@@ -79,9 +80,9 @@
                 </button>
             </form>
 
-            <div class="divider">
+            <div class="divider" id="create-account-divider">
                 <div class="divider-line"></div>
-                <div class="divider-text">Don't have an account? <a href="#">Request Access</a></div>
+                <div class="divider-text">Don't have an account? <a href="register.html">Create Account</a></div>
                 <div class="divider-line"></div>
             </div>
             <div class="footer">© 2026 iShare - IUBAT</div>
@@ -94,12 +95,15 @@
             tab.classList.add('active');
             const label = document.getElementById('id-label');
             const input = document.getElementById('login-id');
+            const divider = document.getElementById('create-account-divider');
             if (type === 'student') {
                 label.textContent = 'University ID';
                 input.placeholder = 'e.g. 1912020';
+                divider.classList.remove('hidden');
             } else {
                 label.textContent = 'Admin ID';
                 input.placeholder = 'e.g. ADMIN-001';
+                divider.classList.add('hidden');
             }
         }
         function handleLogin() {
