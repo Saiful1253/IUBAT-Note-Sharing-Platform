@@ -111,9 +111,30 @@
             const password = document.getElementById('login-password').value.trim();
             if (!id) { alert('Please enter your ID'); return; }
             if (!password) { alert('Please enter your password'); return; }
+
+            const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+            const account = accounts.find(a => (a.studentId || a.id) === id);
+
+            if (!account) {
+                alert('No account found with this ID. Please register first or check your ID.');
+                return;
+            }
+
+            if (account.status === 'suspended') {
+                alert('Your account has been suspended. Please contact the administrator.');
+                return;
+            }
+
+            if (account.password && account.password !== password) {
+                alert('Incorrect password. Please try again.');
+                return;
+            }
+
             localStorage.setItem('ishare_user_id', id);
             localStorage.setItem('ishare_user_password', password);
             localStorage.setItem('ishare_user_type', document.querySelector('.tab.active').textContent.trim());
+            localStorage.setItem('ishare_user_name', account.fullname || '');
+            localStorage.setItem('ishare_user_department', account.department || '');
             window.location.href = 'admin-dashboard.html';
         }
     </script>

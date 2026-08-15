@@ -223,6 +223,7 @@
                 studentId,
                 email,
                 department,
+                password,
                 accountType: 'student',
                 createdAt: new Date().toISOString(),
                 status: 'active'
@@ -268,8 +269,8 @@
                     e.stopPropagation();
                     const value = this.getAttribute('data-value');
                     const fullName = this.getAttribute('data-full');
-                    hiddenInput.value = value;
-                    selectedText.textContent = value;
+                    hiddenInput.value = fullName;
+                    selectedText.textContent = fullName;
                     selectedText.classList.remove('placeholder');
                     options.forEach(o => o.classList.remove('selected'));
                     this.classList.add('selected');
