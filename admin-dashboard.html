@@ -29,7 +29,7 @@
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
                     Platform Overview
                 </button>
-                <button class="nav-item">
+                <button class="nav-item" onclick="window.location.href='user-management.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                     User Management
                 </button>
@@ -74,15 +74,32 @@
         </aside>
         <main class="main-content">
             <header class="topbar">
-                <div class="topbar-actions">
+                <div class="topbar-left">
                     <button class="topbar-btn primary">
-                        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
                         AI Assistant
                     </button>
-                    <div style="position:relative;cursor:pointer;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                </div>
+                <div class="topbar-actions">
+                    <div class="notification-wrapper" id="notificationWrapper">
+                        <button class="topbar-icon-btn" id="notificationBtn" title="Notifications">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                            <span class="topbar-badge" id="notificationBadge" style="display:none;">0</span>
+                        </button>
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <div class="notification-header">
+                                <h3>Notifications</h3>
+                                <div class="notification-header-actions">
+                                    <button class="mark-all-read" id="markAllRead">Mark all as read</button>
+                                    <button class="delete-all" id="deleteAllNotifications">Delete all</button>
+                                </div>
+                            </div>
+                            <div class="notification-list" id="notificationList">
+                                <div class="notification-empty">No notifications yet.</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="topbar-avatar">SI</div>
+                    <div class="topbar-avatar" title="User Menu">SI</div>
                 </div>
             </header>
             <div class="content-area">
@@ -206,6 +223,23 @@
                 if (avatar) avatar.textContent = initials || 'U';
             }
 
+            const page = window.location.pathname.split('/').pop() || 'admin-dashboard.html';
+            const pageMap = {
+                'admin-dashboard.html': 'Platform Overview',
+                'user-management.html': 'User Management',
+                'department-controls.html': 'Department Controls',
+                'system-logs.html': 'System Logs',
+                'announcement-management.html': 'Announcement Management',
+                'student-view.html': 'Student View'
+            };
+            const activeText = pageMap[page] || 'Platform Overview';
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.trim().includes(activeText)) {
+                    item.classList.add('active');
+                }
+            });
+
             const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
             const activeAccounts = accounts.filter(a => a.status === 'active');
             const deptSet = new Set(accounts.map(a => a.department).filter(Boolean));
@@ -254,6 +288,219 @@
             }
         });
 
+        (function() {
+            const STORAGE_KEY = 'ishare_notifications';
+            const notificationBtn = document.getElementById('notificationBtn');
+            const notificationBadge = document.getElementById('notificationBadge');
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            const notificationList = document.getElementById('notificationList');
+            const markAllReadBtn = document.getElementById('markAllRead');
+            const deleteAllBtn = document.getElementById('deleteAllNotifications');
+            const notificationWrapper = document.getElementById('notificationWrapper');
+
+            function getNotifications() {
+                try {
+                    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                } catch {
+                    return [];
+                }
+            }
+
+            function saveNotifications(notifications) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
+            }
+
+            function generateDemoNotifications() {
+                const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+                const notifications = [];
+                const now = Date.now();
+
+                accounts.slice(0, 3).forEach((acc, index) => {
+                    notifications.push({
+                        id: 'user-' + acc.id + '-' + index,
+                        title: 'New user registered',
+                        message: `${acc.fullname} (${acc.email || 'no email'}) joined as ${acc.accountType || 'Student'}.`,
+                        type: 'user',
+                        time: now - 1000 * 60 * (10 + index * 5),
+                        read: false
+                    });
+                });
+
+                if (notifications.length === 0) {
+                    notifications.push({
+                        id: 'system-1',
+                        title: 'No new registrations yet',
+                        message: 'When a new user registers, their details will appear here automatically.',
+                        type: 'system',
+                        time: now - 1000 * 60 * 30,
+                        read: false
+                    });
+                }
+
+                return notifications;
+            }
+
+            function ensureNotifications() {
+                let notifications = getNotifications();
+                if (notifications.length === 0) {
+                    notifications = generateDemoNotifications();
+                    saveNotifications(notifications);
+                }
+                return notifications;
+            }
+
+            function getUnreadCount(notifications) {
+                return notifications.filter(n => !n.read).length;
+            }
+
+            function updateBadge() {
+                const notifications = getNotifications();
+                const unreadCount = getUnreadCount(notifications);
+                if (unreadCount > 0) {
+                    notificationBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                    notificationBadge.style.display = 'inline-flex';
+                } else {
+                    notificationBadge.style.display = 'none';
+                }
+            }
+
+            function formatTime(timestamp) {
+                const diff = Date.now() - timestamp;
+                const minutes = Math.floor(diff / 60000);
+                if (minutes < 1) return 'Just now';
+                if (minutes < 60) return minutes + 'm ago';
+                const hours = Math.floor(minutes / 60);
+                if (hours < 24) return hours + 'h ago';
+                const days = Math.floor(hours / 24);
+                return days + 'd ago';
+            }
+
+            function renderNotifications() {
+                const notifications = getNotifications();
+                if (notifications.length === 0) {
+                    notificationList.innerHTML = '<div class="notification-empty">No notifications yet.</div>';
+                    return;
+                }
+
+                notificationList.innerHTML = notifications.slice(0, 20).map(n => {
+                    const iconMap = {
+                        system: '⚙',
+                        user: '👤',
+                        alert: '⚠',
+                        info: 'ℹ'
+                    };
+                    const icon = iconMap[n.type] || '🔔';
+                    return `<div class="notification-item ${n.read ? '' : 'unread'}" data-id="${n.id}">
+                        <div class="notification-icon ${n.type}">${icon}</div>
+                        <div class="notification-body">
+                            <div class="notification-title">${n.title}</div>
+                            <div class="notification-message">${n.message}</div>
+                            <div class="notification-time">${formatTime(n.time)}</div>
+                        </div>
+                        <button class="notification-delete" data-id="${n.id}" title="Delete notification">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </button>
+                    </div>`;
+                }).join('');
+
+                notificationList.querySelectorAll('.notification-item').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        if (e.target.closest('.notification-delete')) return;
+                        const id = this.getAttribute('data-id');
+                        const notifications = getNotifications();
+                        const target = notifications.find(n => n.id === id);
+                        if (target && !target.read) {
+                            target.read = true;
+                            saveNotifications(notifications);
+                            updateBadge();
+                            this.classList.remove('unread');
+                        }
+                    });
+                });
+
+                notificationList.querySelectorAll('.notification-delete').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.getAttribute('data-id');
+                        deleteNotification(id);
+                    });
+                });
+            }
+
+            function deleteNotification(id) {
+                let notifications = getNotifications();
+                notifications = notifications.filter(n => n.id !== id);
+                saveNotifications(notifications);
+                updateBadge();
+                renderNotifications();
+            }
+
+            function deleteAllNotifications() {
+                saveNotifications([]);
+                updateBadge();
+                renderNotifications();
+            }
+
+            function toggleDropdown(e) {
+                e.stopPropagation();
+                const isShown = notificationDropdown.classList.contains('show');
+                if (isShown) {
+                    notificationDropdown.classList.remove('show');
+                } else {
+                    renderNotifications();
+                    notificationDropdown.classList.add('show');
+                }
+            }
+
+            function closeDropdown() {
+                notificationDropdown.classList.remove('show');
+            }
+
+            function markAllAsRead() {
+                const notifications = getNotifications();
+                let changed = false;
+                notifications.forEach(n => {
+                    if (!n.read) {
+                        n.read = true;
+                        changed = true;
+                    }
+                });
+                if (changed) {
+                    saveNotifications(notifications);
+                    updateBadge();
+                    renderNotifications();
+                }
+            }
+
+            if (notificationBtn) {
+                notificationBtn.addEventListener('click', toggleDropdown);
+            }
+
+            if (markAllReadBtn) {
+                markAllReadBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    markAllAsRead();
+                });
+            }
+
+            if (deleteAllBtn) {
+                deleteAllBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (confirm('Delete all notifications? This cannot be undone.')) {
+                        deleteAllNotifications();
+                    }
+                });
+            }
+
+            document.addEventListener('click', function(e) {
+                if (!notificationWrapper.contains(e.target)) {
+                    closeDropdown();
+                }
+            });
+
+            ensureNotifications();
+            updateBadge();
+        })();
     </script>
 </body>
 </html>
