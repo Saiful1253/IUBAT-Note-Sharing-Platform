@@ -349,7 +349,6 @@ document.addEventListener('DOMContentLoaded', function() {
         'admin-dashboard.html': 'Platform Overview',
         'user-management.html': 'User Management',
         'department-controls.html': 'Department Controls',
-        'system-logs.html': 'System Logs',
         'announcement-management.html': 'Announcement Management',
         'student-view.html': 'Student View'
     };
