@@ -116,12 +116,27 @@
             const inputId = document.getElementById('login-id').value.trim();
             const inputPassword = document.getElementById('login-password').value.trim();
 
-            localStorage.setItem('ishare_user_id', inputId);
-            localStorage.setItem('ishare_user_password', inputPassword);
-            localStorage.setItem('ishare_user_type', userType);
-            localStorage.setItem('ishare_user_name', '');
-            localStorage.setItem('ishare_user_department', '');
-            window.location.href = 'admin-dashboard.html';
+            if (userType === 'Student') {
+                const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+                const account = accounts.find(a => a.studentId === inputId && a.password === inputPassword && a.status !== 'inactive');
+                if (!account) {
+                    alert('Invalid University ID or password. Please try again or register first.');
+                    return;
+                }
+                localStorage.setItem('ishare_user_id', account.studentId);
+                localStorage.setItem('ishare_user_password', account.password);
+                localStorage.setItem('ishare_user_type', 'Student');
+                localStorage.setItem('ishare_user_name', account.fullname);
+                localStorage.setItem('ishare_user_department', account.department || '');
+                window.location.href = 'student-home.html';
+            } else {
+                localStorage.setItem('ishare_user_id', inputId);
+                localStorage.setItem('ishare_user_password', inputPassword);
+                localStorage.setItem('ishare_user_type', 'Admin');
+                localStorage.setItem('ishare_user_name', '');
+                localStorage.setItem('ishare_user_department', '');
+                window.location.href = 'admin-dashboard.html';
+            }
         }
     </script>
 </body>

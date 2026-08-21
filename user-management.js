@@ -369,6 +369,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderTable();
     initNotifications();
+
+    const params = new URLSearchParams(window.location.search);
+    const focusUserId = params.get('user');
+    if (focusUserId) {
+        setTimeout(() => openStudentDetailModal(decodeURIComponent(focusUserId)), 300);
+    }
 });
 
 function initNotifications() {

@@ -149,7 +149,7 @@
                     <div class="panel">
                         <div class="panel-header">
                             <h3 class="panel-title">Recent User Activity</h3>
-                            <a href="#" class="panel-link">View Full Directory
+                                <a href="user-management.html" class="panel-link">View Full Directory
                                 <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                             </a>
                         </div>
@@ -204,11 +204,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const userId = localStorage.getItem('ishare_user_id');
-            const userName = localStorage.getItem('ishare_user_name');
             const userType = localStorage.getItem('ishare_user_type');
-            const userDept = localStorage.getItem('ishare_user_department');
+            const userName = localStorage.getItem('ishare_user_name');
 
-            if (!userId) {
+            if (!userId || userType !== 'Admin') {
                 window.location.href = 'index.html';
                 return;
             }
@@ -263,6 +262,7 @@
                         const initials = acc.fullname.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
                         const roleClass = (acc.accountType || 'student').toLowerCase();
                         const deptShort = acc.department || 'N/A';
+                        const userId = encodeURIComponent(acc.studentId || acc.id || '');
                         return `<tr>
                             <td>
                                 <div class="user-cell">
@@ -276,7 +276,7 @@
                             <td><span style="font-weight:500;">• ${deptShort}</span></td>
                             <td><span class="role-tag ${roleClass}">${acc.accountType || 'Student'}</span></td>
                             <td><span class="status-tag active"><span class="status-dot"></span>${acc.status || 'Active'}</span></td>
-                            <td><a href="#" class="manage-link">Manage →</a></td>
+                            <td><a href="user-management.html?user=${userId}" class="manage-link">Manage →</a></td>
                         </tr>`;
                     }).join('');
                 }

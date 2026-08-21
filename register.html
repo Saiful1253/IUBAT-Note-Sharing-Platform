@@ -232,9 +232,11 @@
             localStorage.setItem('ishare_user_name', fullname);
             localStorage.setItem('ishare_user_department', department);
 
-            showToast('Registration successful! Redirecting to dashboard...', 'success');
-            setTimeout(() => { window.location.href = 'admin-dashboard.html'; }, 1500);
+            showToast('Registration successful! Redirecting to student home...', 'success');
+            setTimeout(() => { window.location.href = 'student-home.html'; }, 1500);
         }
+
+        let trigger, optionsContainer, selectedText, hiddenInput;
 
         function getEnabledDepartments() {
             try {
@@ -289,10 +291,10 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const trigger = document.getElementById('dept-trigger');
-            const optionsContainer = document.getElementById('dept-options');
-            const selectedText = document.getElementById('dept-selected-text');
-            const hiddenInput = document.getElementById('department');
+            trigger = document.getElementById('dept-trigger');
+            optionsContainer = document.getElementById('dept-options');
+            selectedText = document.getElementById('dept-selected-text');
+            hiddenInput = document.getElementById('department');
 
             trigger.addEventListener('click', function(e) {
                 e.stopPropagation();
