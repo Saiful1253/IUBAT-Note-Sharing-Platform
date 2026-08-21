@@ -203,8 +203,8 @@
 
     <div class="announcement-modal-overlay" id="announcementModal">
         <div class="announcement-modal-card">
-            <div class="announcement-modal-header">
-                <h3 class="announcement-modal-title" id="announcementModalTitle">New Notice</h3>
+            <div class="announcement-modal-header-bar">
+                <h3 class="announcement-modal-title" id="announcementModalTitle">Post New Notice</h3>
                 <button class="announcement-modal-close" onclick="closeAnnouncementModal()" type="button">
                     <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><polyline points="6 6 18 18"/></svg>
                 </button>
@@ -212,12 +212,8 @@
             <form class="announcement-form" id="announcementForm" onsubmit="event.preventDefault(); saveAnnouncement();">
                 <input type="hidden" id="announcementId">
                 <div class="announcement-form-group">
-                    <label class="announcement-form-label" for="announcementTitle">Title</label>
-                    <input type="text" class="announcement-form-input" id="announcementTitle" placeholder="Enter notice title" required>
-                </div>
-                <div class="announcement-form-group">
-                    <label class="announcement-form-label" for="announcementBody">Content</label>
-                    <textarea class="announcement-form-textarea" id="announcementBody" placeholder="Write notice content..." required></textarea>
+                    <label class="announcement-form-label" for="announcementTitle">Title <span class="required-star">*</span></label>
+                    <input type="text" class="announcement-form-input" id="announcementTitle" placeholder="e.g., Note Guidelines or Exam Announcement..." required>
                 </div>
                 <div class="announcement-form-group">
                     <label class="announcement-form-label" for="announcementAudience">Target Audience</label>
@@ -236,15 +232,25 @@
                     </select>
                 </div>
                 <div class="announcement-form-group">
-                    <label class="announcement-form-label" for="announcementStatus">Status</label>
-                    <select class="announcement-form-select" id="announcementStatus">
-                        <option value="published">Published</option>
-                        <option value="draft">Draft</option>
-                    </select>
+                    <label class="announcement-form-label" for="announcementBody">Notice Details / Message <span class="required-star">*</span></label>
+                    <textarea class="announcement-form-textarea" id="announcementBody" placeholder="Type your message or instructions here..." required></textarea>
+                </div>
+                <div class="announcement-form-group announcement-pin-group">
+                    <label class="announcement-pin-label">
+                        <input type="checkbox" class="announcement-pin-checkbox" id="announcementPin">
+                        <span class="announcement-pin-custom"></span>
+                        <span class="announcement-pin-text">
+                            <strong>Pin to Top of Student Feed</strong>
+                            <span class="announcement-pin-desc">Shows prominently as a notice banner for students.</span>
+                        </span>
+                    </label>
                 </div>
                 <div class="announcement-form-actions">
-                    <button class="topbar-btn" type="button" onclick="closeAnnouncementModal()">Cancel</button>
-                    <button class="topbar-btn primary" type="submit">Save Notice</button>
+                    <button class="announcement-btn announcement-btn-cancel" type="button" onclick="closeAnnouncementModal()">Cancel</button>
+                    <button class="announcement-btn announcement-btn-primary" type="submit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9z"/></svg>
+                        Publish Notice
+                    </button>
                 </div>
             </form>
         </div>
@@ -318,6 +324,7 @@
             const form = document.getElementById('announcementForm');
             form.reset();
             document.getElementById('announcementId').value = '';
+            document.getElementById('announcementPin').checked = false;
 
             if (id) {
                 const announcements = getAnnouncements();
@@ -329,9 +336,10 @@
                 document.getElementById('announcementTitle').value = announcement.title;
                 document.getElementById('announcementBody').value = announcement.body;
                 document.getElementById('announcementAudience').value = announcement.audience;
-                document.getElementById('announcementStatus').value = announcement.status || 'published';
+                const pinnedIds = getPinnedIds();
+                document.getElementById('announcementPin').checked = pinnedIds.includes(id);
             } else {
-                titleEl.textContent = 'New Notice';
+                titleEl.textContent = 'Post New Notice';
             }
 
             modal.classList.add('show');
@@ -347,14 +355,15 @@
             const title = document.getElementById('announcementTitle').value.trim();
             const body = document.getElementById('announcementBody').value.trim();
             const audience = document.getElementById('announcementAudience').value;
-            const status = document.getElementById('announcementStatus').value;
+            const pinChecked = document.getElementById('announcementPin').checked;
 
             if (!title || !body) {
-                alert('Please fill in both title and content');
+                alert('Please fill in both title and notice details');
                 return;
             }
 
             let announcements = getAnnouncements();
+            let newId = id;
 
             if (id) {
                 const index = announcements.findIndex(a => a.id === id);
@@ -364,23 +373,33 @@
                         title,
                         body,
                         audience,
-                        status,
                         updatedAt: Date.now()
                     };
                 }
             } else {
+                newId = generateId();
                 announcements.unshift({
-                    id: generateId(),
+                    id: newId,
                     title,
                     body,
                     audience,
-                    status,
                     createdAt: Date.now(),
                     updatedAt: Date.now()
                 });
             }
 
             saveAnnouncements(announcements);
+
+            let pinnedIds = getPinnedIds();
+            if (pinChecked) {
+                if (!pinnedIds.includes(newId)) {
+                    pinnedIds.unshift(newId);
+                }
+            } else {
+                pinnedIds = pinnedIds.filter(pid => pid !== newId);
+            }
+            savePinnedIds(pinnedIds);
+
             closeAnnouncementModal();
             renderAnnouncements();
         }
