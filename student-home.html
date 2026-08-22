@@ -7,286 +7,217 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f6f9; min-height: 100vh; color: #1a1a1a; }
-
-        .home-wrapper { display: flex; min-height: 100vh; }
-
-        .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; position: fixed; left: 0; top: 0; bottom: 0; z-index: 100; }
-        .sidebar-header { padding: 20px 20px 16px; border-bottom: 1px solid #f1f5f9; }
-        .sidebar-logo { display: flex; align-items: center; gap: 10px; }
-        .sidebar-logo-icon { width: 36px; height: 36px; background: #0f172a; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(15,23,42,0.1); }
-        .sidebar-logo-icon svg { width: 20px; height: 20px; fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .sidebar-brand { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; }
-        .sidebar-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px; color: #64748b; text-transform: uppercase; margin-top: 2px; }
-        .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
-        .nav-section-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; color: #94a3b8; text-transform: uppercase; padding: 8px 12px 6px; margin-top: 8px; }
-        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: #475569; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; text-decoration: none; border: none; background: none; width: 100%; text-align: left; }
-        .nav-item:hover { background: #f8fafc; color: #0f172a; }
-        .nav-item.active { background: #f1f5f9; color: #0f172a; font-weight: 600; box-shadow: inset 2px 0 0 #0f172a; }
-        .nav-item .nav-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; opacity: 0.6; flex-shrink: 0; }
-        .nav-item .nav-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-        .nav-item.active .nav-icon { opacity: 1; }
-        .sidebar-footer { padding: 12px; border-top: 1px solid #f1f5f9; }
-        .sidebar-bottom-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 500; color: #64748b; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left; }
-        .sidebar-bottom-item:hover { background: #f8fafc; color: #0f172a; }
-        .sidebar-bottom-item svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-
-        .main-content { flex: 1; margin-left: 260px; display: flex; flex-direction: column; min-height: 100vh; }
-        .topbar { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 32px; display: flex; align-items: center; position: sticky; top: 0; z-index: 50; height: 64px; min-width: 0; }
-        .topbar-left { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
-        .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
-        .topbar-icon-btn { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid #e2e8f0; background: #ffffff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; position: relative; color: #64748b; }
-        .topbar-icon-btn:hover { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
-        .topbar-icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .topbar-badge { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: #dc2626; color: #ffffff; font-size: 0.68rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; position: absolute; top: -4px; right: -4px; }
-        .topbar-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); border: 2px solid #e2e8f0; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #334155; cursor: pointer; overflow: hidden; transition: all 0.2s; }
-        .topbar-avatar:hover { border-color: #0f172a; color: #0f172a; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(15,23,42,0.15); }
-
-        .notification-wrapper { position: relative; }
-        .notification-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 360px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 10px 40px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.06); z-index: 200; display: none; flex-direction: column; max-height: 480px; overflow: hidden; }
-        .notification-dropdown.show { display: flex; }
-        .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f1f5f9; }
-        .notification-header h3 { font-size: 0.9rem; font-weight: 700; color: #0f172a; }
-        .notification-header-actions { display: flex; align-items: center; gap: 8px; }
-        .mark-all-read { font-size: 0.75rem; font-weight: 600; color: #0f172a; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
-        .mark-all-read:hover { background: #f1f5f9; }
-        .delete-all { font-size: 0.75rem; font-weight: 600; color: #dc2626; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
-        .delete-all:hover { background: #fef2f2; }
-        .notification-list { overflow-y: auto; max-height: 420px; }
-        .notification-item { display: flex; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #f8fafc; cursor: pointer; transition: background 0.15s; position: relative; }
-        .notification-item:last-child { border-bottom: none; }
-        .notification-item:hover { background: #fafbfc; }
-        .notification-item.unread { background: #f8fafc; }
-        .notification-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem; }
-        .notification-icon.system { background: #f0f9ff; color: #0284c7; }
-        .notification-icon.user { background: #f0fdf4; color: #16a34a; }
-        .notification-icon.alert { background: #fefce8; color: #ca8a04; }
-        .notification-icon.info { background: #fef2f2; color: #dc2626; }
-        .notification-body { flex: 1; min-width: 0; }
-        .notification-title { font-size: 0.82rem; font-weight: 600; color: #0f172a; margin-bottom: 2px; line-height: 1.3; }
-        .notification-message { font-size: 0.78rem; color: #64748b; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .notification-time { font-size: 0.72rem; color: #94a3b8; font-weight: 500; margin-top: 4px; }
-        .notification-delete { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: #94a3b8; transition: all 0.15s; flex-shrink: 0; align-self: center; opacity: 0; }
-        .notification-item:hover .notification-delete { opacity: 1; }
-        .notification-delete:hover { background: #fef2f2; color: #dc2626; }
-        .notification-delete svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .notification-empty { text-align: center; padding: 32px 16px; color: #94a3b8; font-size: 0.85rem; }
-
-        .content-area { padding: 28px 32px; flex: 1; }
-        .page-header { margin-bottom: 24px; }
-        .page-title { font-size: 1.75rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; margin-bottom: 4px; }
-        .page-subtitle { font-size: 0.88rem; color: #64748b; font-weight: 400; }
-
-        .hero-card { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); border-radius: 16px; padding: 32px 36px; color: #ffffff; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-        .hero-card h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; }
-        .hero-card p { font-size: 0.88rem; opacity: 0.85; max-width: 500px; line-height: 1.5; }
-        .hero-badge { background: rgba(255,255,255,0.15); padding: 10px 16px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
-
-        .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-        .quick-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
-        .quick-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.03); transform: translateY(-2px); border-color: #cbd5e1; }
-        .quick-card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
-        .quick-card-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .quick-card-icon.blue { background: #f0f9ff; color: #0284c7; }
-        .quick-card-icon.green { background: #f0fdf4; color: #16a34a; }
-        .quick-card-icon.amber { background: #fefce8; color: #ca8a04; }
-        .quick-card-icon.purple { background: #faf5ff; color: #9333ea; }
-        .quick-card-title { font-size: 0.92rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
-        .quick-card-desc { font-size: 0.78rem; color: #64748b; line-height: 1.4; }
-
-        .section-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-top: 20px; }
-        .panel { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.03); }
-        .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-        .panel-title { font-size: 0.95rem; font-weight: 700; color: #0f172a; }
-        .panel-link { font-size: 0.8rem; font-weight: 600; color: #0f172a; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; transition: all 0.15s; outline: none; border: none; background: transparent; cursor: pointer; }
-        .panel-link:hover { background: #f1f5f9; color: #0f172a; }
-        .panel-link:focus-visible { box-shadow: 0 0 0 2px rgba(15,23,42,0.15); }
-        .panel-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-        .announcement-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
-        .announcement-item:last-child { border-bottom: none; }
-        .announcement-dot { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; margin-top: 6px; flex-shrink: 0; }
-        .announcement-content { flex: 1; min-width: 0; }
-        .announcement-title { font-size: 0.88rem; font-weight: 600; color: #0f172a; margin-bottom: 2px; }
-        .announcement-meta { font-size: 0.78rem; color: #64748b; }
-
-        .note-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: all 0.15s; }
-        .note-item:last-child { border-bottom: none; }
-        .note-item:hover { padding-left: 6px; }
-        .note-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.75rem; font-weight: 700; }
-        .note-icon.pdf { background: #fef2f2; color: #dc2626; }
-        .note-icon.doc { background: #eff6ff; color: #2563eb; }
-        .note-icon.slides { background: #f0fdf4; color: #16a34a; }
-        .note-icon.code { background: #faf5ff; color: #9333ea; }
-        .note-content { flex: 1; min-width: 0; }
-        .note-title { font-size: 0.85rem; font-weight: 600; color: #0f172a; margin-bottom: 2px; }
-        .note-meta { font-size: 0.72rem; color: #94a3b8; }
-
-        .empty-state { text-align: center; padding: 36px 20px; color: #94a3b8; }
-        .empty-state svg { width: 40px; height: 40px; stroke: #cbd5e1; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 10px; }
-        .empty-state-title { font-size: 0.88rem; font-weight: 700; color: #475569; margin-bottom: 4px; }
-        .empty-state-desc { font-size: 0.78rem; }
-
-        .toast { position: fixed; bottom: 24px; right: 24px; background: #0f172a; color: #ffffff; padding: 14px 20px; border-radius: 12px; font-size: 0.88rem; font-weight: 500; box-shadow: 0 8px 24px rgba(15,23,42,0.2); transform: translateY(120%); transition: transform 0.3s ease, visibility 0.3s ease; visibility: hidden; z-index: 1000; max-width: 360px; }
-        .toast.show { transform: translateY(0); visibility: visible; }
-        .toast.success { background: #059669; }
-
-        @media (max-width: 1200px) {
-            .quick-grid { grid-template-columns: repeat(2, 1fr); }
-            .section-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 768px) {
-            .sidebar { width: 100%; position: relative; }
-            .main-content { margin-left: 0; }
-            .quick-grid { grid-template-columns: 1fr; }
-            .content-area { padding: 20px; }
-            .topbar { padding: 12px 20px; }
-            .hero-card { flex-direction: column; align-items: flex-start; }
-        }
-    </style>
+    <link rel="stylesheet" href="student-home.css">
 </head>
 <body>
-    <div class="home-wrapper">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <div class="sidebar-logo-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 2L2 9l10 7 10-7-10-7z"/><path d="M7 12l5 3.5 5-3.5"/><path d="M12 16v4"/><circle cx="12" cy="21" r="1"/></svg>
+    <header class="topbar">
+        <div class="topbar-left">
+            <a href="#" class="topbar-logo">
+                <div class="topbar-logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 9l10 7 10-7-10-7z"/><path d="M7 12l5 3.5 5-3.5"/><path d="M12 16v4"/><circle cx="12" cy="21" r="1"/></svg>
+                </div>
+                <div>
+                    <div class="topbar-logo-text">iShare</div>
+                    <div class="topbar-logo-badge">IUBAT</div>
+                </div>
+            </a>
+        </div>
+        <div class="topbar-center">
+            <div class="topbar-search-wrapper">
+                <svg class="topbar-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" class="topbar-search" placeholder="Search notes, slides, course codes (e.g. CSE321)...">
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <button class="topbar-ai-btn" type="button">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>
+                Gemma 3 AI
+            </button>
+            <div class="notification-wrapper" id="notificationWrapper">
+                <button class="topbar-icon-btn" id="notificationBtn" title="Notifications" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                    <span class="topbar-badge" id="notificationBadge" style="display:none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <div class="notification-header-actions">
+                            <button class="mark-all-read" id="markAllRead" type="button">Mark all as read</button>
+                            <button class="delete-all" id="deleteAllNotifications" type="button">Delete all</button>
+                        </div>
                     </div>
-                    <div>
-                        <div class="sidebar-brand">iShare</div>
-                        <div class="sidebar-badge">Student Home</div>
+                    <div class="notification-list" id="notificationList">
+                        <div class="notification-empty">No notifications yet.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="topbar-avatar" id="studentAvatar" title="My Profile">TP</div>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-profile">
+                <div class="sidebar-profile-card">
+                    <div class="sidebar-avatar" id="sidebarAvatar">TP</div>
+                    <div class="sidebar-profile-info">
+                        <div class="sidebar-profile-name" id="sidebarName">Tanwin Podishetty</div>
+                        <div class="sidebar-profile-dept" id="sidebarDept">Computer Science & Engin..</div>
                     </div>
                 </div>
             </div>
             <nav class="sidebar-nav">
-                <div class="nav-section-title">Menu</div>
                 <button class="nav-item active" type="button" onclick="window.location.href='student-home.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
                     Home
                 </button>
-                <button class="nav-item" type="button" onclick="alert('Coming soon')">
-                    <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
-                    Dashboard
+                <button class="nav-item" type="button" onclick="window.location.href='student-people.html'">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                    People
                 </button>
-                <button class="nav-item" type="button" onclick="alert('Coming soon')">
-                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
-                    Announcements
-                </button>
-                <button class="nav-item" type="button" onclick="alert('Coming soon')">
-                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-                    Browse Notes
+                <button class="nav-item" type="button" onclick="window.location.href='student-messaging.html'">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                    Messaging
+                    <span class="nav-dot"></span>
                 </button>
             </nav>
             <div class="sidebar-footer">
-                <button class="sidebar-bottom-item" type="button" onclick="window.location.href='index.html'">
+                <button class="sidebar-logout" type="button" id="sidebarLogoutBtn">
                     <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    Log Out
+                    Logout
                 </button>
             </div>
         </aside>
-        <main class="main-content">
-            <header class="topbar">
-                <div class="topbar-left">
-                    <span style="font-size: 0.88rem; font-weight: 600; color: #64748b;">Student Home</span>
-                </div>
-                <div class="topbar-actions">
-                    <div class="notification-wrapper" id="notificationWrapper">
-                        <button class="topbar-icon-btn" id="notificationBtn" title="Notifications">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-                            <span class="topbar-badge" id="notificationBadge" style="display:none;">0</span>
+
+        <div class="main-area">
+            <main class="content">
+                <div id="noticeContainer"></div>
+
+                <div class="dept-header">
+                    <div class="dept-badge">
+                        <span class="dept-badge-dot"></span>
+                        ACTIVE DEPARTMENT
+                    </div>
+                    <div class="dept-title" id="deptTitle">Loading...</div>
+                    <div class="dept-desc" id="deptDesc">Loading...</div>
+                    <div class="dept-header-actions">
+                        <button class="dept-post-btn" type="button" id="openPostNoteBtn">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            Post New Note
                         </button>
-                        <div class="notification-dropdown" id="notificationDropdown">
-                            <div class="notification-header">
-                                <h3>Notifications</h3>
-                                <div class="notification-header-actions">
-                                    <button class="mark-all-read" id="markAllRead">Mark all as read</button>
-                                    <button class="delete-all" id="deleteAllNotifications">Delete all</button>
-                                </div>
-                            </div>
-                            <div class="notification-list" id="notificationList">
-                                <div class="notification-empty">No notifications yet.</div>
-                            </div>
-                        </div>
                     </div>
-                    <div class="topbar-avatar" id="studentAvatar" title="User Menu">S</div>
-                </div>
-            </header>
-            <div class="content-area">
-                <div class="hero-card">
-                    <div>
-                        <h2 id="welcomeName">Welcome, Student</h2>
-                        <p id="welcomeDept">Your personal hub for notes, announcements, and collaboration.</p>
-                    </div>
-                    <div class="hero-badge" id="welcomeBadge">Student</div>
                 </div>
 
-                <div class="quick-grid">
-                <div class="quick-card" onclick="alert('Coming soon')">
-                    <div class="quick-card-icon blue">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                    </div>
-                    <div class="quick-card-title">Dashboard</div>
-                    <div class="quick-card-desc">View your stats, activity, and performance overview.</div>
-                </div>
-                <div class="quick-card" onclick="alert('Coming soon')">
-                    <div class="quick-card-icon green">
-                        <svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    </div>
-                    <div class="quick-card-title">Announcements</div>
-                    <div class="quick-card-desc">Stay updated with the latest notices from your department.</div>
-                </div>
-                <div class="quick-card" onclick="alert('Coming soon')">
-                    <div class="quick-card-icon amber">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    </div>
-                    <div class="quick-card-title">Browse Notes</div>
-                    <div class="quick-card-desc">Explore and download notes shared by your classmates.</div>
-                </div>
-                <div class="quick-card" onclick="window.location.href='academic-guidelines.html'">
-                    <div class="quick-card-icon purple">
-                        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    </div>
-                    <div class="quick-card-title">Academic Guidelines</div>
-                    <div class="quick-card-desc">Review the academic integrity guidelines and policies.</div>
-                </div>
+                <div class="subject-tabs" id="subjectTabs">
+                    <button class="subject-tab active" type="button" data-subject="all">All Subjects</button>
                 </div>
 
-                <div class="section-grid">
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h3 class="panel-title">Recent Announcements</h3>
-                            <button class="panel-link" type="button" onclick="alert('Coming soon')">View All <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+                <div id="notesContainer"></div>
+            </main>
+
+            <aside class="sidebar-right">
+                <div class="stats-card">
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">Active Course Codes</span>
+                            <span class="stat-value" id="activeCourseCodesStat">0</span>
                         </div>
-                        <div id="homeAnnouncementList">
-                            <div class="empty-state">
-                                <svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                                <div class="empty-state-title">No announcements yet</div>
-                                <div class="empty-state-desc">Check back later for updates from your department.</div>
-                            </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Study Documents</span>
+                            <span class="stat-value" id="totalStudyDocumentsStat">0</span>
                         </div>
-                    </div>
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h3 class="panel-title">Popular Notes</h3>
-                            <button class="panel-link" type="button" onclick="alert('Coming soon')">View All <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-                        </div>
-                        <div id="homeNotesList">
-                            <div class="empty-state">
-                                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                                <div class="empty-state-title">No notes yet</div>
-                                <div class="empty-state-desc">Notes will appear here once they are shared.</div>
-                            </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Downloads</span>
+                            <span class="stat-value" id="totalDownloadsStat">0</span>
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
+            </aside>
+        </div>
     </div>
 
     <div class="toast" id="toast"></div>
+
+    <div class="modal-overlay" id="postNoteModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">Post New Note</div>
+                <button class="modal-close" id="closePostNoteModal" type="button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label class="field-label">Title</label>
+                <input class="field-input" id="postNoteTitle" placeholder="e.g. Midterm Summary - CSE321">
+
+                <label class="field-label">Course Code</label>
+                <input class="field-input" id="postNoteCourseCode" placeholder="e.g. CSE321">
+
+                <label class="field-label">Description</label>
+                <textarea class="field-input field-textarea" id="postNoteDescription" placeholder="Write a short description about this note..." rows="3"></textarea>
+
+                <label class="field-label">File Type</label>
+                <select class="field-input" id="postNoteFileType">
+                    <option value="pdf">PDF</option>
+                    <option value="doc">DOC</option>
+                    <option value="slides">Slides</option>
+                    <option value="code">Code</option>
+                </select>
+
+                <label class="field-label">Upload PDF</label>
+                <input class="field-input" type="file" id="postNoteFile" accept="application/pdf" style="padding: 8px 12px;">
+
+                <label class="field-label">Note URL</label>
+                <input class="field-input" id="postNoteUrl" placeholder="https://...">
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn secondary" id="cancelPostNote" type="button">Cancel</button>
+                <button class="modal-btn primary" id="submitPostNote" type="button">Post Note</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-card profile-modal">
+            <div class="modal-header">
+                <div class="modal-title">My Profile</div>
+                <button class="modal-close" id="closeProfileModal" type="button">&times;</button>
+            </div>
+            <div class="modal-body profile-modal-body">
+                <div class="profile-avatar" id="profileModalAvatar">TP</div>
+                <div class="profile-name" id="profileModalName">Student</div>
+                <div class="profile-dept" id="profileModalDept">Student</div>
+
+                <div class="profile-details">
+                    <div class="profile-detail-item">
+                        <span class="profile-detail-label">Student ID</span>
+                        <span class="profile-detail-value" id="profileModalStudentId">-</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span class="profile-detail-label">Department</span>
+                        <span class="profile-detail-value" id="profileModalDeptDetail">-</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span class="profile-detail-label">Account Type</span>
+                        <span class="profile-detail-value" id="profileModalType">-</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <span class="profile-detail-label">Email</span>
+                        <span class="profile-detail-value" id="profileModalEmail">-</span>
+                    </div>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <span class="profile-stat-value" id="profileModalNotes">0</span>
+                        <span class="profile-stat-label">Notes Posted</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span class="profile-stat-value" id="profileModalDownloads">0</span>
+                        <span class="profile-stat-label">Downloads</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         const STORAGE_KEY = 'ishare_announcements';
@@ -325,16 +256,6 @@
             try { return JSON.parse(localStorage.getItem(DEPT_KEY) || '[]'); } catch { return []; }
         }
 
-        function getFileIcon(type) {
-            const icons = {
-                'PDF': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
-                'DOC': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
-                'SLIDES': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
-                'CODE': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>'
-            };
-            return icons[(type || 'PDF').toUpperCase()] || icons['PDF'];
-        }
-
         function showToast(message, type) {
             type = type || 'success';
             const toast = document.getElementById('toast');
@@ -352,6 +273,249 @@
             localStorage.setItem(NOTIF_KEY, JSON.stringify(notifications));
         }
 
+        function getUserDownloads() {
+            try { return parseInt(localStorage.getItem('ishare_user_downloads') || '0', 10); } catch { return 0; }
+        }
+
+        function addUserDownload() {
+            const count = getUserDownloads() + 1;
+            localStorage.setItem('ishare_user_downloads', count);
+            return count;
+        }
+
+        function updateDownloadsStat() {
+            const el = document.getElementById('totalDownloadsStat');
+            if (el) el.textContent = getUserDownloads().toLocaleString();
+        }
+
+        function getUserNotes() {
+            const notes = getNotes();
+            const userId = localStorage.getItem('ishare_user_id');
+            return notes.filter(function(n) { return n.authorId === userId; });
+        }
+
+        function getUserLikedNotes() {
+            try { return JSON.parse(localStorage.getItem('ishare_user_likes') || '[]'); } catch { return []; }
+        }
+
+        function setUserLikedNote(noteId, liked) {
+            let likedNotes = getUserLikedNotes();
+            const userId = localStorage.getItem('ishare_user_id') || '';
+            const key = userId + '::' + noteId;
+            likedNotes = likedNotes.filter(function(id) { return id !== key; });
+            if (liked) likedNotes.push(key);
+            localStorage.setItem('ishare_user_likes', JSON.stringify(likedNotes));
+        }
+
+        function hasUserLikedNote(noteId) {
+            const likedNotes = getUserLikedNotes();
+            const userId = localStorage.getItem('ishare_user_id') || '';
+            return likedNotes.indexOf(userId + '::' + noteId) !== -1;
+        }
+
+        function getSubjects() {
+            try { return JSON.parse(localStorage.getItem('ishare_subjects') || '[]'); } catch { return []; }
+        }
+
+        function saveSubjects(subjects) {
+            localStorage.setItem('ishare_subjects', JSON.stringify(subjects));
+        }
+
+        function renderSubjectTabs() {
+            const container = document.getElementById('subjectTabs');
+            if (!container) return;
+            const subjects = getSubjects();
+            const allSubjects = ['All Subjects'].concat(subjects);
+            container.innerHTML = allSubjects.map(function(name, index) {
+                const isActive = index === 0 ? ' active' : '';
+                const escaped = escapeHtml(name);
+                return '<button class="subject-tab' + isActive + '" type="button" data-subject="' + escaped + '">' + escaped + '</button>';
+            }).join('');
+
+            container.querySelectorAll('.subject-tab').forEach(function(tab) {
+                tab.addEventListener('click', function(e) {
+                    container.querySelectorAll('.subject-tab').forEach(function(t) { t.classList.remove('active'); });
+                    tab.classList.add('active');
+                    const subject = tab.getAttribute('data-subject');
+                    filterNotesBySubject(subject);
+                });
+            });
+        }
+
+        function filterNotesBySubject(subject) {
+            const notes = getNotes();
+            const currentUserDept = localStorage.getItem('ishare_user_department');
+            const deptFiltered = currentUserDept ? notes.filter(function(n) { return n.department === currentUserDept; }) : notes;
+            const filtered = subject === 'All Subjects' ? deptFiltered : deptFiltered.filter(function(n) {
+                const courseCode = (n.courseCode || '').toLowerCase();
+                const title = (n.title || '').toLowerCase();
+                const subjectLower = subject.toLowerCase();
+                return courseCode.indexOf(subjectLower) !== -1 || title.indexOf(subjectLower) !== -1;
+            });
+            renderNotes(filtered);
+        }
+
+        function renderNotes(notes) {
+            const notesContainer = document.getElementById('notesContainer');
+            if (!notesContainer) return;
+            const currentUserDept = localStorage.getItem('ishare_user_department');
+            const visibleNotes = currentUserDept ? notes.filter(function(n) { return n.department === currentUserDept; }) : notes;
+            if (!visibleNotes || visibleNotes.length === 0) {
+                notesContainer.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-title">No notes found</div><div class="empty-state-desc">Be the first to post notes in this subject.</div></div>';
+                return;
+            }
+            notesContainer.innerHTML = visibleNotes.map(function(note) {
+                const fileIconClass = note.fileType === 'pdf' ? 'pdf' : note.fileType === 'doc' ? 'doc' : note.fileType === 'slides' ? 'slides' : 'code';
+                const timeText = note.createdAt ? formatTime(note.createdAt) : '';
+                return '<div class="note-card" data-note-url="' + escapeHtml(note.url || '#') + '" data-note-title="' + escapeHtml(note.title || 'note') + '" data-note-id="' + escapeHtml(note.id || '') + '">' +
+                    '<div class="note-card-header">' +
+                        '<div class="note-icon ' + fileIconClass + '">' +
+                            '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+                        '</div>' +
+                        '<div class="note-info">' +
+                            '<div class="note-title">' + escapeHtml(note.title || 'Untitled') + '</div>' +
+                            '<div class="note-meta">' +
+                                '<span class="note-meta-item">' +
+                                    '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+                                    escapeHtml(note.courseCode || '') +
+                                '</span>' +
+                                '<span class="note-meta-item">' +
+                                    '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+                                    escapeHtml(timeText) +
+                                '</span>' +
+                                '<span class="note-meta-item">' +
+                                    '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+                                    escapeHtml(note.author || '') +
+                                '</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    (note.description ? '<div class="note-desc">' + escapeHtml(note.description) + '</div>' : '') +
+                    '<div class="note-actions">' +
+                        '<button class="note-action-btn" type="button" title="Download">' +
+                            '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+                        '</button>' +
+                        '<button class="note-action-btn' + (hasUserLikedNote(note.id) ? ' liked' : '') + '" type="button" title="Like">' +
+                            '<svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>' +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function updateStudyDocumentsStat() {
+            const el = document.getElementById('totalStudyDocumentsStat');
+            if (el) el.textContent = getUserNotes().length.toLocaleString();
+        }
+
+        function updateActiveCourseCodesStat() {
+            const notes = getUserNotes();
+            const courseCodes = new Set();
+            notes.forEach(function(n) {
+                if (n.courseCode && n.courseCode.trim()) {
+                    courseCodes.add(n.courseCode.trim().toUpperCase());
+                }
+            });
+            const el = document.getElementById('activeCourseCodesStat');
+            if (el) el.textContent = courseCodes.size.toLocaleString();
+        }
+
+        function saveUserNote(note) {
+            const notes = getNotes();
+            notes.push(note);
+            localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+        }
+
+        function openPostNoteModal() {
+            const modal = document.getElementById('postNoteModal');
+            if (!modal) return;
+            modal.classList.add('show');
+            const titleInput = document.getElementById('postNoteTitle');
+            if (titleInput) titleInput.value = '';
+            const courseInput = document.getElementById('postNoteCourseCode');
+            if (courseInput) courseInput.value = '';
+            const descriptionInput = document.getElementById('postNoteDescription');
+            if (descriptionInput) descriptionInput.value = '';
+            const urlInput = document.getElementById('postNoteUrl');
+            if (urlInput) urlInput.value = '';
+            const fileInput = document.getElementById('postNoteFile');
+            if (fileInput) fileInput.value = '';
+        }
+
+        function closePostNoteModal() {
+            const modal = document.getElementById('postNoteModal');
+            if (modal) modal.classList.remove('show');
+        }
+
+        function readFileAsDataURL(file) {
+            return new Promise(function(resolve, reject) {
+                const reader = new FileReader();
+                reader.onload = function(e) { resolve(e.target.result); };
+                reader.onerror = function(err) { reject(err); };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function handlePostNote() {
+            const title = document.getElementById('postNoteTitle').value.trim();
+            const courseCode = document.getElementById('postNoteCourseCode').value.trim();
+            const description = document.getElementById('postNoteDescription').value.trim();
+            const fileType = document.getElementById('postNoteFileType').value;
+            const url = document.getElementById('postNoteUrl').value.trim();
+            const fileInput = document.getElementById('postNoteFile');
+            const userName = localStorage.getItem('ishare_user_name') || 'Student';
+            const userId = localStorage.getItem('ishare_user_id');
+            const userDept = localStorage.getItem('ishare_user_department');
+
+            if (!title) { showToast('Please enter a title', 'error'); return; }
+
+            function saveNote(storedUrl) {
+                const note = {
+                    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+                    title: title,
+                    courseCode: courseCode,
+                    description: description,
+                    fileType: fileType,
+                    url: storedUrl || '#',
+                    author: userName,
+                    authorId: userId,
+                    department: userDept,
+                    downloads: 0,
+                    likes: 0,
+                    createdAt: Date.now()
+                };
+                saveUserNote(note);
+                updateStudyDocumentsStat();
+                updateActiveCourseCodesStat();
+                ensureNotifications();
+                updateBadge();
+                const activeTab = document.querySelector('.subject-tab.active');
+                if (activeTab) {
+                    const subject = activeTab.getAttribute('data-subject');
+                    filterNotesBySubject(subject);
+                } else {
+                    renderNotes(getNotes());
+                }
+                closePostNoteModal();
+                showToast('Note posted successfully!');
+            }
+
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+                if (file.type !== 'application/pdf') {
+                    showToast('Please upload a PDF file', 'error');
+                    return;
+                }
+                readFileAsDataURL(file).then(function(dataUrl) {
+                    saveNote(dataUrl);
+                }).catch(function() {
+                    showToast('Failed to read file', 'error');
+                });
+            } else {
+                saveNote(url);
+            }
+        }
+
         function updateBadge() {
             const notifications = getNotifications();
             const unreadCount = notifications.filter(n => !n.read).length;
@@ -362,6 +526,41 @@
             } else {
                 badge.style.display = 'none';
             }
+        }
+
+        function renderNotices() {
+            const container = document.getElementById('noticeContainer');
+            if (!container) return;
+
+            let announcements;
+            try {
+                announcements = JSON.parse(localStorage.getItem('ishare_announcements') || '[]');
+            } catch {
+                announcements = [];
+            }
+
+            if (!Array.isArray(announcements) || announcements.length === 0) {
+                container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-title">No announcements yet</div><div class="empty-state-desc">Check back later for updates from admin.</div></div>';
+                return;
+            }
+
+            container.innerHTML = announcements.map(function(a) {
+                const time = a.createdAt ? new Date(a.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+                return '<div class="notice-card">' +
+                    '<div class="notice-header">' +
+                        '<span class="notice-badge">' +
+                            '<svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>' +
+                            ' NOTICE' +
+                        '</span>' +
+                        '<span class="notice-time">' + escapeHtml(time) + '</span>' +
+                    '</div>' +
+                    '<div class="notice-title">' + escapeHtml(a.title || '') + '</div>' +
+                    '<div class="notice-desc">' + escapeHtml(a.body || '') + '</div>' +
+                    '<button class="notice-close" type="button" onclick="this.closest(\'.notice-card\').remove()">' +
+                        '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><polyline points="6 6 18 18"/></svg>' +
+                    '</button>' +
+                '</div>';
+            }).join('');
         }
 
         function renderNotifications() {
@@ -381,7 +580,7 @@
                         '<div class="notification-time">' + formatTime(n.time) + '</div>' +
                     '</div>' +
                     '<button class="notification-delete" data-id="' + n.id + '" title="Delete notification">' +
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>' +
+                        '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>' +
                     '</button>' +
                 '</div>';
             }).join('');
@@ -413,107 +612,51 @@
             });
         }
 
-        function generateDemoNotifications() {
-            const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+        function ensureNotifications() {
+            const currentUserId = localStorage.getItem('ishare_user_id');
+            const currentUserDept = localStorage.getItem('ishare_user_department');
+            const notes = getNotes();
+            const announcements = getAnnouncements();
+            const existingNotifications = getNotifications();
             const notifications = [];
             const now = Date.now();
 
-            notifications.push({
-                id: 'welcome-' + Date.now(),
-                title: 'Welcome to iShare!',
-                message: 'Explore notes from your department and upload your own to help classmates.',
-                type: 'info',
-                time: now,
-                read: false
+            const existingMap = {};
+            existingNotifications.forEach(function(n) {
+                existingMap[n.id] = n;
             });
 
-            accounts.slice(0, 2).forEach(function(acc, index) {
+            announcements.forEach(function(a) {
+                const id = 'announcement-' + a.id;
+                const existing = existingMap[id];
                 notifications.push({
-                    id: 'system-' + acc.studentId + '-' + index,
-                    title: 'New user registered',
-                    message: acc.fullname + ' joined as ' + (acc.accountType || 'Student') + '.',
-                    type: 'user',
-                    time: now - 1000 * 60 * (5 + index * 10),
-                    read: false
+                    id: id,
+                    title: a.title || 'New Announcement',
+                    message: a.body || '',
+                    type: 'info',
+                    time: a.createdAt || now,
+                    read: existing ? existing.read : false
                 });
             });
 
-            if (notifications.length <= 1) {
-                notifications.push({
-                    id: 'system-1',
-                    title: 'Platform ready',
-                    message: 'iShare is ready. Browse notes and stay updated with announcements.',
-                    type: 'system',
-                    time: now - 1000 * 60 * 15,
-                    read: false
-                });
-            }
-
-            return notifications;
-        }
-
-        function ensureNotifications() {
-            let notifications = getNotifications();
-            if (notifications.length === 0) {
-                notifications = generateDemoNotifications();
-                saveNotifications(notifications);
-            }
-            return notifications;
-        }
-
-        function renderHomeAnnouncements() {
-            const listEl = document.getElementById('homeAnnouncementList');
-            const announcements = getAnnouncements().filter(a => (a.status || 'published') === 'published').slice(0, 5);
-
-            if (announcements.length === 0) {
-                listEl.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><div class="empty-state-title">No announcements yet</div><div class="empty-state-desc">Check back later for updates from your department.</div></div>';
-                return;
-            }
-
-            listEl.innerHTML = announcements.map(a => {
-                const timeLabel = formatTime(a.updatedAt || a.createdAt);
-                return '<div class="announcement-item">' +
-                    '<div class="announcement-dot"></div>' +
-                    '<div class="announcement-content">' +
-                        '<div class="announcement-title">' + escapeHtml(a.title) + '</div>' +
-                        '<div class="announcement-meta">' + escapeHtml(a.audience || 'All') + ' · ' + timeLabel + '</div>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-        }
-
-        function renderHomeNotes() {
-            const listEl = document.getElementById('homeNotesList');
-            const currentUserId = localStorage.getItem('ishare_user_id');
-            const userDept = localStorage.getItem('ishare_user_department');
-            let notes = getNotes().filter(n => n.uploadedBy !== currentUserId);
-
-            if (userDept) {
-                const deptNotes = notes.filter(n => n.department === userDept).slice(0, 5);
-                if (deptNotes.length > 0) {
-                    notes = deptNotes;
-                } else {
-                    notes = notes.slice(0, 5);
+            notes.forEach(function(note) {
+                if (note.authorId !== currentUserId && note.department === currentUserDept) {
+                    const id = 'note-' + note.id;
+                    const existing = existingMap[id];
+                    notifications.push({
+                        id: id,
+                        title: 'New note: ' + (note.title || 'Untitled'),
+                        message: note.author + ' posted a note in ' + (note.courseCode || 'General'),
+                        type: 'user',
+                        time: note.createdAt || now,
+                        read: existing ? existing.read : false
+                    });
                 }
-            } else {
-                notes = notes.slice(0, 5);
-            }
+            });
 
-            if (notes.length === 0) {
-                listEl.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div class="empty-state-title">No notes yet</div><div class="empty-state-desc">Notes will appear here once they are shared.</div></div>';
-                return;
-            }
-
-            listEl.innerHTML = notes.map(n => {
-                const fileType = (n.fileType || 'pdf').toUpperCase();
-                return '<div class="note-item" onclick="alert(\'Coming soon\')">' +
-                    '<div class="note-icon ' + fileType.toLowerCase() + '">' + getFileIcon(fileType) + '</div>' +
-                    '<div class="note-content">' +
-                        '<div class="note-title">' + escapeHtml(n.title) + '</div>' +
-                        '<div class="note-meta">' + escapeHtml(n.courseCode || '') + (n.courseName ? ' - ' + escapeHtml(n.courseName) : '') + ' · ' + (n.downloads || 0) + ' downloads</div>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
+            notifications.sort(function(a, b) { return b.time - a.time; });
+            saveNotifications(notifications);
+            return notifications;
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -532,9 +675,25 @@
                 const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
                 const avatar = document.getElementById('studentAvatar');
                 if (avatar) avatar.textContent = initials || 'S';
-                document.getElementById('welcomeName').textContent = 'Welcome, ' + userName;
-                document.getElementById('welcomeDept').textContent = userDept ? 'Department: ' + userDept + ' · Your personal hub for notes, announcements, and collaboration.' : 'Your personal hub for notes, announcements, and collaboration.';
-                document.getElementById('welcomeBadge').textContent = userDept || 'Student';
+                const sidebarAvatar = document.getElementById('sidebarAvatar');
+                if (sidebarAvatar) sidebarAvatar.textContent = initials || 'S';
+                const sidebarName = document.getElementById('sidebarName');
+                if (sidebarName) sidebarName.textContent = userName;
+                const sidebarDept = document.getElementById('sidebarDept');
+                if (sidebarDept) sidebarDept.textContent = (userDept || 'Student').slice(0, 25) + (userDept && userDept.length > 25 ? '..' : '');
+
+                const deptTitle = document.getElementById('deptTitle');
+                const deptDesc = document.getElementById('deptDesc');
+                if (deptTitle) deptTitle.textContent = userDept || 'Student';
+                if (deptDesc) {
+                    const deptDescriptions = {
+                        'Computer Science & Engineering': 'Official repository for CSE course notes, lecture slides, and study materials.',
+                        'Electrical & Electronic Engineering': 'Official repository for EEE course notes, lecture slides, and study materials.',
+                        'Business Administration': 'Official repository for BBA course notes, lecture slides, and study materials.',
+                        'Civil Engineering': 'Official repository for CE course notes, lecture slides, and study materials.'
+                    };
+                    deptDesc.textContent = deptDescriptions[userDept] || 'Official repository for course notes, lecture slides, and study materials.';
+                }
             }
 
             const notificationWrapper = document.getElementById('notificationWrapper');
@@ -587,10 +746,197 @@
                 }
             });
 
+            const notesContainer = document.getElementById('notesContainer');
+            if (notesContainer) {
+                notesContainer.addEventListener('click', function(e) {
+                    const downloadBtn = e.target.closest('.note-action-btn[title="Download"]');
+                    const likeBtn = e.target.closest('.note-action-btn[title="Like"]');
+
+                    if (downloadBtn) {
+                        e.stopPropagation();
+                        const card = downloadBtn.closest('.note-card');
+                        if (!card) return;
+                        const noteUrl = card.getAttribute('data-note-url') || '';
+                        const noteTitle = card.getAttribute('data-note-title') || 'note';
+                        const newCount = addUserDownload();
+                        updateDownloadsStat();
+                        if (noteUrl && noteUrl !== '#') {
+                            const a = document.createElement('a');
+                            a.href = noteUrl;
+                            a.download = noteTitle.replace(/[^a-z0-9]/gi, '_') + '.pdf';
+                            a.target = '_blank';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                        }
+                        showToast('Downloaded successfully! Total downloads: ' + newCount);
+                    }
+
+                    if (likeBtn) {
+                        e.stopPropagation();
+                        const card = likeBtn.closest('.note-card');
+                        if (!card) return;
+                        const noteId = card.getAttribute('data-note-id');
+                        if (noteId) {
+                            const notes = getNotes();
+                            const note = notes.find(function(n) { return n.id === noteId; });
+                            if (note) {
+                                const wasLiked = hasUserLikedNote(noteId);
+                                if (wasLiked) {
+                                    note.likes = Math.max((note.likes || 0) - 1, 0);
+                                    setUserLikedNote(noteId, false);
+                                    likeBtn.classList.remove('liked');
+                                    showToast('You unliked this note');
+                                } else {
+                                    note.likes = (note.likes || 0) + 1;
+                                    setUserLikedNote(noteId, true);
+                                    likeBtn.classList.add('liked');
+                                    showToast('You liked this note!');
+                                }
+                                localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+                            }
+                        }
+                    }
+                });
+            }
+
+            const openPostNoteBtn = document.getElementById('openPostNoteBtn');
+            if (openPostNoteBtn) {
+                openPostNoteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openPostNoteModal();
+                });
+            }
+
+            const closePostNoteModalBtn = document.getElementById('closePostNoteModal');
+            if (closePostNoteModalBtn) {
+                closePostNoteModalBtn.addEventListener('click', closePostNoteModal);
+            }
+
+            const cancelPostNote = document.getElementById('cancelPostNote');
+            if (cancelPostNote) {
+                cancelPostNote.addEventListener('click', closePostNoteModal);
+            }
+
+            const submitPostNote = document.getElementById('submitPostNote');
+            if (submitPostNote) {
+                submitPostNote.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    handlePostNote();
+                });
+            }
+
+            const postNoteModal = document.getElementById('postNoteModal');
+            if (postNoteModal) {
+                postNoteModal.addEventListener('click', function(e) {
+                    if (e.target === postNoteModal) closePostNoteModal();
+                });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closePostNoteModal();
+            });
+
+            function closeProfileModal() {
+                const modal = document.getElementById('profileModal');
+                if (modal) modal.classList.remove('show');
+            }
+
+            function openProfileModal() {
+                const modal = document.getElementById('profileModal');
+                if (!modal) return;
+
+                const userName = localStorage.getItem('ishare_user_name') || 'Student';
+                const userDept = localStorage.getItem('ishare_user_department') || '';
+                const userId = localStorage.getItem('ishare_user_id') || '';
+                const userType = localStorage.getItem('ishare_user_type') || 'Student';
+
+                const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+                const account = accounts.find(function(a) { return a.studentId === userId; });
+                const userEmail = account ? account.email : '';
+
+                const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
+                const avatarEl = document.getElementById('profileModalAvatar');
+                if (avatarEl) avatarEl.textContent = initials || 'S';
+
+                const nameEl = document.getElementById('profileModalName');
+                if (nameEl) nameEl.textContent = userName;
+
+                const deptEl = document.getElementById('profileModalDept');
+                if (deptEl) deptEl.textContent = (userDept || 'Student').slice(0, 30);
+
+                const studentIdEl = document.getElementById('profileModalStudentId');
+                if (studentIdEl) studentIdEl.textContent = userId || '-';
+
+                const deptDetailEl = document.getElementById('profileModalDeptDetail');
+                if (deptDetailEl) deptDetailEl.textContent = userDept || '-';
+
+                const typeEl = document.getElementById('profileModalType');
+                if (typeEl) typeEl.textContent = userType || '-';
+
+                const emailEl = document.getElementById('profileModalEmail');
+                if (emailEl) emailEl.textContent = userEmail || '-';
+
+                const notesEl = document.getElementById('profileModalNotes');
+                if (notesEl) notesEl.textContent = getUserNotes().length;
+
+                const downloadsEl = document.getElementById('profileModalDownloads');
+                if (downloadsEl) downloadsEl.textContent = getUserDownloads();
+
+                modal.classList.add('show');
+            }
+
+            const studentAvatar = document.getElementById('studentAvatar');
+            if (studentAvatar) {
+                studentAvatar.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openProfileModal();
+                });
+            }
+
+            const closeProfileModalBtn = document.getElementById('closeProfileModal');
+            if (closeProfileModalBtn) {
+                closeProfileModalBtn.addEventListener('click', closeProfileModal);
+            }
+
+            const profileModal = document.getElementById('profileModal');
+            if (profileModal) {
+                profileModal.addEventListener('click', function(e) {
+                    if (e.target === profileModal) closeProfileModal();
+                });
+            }
+
+            updateDownloadsStat();
+            updateStudyDocumentsStat();
+            updateActiveCourseCodesStat();
             ensureNotifications();
             updateBadge();
-            renderHomeAnnouncements();
-            renderHomeNotes();
+            renderNotices();
+
+            const logoutBtn = document.getElementById('sidebarLogoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (confirm('Are you sure you want to log out?')) {
+                        localStorage.removeItem('ishare_user_id');
+                        localStorage.removeItem('ishare_user_password');
+                        localStorage.removeItem('ishare_user_type');
+                        localStorage.removeItem('ishare_user_name');
+                        localStorage.removeItem('ishare_user_department');
+                        localStorage.removeItem('ishare_user_email');
+                        localStorage.removeItem('ishare_user_downloads');
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+
+            const existingSubjects = getSubjects();
+            if (existingSubjects.length === 0) {
+                saveSubjects(['Algorithms', 'Operating Systems', 'Database Systems', 'Networking']);
+            }
+            renderSubjectTabs();
+            renderNotes(getNotes());
         });
     </script>
 </body>
