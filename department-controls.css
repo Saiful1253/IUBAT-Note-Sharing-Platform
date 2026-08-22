@@ -329,10 +329,9 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .dept-stats {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: 1fr 1fr;
     }
     .dept-card-header {
         flex-direction: column;
@@ -341,6 +340,23 @@
     .dept-actions {
         width: 100%;
         justify-content: space-between;
+    }
+}
+
+@media (max-width: 768px) {
+    .dept-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .dept-control-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .dept-actions {
+        width: 100%;
+    }
+    .toggle {
+        align-self: flex-end;
     }
 }
 

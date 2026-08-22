@@ -41,6 +41,14 @@
         .student-view-modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: transparent; cursor: pointer; font-size: 1.2rem; color: #64748b; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; }
         .student-view-modal-close:hover { background: #f1f5f9; color: #0f172a; }
         .student-view-modal-body { padding: 24px; }
+
+        @media (max-width: 768px) {
+            .admin-view-banner { flex-direction: column; gap: 10px; align-items: stretch; }
+            .admin-view-select { width: 100%; }
+            .student-view-container { padding: 20px; }
+            .student-view-stats { grid-template-columns: 1fr; }
+            .student-view-header h1 { font-size: 1.4rem; }
+        }
     </style>
 </head>
 <body>
@@ -49,8 +57,11 @@
             <span class="admin-view-badge">Admin View Mode</span>
             <span class="admin-view-title">Student View - Read Only</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <select class="admin-view-select" id="studentSelector">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Menu">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <select class="admin-view-select" id="studentSelector">
                 <option value="">Select Student Account</option>
             </select>
             <span class="readonly-badge">Read Only</span>
@@ -87,7 +98,7 @@
                 </button>
             </div>
         </aside>
-
+        <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
         <div class="main-area">
             <main class="content">
                 <div class="student-view-container">
@@ -319,6 +330,42 @@
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') closeProfileModal();
             });
+
+            (function() {
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                const sidebar = document.querySelector('.sidebar');
+                const overlay = document.getElementById('mobileSidebarOverlay');
+
+                function closeMobileSidebar() {
+                    if (sidebar) sidebar.classList.remove('open');
+                    if (overlay) overlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.addEventListener('click', function() {
+                        if (sidebar && sidebar.classList.contains('open')) {
+                            closeMobileSidebar();
+                        } else {
+                            if (sidebar) sidebar.classList.add('open');
+                            if (overlay) overlay.classList.add('show');
+                            document.body.style.overflow = 'hidden';
+                        }
+                    });
+                }
+
+                if (overlay) {
+                    overlay.addEventListener('click', closeMobileSidebar);
+                }
+
+                document.querySelectorAll('.sidebar-nav .nav-item, .sidebar-logout').forEach(function(item) {
+                    item.addEventListener('click', function() {
+                        if (window.innerWidth <= 768) {
+                            closeMobileSidebar();
+                        }
+                    });
+                });
+            })();
         });
     </script>
 </body>

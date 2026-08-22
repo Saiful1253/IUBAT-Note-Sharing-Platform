@@ -176,9 +176,17 @@ tbody tr.flagged-row:hover { background: #fee2e2; }
 .student-detail-btn-close { background: #ffffff; color: #334155; border: 1.5px solid #e2e8f0; }
 .student-detail-btn-close:hover { background: #f8fafc; border-color: #cbd5e1; }
 
-@media (max-width: 768px) {
-    .page-actions { width: 100%; }
+@media (max-width: 1024px) {
+    .page-title-row { flex-direction: column; gap: 8px; }
+    .page-actions { width: 100%; justify-content: flex-start; }
     .toolbar { flex-direction: column; }
     .search-box { min-width: 100%; }
+    .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { min-width: 900px; }
     .pagination-bar { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 768px) {
+    .tabs-bar { flex-direction: column; }
+    .tab-btn { width: 100%; justify-content: center; }
+    .discipline-modal, .student-detail-modal { max-width: 100%; }
 }

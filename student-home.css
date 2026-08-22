@@ -225,6 +225,10 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 @media (max-width: 1200px) {
     .content { max-width: none; }
 }
+@media (max-width: 1024px) {
+    .dept-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .stats-list { grid-template-columns: 1fr 1fr; }
+}
 @media (max-width: 768px) {
     .sidebar { width: 100%; position: relative; top: 0; }
     .main-area { margin-left: 0; }
@@ -233,6 +237,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
     .topbar { padding: 12px 20px; }
     .topbar-center { display: none; }
     .dept-header-actions { justify-content: flex-start; }
+    .stats-list { grid-template-columns: 1fr; }
     .messaging-layout { grid-template-columns: 1fr; }
     .messaging-sidebar { display: none; }
 }
