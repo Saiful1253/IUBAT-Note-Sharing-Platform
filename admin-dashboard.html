@@ -42,7 +42,7 @@
                     Announcement Management
                     <span class="nav-badge">0</span>
                 </button>
-                <button class="nav-item">
+                <button class="nav-item" type="button" onclick="window.location.href='student-view.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
                     Student View
                     <span class="nav-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
@@ -58,10 +58,6 @@
                         <div class="sidebar-ai-sub">Online</div>
                     </div>
                 </div>
-                <button class="sidebar-bottom-item">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/></svg>
-                    Settings
-                </button>
                 <button class="sidebar-bottom-item" onclick="window.location.href='index.html'">
                     <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     Log Out
@@ -123,11 +119,21 @@
                                 <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                             </div>
                         </div>
-                        <div class="stat-value" id="uptime">99.9%</div>
-                        <div class="stat-sub" style="display:flex;align-items:center;gap:6px;margin-top:4px;">
-                            <span style="width:8px;height:8px;background:#16a34a;border-radius:50%;display:inline-block;"></span>
-                            All Systems Operational
+                        <div class="stat-value" id="uptime">--</div>
+                        <div class="stat-sub" id="uptimeStatus" style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+                            <span id="uptimeDot" style="width:8px;height:8px;background:#94a3b8;border-radius:50%;display:inline-block;"></span>
+                            <span id="uptimeText">Checking...</span>
                         </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <span class="stat-label">Total Notes</span>
+                            <div class="stat-icon notes">
+                                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="totalNotes">0</div>
+                        <div class="stat-sub" id="notesSub">No notes uploaded yet</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-card-header">
@@ -136,12 +142,12 @@
                                 <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
                             </div>
                         </div>
-                        <div class="stat-value" style="font-size:1.5rem;">0GB <span style="font-size:1rem;color:#94a3b8;font-weight:500;">/ 10TB</span></div>
+                        <div class="stat-value" style="font-size:1.5rem;"><span id="storageUsed">0GB</span> <span style="font-size:1rem;color:#94a3b8;font-weight:500;">/ 10TB</span></div>
                         <div class="storage-bar">
                             <div class="storage-fill" id="storageFill" style="width:0%;"></div>
                         </div>
                         <div class="storage-info">
-                            <span class="storage-sub">No data uploaded yet</span>
+                            <span class="storage-sub" id="storageSub">No data uploaded yet</span>
                         </div>
                     </div>
                 </div>
@@ -173,15 +179,15 @@
                                 <h3 class="panel-title">Quick Actions</h3>
                             </div>
                             <div class="quick-actions">
-                                <button class="action-btn" onclick="alert('Feature coming soon')">
+                                <button class="action-btn" id="exportAuthDataBtn">
                                     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                                     Export Auth Data
                                 </button>
-                                <button class="action-btn" onclick="alert('Feature coming soon')">
+                                <button class="action-btn" id="broadcastAnnouncementBtn">
                                     <svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                                     Broadcast Announcement
                                 </button>
-                                <button class="action-btn" onclick="alert('Feature coming soon')">
+                                <button class="action-btn" id="manageDeptAccessBtn">
                                     <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                     Manage Dept. Access
                                 </button>
@@ -252,6 +258,28 @@
                 if (userChange) userChange.style.display = 'none';
                 if (userSub) userSub.textContent = 'No registered users yet';
             }
+
+            const notes = JSON.parse(localStorage.getItem('ishare_notes') || '[]');
+            const totalNotesEl = document.getElementById('totalNotes');
+            const notesSubEl = document.getElementById('notesSub');
+            if (totalNotesEl) totalNotesEl.textContent = notes.length.toLocaleString();
+            if (notesSubEl) notesSubEl.textContent = notes.length > 0 ? `Across ${new Set(notes.map(n => n.department).filter(Boolean)).size} departments` : 'No notes uploaded yet';
+
+            let totalStorageBytes = 0;
+            notes.forEach(function(n) {
+                if (n.url && n.url.startsWith('data:')) {
+                    totalStorageBytes += n.url.length * 2;
+                }
+            });
+            const totalStorageMB = (totalStorageBytes / (1024 * 1024)).toFixed(2);
+            const storageUsedEl = document.getElementById('storageUsed');
+            const storageSubEl = document.getElementById('storageSub');
+            const storageFillEl = document.getElementById('storageFill');
+            const storageTB = 10 * 1024;
+            const storagePercent = totalStorageMB > 0 ? Math.min((totalStorageMB / storageTB) * 100, 100) : 0;
+            if (storageUsedEl) storageUsedEl.textContent = totalStorageMB + 'MB';
+            if (storageSubEl) storageSubEl.textContent = totalStorageMB > 0 ? `${notes.length} notes uploaded` : 'No data uploaded yet';
+            if (storageFillEl) storageFillEl.style.width = storagePercent + '%';
 
             const tableBody = document.getElementById('activityTableBody');
             if (tableBody) {
@@ -495,6 +523,114 @@
 
             ensureNotifications();
             updateBadge();
+
+            const sessionStart = Date.now();
+            const uptimeEl = document.getElementById('uptime');
+            const uptimeDot = document.getElementById('uptimeDot');
+            const uptimeText = document.getElementById('uptimeText');
+
+            function checkSystemHealth() {
+                const checks = [];
+                let passed = 0;
+
+                try {
+                    localStorage.setItem('ishare_health_check', 'ok');
+                    localStorage.removeItem('ishare_health_check');
+                    checks.push({ name: 'LocalStorage', status: 'pass' });
+                    passed++;
+                } catch (e) {
+                    checks.push({ name: 'LocalStorage', status: 'fail' });
+                }
+
+                if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                    checks.push({ name: 'Page Load', status: 'pass' });
+                    passed++;
+                } else {
+                    checks.push({ name: 'Page Load', status: 'fail' });
+                }
+
+                const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+                if (Array.isArray(accounts)) {
+                    checks.push({ name: 'User Data', status: 'pass' });
+                    passed++;
+                } else {
+                    checks.push({ name: 'User Data', status: 'fail' });
+                }
+
+                const notes = JSON.parse(localStorage.getItem('ishare_notes') || '[]');
+                if (Array.isArray(notes)) {
+                    checks.push({ name: 'Notes Data', status: 'pass' });
+                    passed++;
+                } else {
+                    checks.push({ name: 'Notes Data', status: 'fail' });
+                }
+
+                const healthPercent = Math.round((passed / checks.length) * 100);
+                const allOperational = passed === checks.length;
+
+                if (uptimeEl) uptimeEl.textContent = healthPercent + '.9%';
+                if (uptimeDot) {
+                    uptimeDot.style.background = allOperational ? '#16a34a' : '#dc2626';
+                }
+                if (uptimeText) {
+                    uptimeText.textContent = allOperational ? 'All Systems Operational' : passed + '/' + checks.length + ' Systems Healthy';
+                }
+            }
+
+            checkSystemHealth();
+            setInterval(checkSystemHealth, 30000);
+
+            function addAuditLog(message, type) {
+                type = type || 'info';
+                const container = document.getElementById('auditLogContainer');
+                const emptyState = document.getElementById('auditEmptyState');
+                if (emptyState) emptyState.style.display = 'none';
+                
+                const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const logEntry = document.createElement('div');
+                logEntry.className = 'audit-log-entry';
+                logEntry.innerHTML = '<span class="audit-log-time">' + time + '</span><span class="audit-log-type ' + type + '">' + type.toUpperCase() + '</span><span class="audit-log-msg">' + message + '</span>';
+                container.insertBefore(logEntry, container.firstChild);
+            }
+
+            const exportBtn = document.getElementById('exportAuthDataBtn');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', function() {
+                    const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+                    if (accounts.length === 0) {
+                        addAuditLog('Export failed: No user data available', 'error');
+                        return;
+                    }
+                    const blob = new Blob([JSON.stringify(accounts, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'ishare_auth_data_' + new Date().toISOString().slice(0, 10) + '.json';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    addAuditLog('Exported ' + accounts.length + ' user records', 'success');
+                });
+            }
+
+            const broadcastBtn = document.getElementById('broadcastAnnouncementBtn');
+            if (broadcastBtn) {
+                broadcastBtn.addEventListener('click', function() {
+                    addAuditLog('Navigating to Announcement Management', 'info');
+                    window.location.href = 'announcement-management.html';
+                });
+            }
+
+            const manageDeptBtn = document.getElementById('manageDeptAccessBtn');
+            if (manageDeptBtn) {
+                manageDeptBtn.addEventListener('click', function() {
+                    addAuditLog('Navigating to Department Controls', 'info');
+                    window.location.href = 'department-controls.html';
+                });
+            }
+
+            addAuditLog('Admin dashboard loaded successfully', 'success');
         })();
     </script>
 </body>

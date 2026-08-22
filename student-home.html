@@ -25,7 +25,7 @@
         <div class="topbar-center">
             <div class="topbar-search-wrapper">
                 <svg class="topbar-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" class="topbar-search" placeholder="Search notes, slides, course codes (e.g. CSE321)...">
+                <input type="text" class="topbar-search" placeholder="Search notes, slides, course codes (e.g. CSE321)..." id="homeSearch">
             </div>
         </div>
         <div class="topbar-actions">
@@ -72,7 +72,7 @@
                     Home
                 </button>
                 <button class="nav-item" type="button" onclick="window.location.href='student-people.html'">
-                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4v2a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                     People
                 </button>
                 <button class="nav-item" type="button" onclick="window.location.href='student-messaging.html'">
@@ -355,6 +355,20 @@
             renderNotes(filtered);
         }
 
+        function searchNotes(query) {
+            const notes = getNotes();
+            const currentUserDept = localStorage.getItem('ishare_user_department');
+            const deptFiltered = currentUserDept ? notes.filter(function(n) { return n.department === currentUserDept; }) : notes;
+            const lowerQuery = (query || '').toLowerCase();
+            const filtered = deptFiltered.filter(function(n) {
+                return (n.title || '').toLowerCase().indexOf(lowerQuery) !== -1 ||
+                    (n.courseCode || '').toLowerCase().indexOf(lowerQuery) !== -1 ||
+                    (n.description || '').toLowerCase().indexOf(lowerQuery) !== -1 ||
+                    (n.author || '').toLowerCase().indexOf(lowerQuery) !== -1;
+            });
+            renderNotes(filtered);
+        }
+
         function renderNotes(notes) {
             const notesContainer = document.getElementById('notesContainer');
             if (!notesContainer) return;
@@ -405,19 +419,26 @@
 
         function updateStudyDocumentsStat() {
             const el = document.getElementById('totalStudyDocumentsStat');
-            if (el) el.textContent = getUserNotes().length.toLocaleString();
+            if (!el) return;
+            const notes = getNotes();
+            const currentUserDept = localStorage.getItem('ishare_user_department');
+            const deptNotes = currentUserDept ? notes.filter(function(n) { return n.department === currentUserDept; }) : notes;
+            el.textContent = deptNotes.length.toLocaleString();
         }
 
         function updateActiveCourseCodesStat() {
-            const notes = getUserNotes();
+            const el = document.getElementById('activeCourseCodesStat');
+            if (!el) return;
+            const notes = getNotes();
+            const currentUserDept = localStorage.getItem('ishare_user_department');
+            const deptNotes = currentUserDept ? notes.filter(function(n) { return n.department === currentUserDept; }) : notes;
             const courseCodes = new Set();
-            notes.forEach(function(n) {
+            deptNotes.forEach(function(n) {
                 if (n.courseCode && n.courseCode.trim()) {
                     courseCodes.add(n.courseCode.trim().toUpperCase());
                 }
             });
-            const el = document.getElementById('activeCourseCodesStat');
-            if (el) el.textContent = courseCodes.size.toLocaleString();
+            el.textContent = courseCodes.size.toLocaleString();
         }
 
         function saveUserNote(note) {
@@ -928,6 +949,13 @@
                         localStorage.removeItem('ishare_user_downloads');
                         window.location.href = 'index.html';
                     }
+                });
+            }
+
+            const homeSearch = document.getElementById('homeSearch');
+            if (homeSearch) {
+                homeSearch.addEventListener('input', function() {
+                    searchNotes(this.value);
                 });
             }
 
