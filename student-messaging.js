@@ -1,15 +1,23 @@
+/* ============================================ */
+/* Student Messaging JS - iShare IUBAT            */
+/* মেসেজিং: চ্যাট, কনভারসেশন, মেসেজ সেভ, নোটিফ */
+/* ============================================ */
+
+/* localStorage কী */
 const STORAGE_KEY = 'ishare_announcements';
 const NOTES_KEY = 'ishare_notes';
 const DEPT_KEY = 'ishare_departments';
 const NOTIF_KEY = 'ishare_notifications';
 const MESSAGES_KEY = 'ishare_messages';
 
+/* XSS প্রতিরোধ: HTML এস্কেপ */
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
+/* টাইম স্ট্যাম্প থেকে রেডেবল টাইম */
 function formatTime(timestamp) {
     if (!timestamp) return '';
     const diff = Date.now() - timestamp;
@@ -23,18 +31,22 @@ function formatTime(timestamp) {
     return new Date(timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+/* অ্যানাউন্সমেন্ট লোড */
 function getAnnouncements() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
 }
 
+/* নোট লোড */
 function getNotes() {
     try { return JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'); } catch { return []; }
 }
 
+/* ডিপার্টমেন্ট লোড */
 function getDepartments() {
     try { return JSON.parse(localStorage.getItem(DEPT_KEY) || '[]'); } catch { return []; }
 }
 
+/* টোস্ট মেসেজ */
 function showToast(message, type) {
     type = type || 'success';
     const toast = document.getElementById('toast');
@@ -44,14 +56,17 @@ function showToast(message, type) {
     setTimeout(function() { toast.classList.remove('show'); }, 3500);
 }
 
+/* নোটিফিকেশন লোড */
 function getNotifications() {
     try { return JSON.parse(localStorage.getItem(NOTIF_KEY) || '[]'); } catch { return []; }
 }
 
+/* নোটিফিকেশন সেভ */
 function saveNotifications(notifications) {
     localStorage.setItem(NOTIF_KEY, JSON.stringify(notifications));
 }
 
+/* নোটিফিকেশন ব্যেজ আপডেট */
 function updateBadge() {
     const notifications = getNotifications();
     const unreadCount = notifications.filter(n => !n.read).length;
@@ -64,6 +79,7 @@ function updateBadge() {
     }
 }
 
+/* নোটিফিকেশন রেন্ডার */
 function renderNotifications() {
     const notifications = getNotifications();
     const listEl = document.getElementById('notificationList');
@@ -71,17 +87,17 @@ function renderNotifications() {
         listEl.innerHTML = '<div class="notification-empty">No notifications yet.</div>';
         return;
     }
-    const iconMap = { system: '&#9881;', user: '&#128100;', alert: '&#9888;', info: '&#8505;' };
+    const iconMap = { system: '⚙', user: '👤', alert: '⚠', info: 'ℹ' };
     listEl.innerHTML = notifications.slice(0, 20).map(n => {
         return '<div class="notification-item ' + (n.read ? '' : 'unread') + '" data-id="' + n.id + '">' +
-            '<div class="notification-icon ' + (n.type || 'system') + '">' + (iconMap[n.type] || '&#128276;') + '</div>' +
+            '<div class="notification-icon ' + (n.type || 'system') + '">' + (iconMap[n.type] || '🔔') + '</div>' +
             '<div class="notification-body">' +
                 '<div class="notification-title">' + escapeHtml(n.title) + '</div>' +
                 '<div class="notification-message">' + escapeHtml(n.message) + '</div>' +
                 '<div class="notification-time">' + formatTime(n.time) + '</div>' +
             '</div>' +
             '<button class="notification-delete" data-id="' + n.id + '" title="Delete notification">' +
-                '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>' +
+                '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4"/></svg>' +
             '</button>' +
         '</div>';
     }).join('');
@@ -113,6 +129,7 @@ function renderNotifications() {
     });
 }
 
+/* নোটিফিকেশন এনশ্যুর */
 function ensureNotifications() {
     const currentUserId = localStorage.getItem('ishare_user_id');
     const currentUserDept = localStorage.getItem('ishare_user_department');
@@ -160,19 +177,24 @@ function ensureNotifications() {
     return notifications;
 }
 
+/* ==================== মেসেজিং সিস্টেম ==================== */
+/* মেসেজ লোড */
 function getMessages() {
     try { return JSON.parse(localStorage.getItem(MESSAGES_KEY) || '{}'); } catch { return {}; }
 }
 
+/* মেসেজ সেভ */
 function saveMessages(messages) {
     localStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
 }
 
+/* দুই ইউজারের কনভারসেশন কী জেনারেট */
 function getConversationKey(userId1, userId2) {
     const ids = [userId1, userId2].sort();
     return ids[0] + '_' + ids[1];
 }
 
+/* কনভারসেশন মেসেজ লোড */
 function getConversationMessages(otherUserId) {
     const currentUserId = localStorage.getItem('ishare_user_id');
     const key = getConversationKey(currentUserId, otherUserId);
@@ -180,6 +202,7 @@ function getConversationMessages(otherUserId) {
     return allMessages[key] || [];
 }
 
+/* মেসেজ পাঠানো */
 function sendMessageTo(otherUserId, text) {
     const currentUserId = localStorage.getItem('ishare_user_id');
     const key = getConversationKey(currentUserId, otherUserId);
@@ -195,6 +218,7 @@ function sendMessageTo(otherUserId, text) {
     return allMessages[key];
 }
 
+/* মেসেজিং কন্ট্যাক্ট লিস্ট রেন্ডার */
 function renderMessagingList() {
     const listEl = document.getElementById('messagingList');
     if (!listEl) return;
@@ -242,6 +266,7 @@ function renderMessagingList() {
     });
 }
 
+/* চ্যাট ওপেন */
 function openChat(studentId, fullname) {
     const main = document.getElementById('messagingMain');
     if (!main) return;
@@ -277,6 +302,7 @@ function openChat(studentId, fullname) {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
+    /* মেসেজ পাঠানোর ফাংশন */
     function sendMessage() {
         const text = input.value.trim();
         if (!text) return;
@@ -307,11 +333,13 @@ function openChat(studentId, fullname) {
     }
 }
 
+/* প্রোফাইল মোডাল ক্লোজ */
 function closeProfileModal() {
     const modal = document.getElementById('profileModal');
     if (modal) modal.classList.remove('show');
 }
 
+/* প্রোফাইল মোডাল ওপেন */
 function openProfileModal(person) {
     const modal = document.getElementById('profileModal');
     if (!modal) return;
@@ -374,6 +402,7 @@ function openProfileModal(person) {
     modal.classList.add('show');
 }
 
+/* ডমContentLoaded: মেসেজিং পেজ ইনিশিয়ালাইজ */
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('ishare_user_id');
     const userName = localStorage.getItem('ishare_user_name');

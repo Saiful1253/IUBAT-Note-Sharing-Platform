@@ -1,6 +1,46 @@
+/* ========================================================= */
+/* Student People CSS - iShare IUBAT                         */
+/*                                                          */
+/* এই CSS ফাইলের পুরো কাজটি নিচে ধাপে ধাপে ব্যাখ্যা করা হলো: */
+/*                                                          */
+/* ১. গ্লোবাল রিসেট:                                          */
+/*    margin/padding 0, box-sizing border-box — layout stability  */
+/*                                                          */
+/* ২. বডি:                                                   */
+/*    background: #ffffff — student pages clean white theme       */
+/*    font: Inter — modern sans-serif, system fallback            */
+/*                                                          */
+/* ৩. টপবার:                                                */
+/*    sticky top, height 64px — scroll-এ header fixed             */
+/*    justify-content: space-between — logo/actions বam-feira   */
+/*                                                          */
+/* ৪. লেয়াউট (.layout):                                    */
+/*    flex row, min-height: 100vh - 64px — sidebar + main-area    */
+/*    main-area margin-left: 260px — sidebar width offset         */
+/*                                                          */
+/* ৫. পিপল পেজ (.people-page):                               */
+/*    breadcrumb → title → subtitle → toolbar → grid → pagination */
+/*    top-to-bottom content flow                                   */
+/*                                                          */
+/* ৬. পিপল গ্রিড (.people-grid):                             */
+/*    auto-fill minmax(260px, 1fr) — responsive auto columns       */
+/*    3→2→1 column at different viewport widths                     */
+/* ========================================================= */
+
+/* ---------- গ্লোবাল রিসেট ---------- */
+/* margin/padding সব শূন্য, box-sizing border-box নিয়েছে            */
+/* width/height calculation-এ padding+browser default margin নойдетা */
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ---------- বডি ---------- */
+/* font-family: Inter — modern, clean sans-serif                    */
+/* background: #ffffff — pure white, flat design theme              */
+/* min-height: 100vh — full viewport height, flex grow possible     */
+/* color: #1a1a1a — near-black, comfortable reading                 */
 body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #ffffff; min-height: 100vh; color: #1a1a1a; }
 
+/* ==================== টপবার ==================== */
+/* sticky top, height 64px, padding 12px 32px, justify-content: space-between */
 .topbar { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; height: 64px; }
 .topbar-left { display: flex; align-items: center; gap: 16px; }
 .topbar-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
@@ -9,10 +49,15 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .topbar-logo-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #0f172a; }
 .topbar-logo-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 1px; color: #64748b; text-transform: uppercase; }
 .topbar-center { flex: 1; max-width: 480px; margin: 0 24px; }
+
+/* ---------- সার্চ ---------- */
+/* padding-left 40px (icon space), focus ring — search input styling */
 .topbar-search { width: 100%; padding: 10px 16px 10px 40px; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.85rem; background: #f8fafc; outline: none; transition: all 0.2s; }
 .topbar-search:focus { border-color: #0f172a; background: #ffffff; box-shadow: 0 0 0 3px rgba(15,23,42,0.08); }
 .topbar-search-wrapper { position: relative; }
 .topbar-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; fill: none; stroke: #94a3b8; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- টপবার অ্যাকশন ---------- */
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
 .topbar-ai-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 10px; background: #0f172a; color: #ffffff; border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .topbar-ai-btn:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15,23,42,0.2); }
@@ -24,14 +69,20 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .topbar-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); border: 2px solid #e2e8f0; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #334155; cursor: pointer; overflow: hidden; transition: all 0.2s; }
 .topbar-avatar:hover { border-color: #0f172a; color: #0f172a; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(15,23,42,0.15); }
 
+/* ==================== লেআউট ==================== */
+/* flex row, min-height calc(100vh - 64px) — full height minus header */
 .layout { display: flex; min-height: calc(100vh - 64px); }
 .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; position: fixed; left: 0; top: 64px; bottom: 0; z-index: 100; }
+
+/* ---------- সাইডবার প্রোফাইল ---------- */
 .sidebar-profile { padding: 20px; border-bottom: 1px solid #f1f5f9; }
 .sidebar-profile-card { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: #f8fafc; border: 1px solid #f1f5f9; }
 .sidebar-avatar { width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: #334155; flex-shrink: 0; }
 .sidebar-profile-info { flex: 1; min-width: 0; }
 .sidebar-profile-name { font-size: 0.85rem; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sidebar-profile-dept { font-size: 0.72rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+
+/* ---------- সাইডবার নেভ ---------- */
 .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
 .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: #475569; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; text-decoration: none; border: none; background: none; width: 100%; text-align: left; }
 .nav-item:hover { background: #f8fafc; color: #0f172a; }
@@ -40,20 +91,31 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .nav-item .nav-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .nav-item.active .nav-icon { opacity: 1; }
 .nav-item .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; margin-left: auto; }
+
+/* ---------- সাইডবার ফুটার ---------- */
 .sidebar-footer { padding: 12px; border-top: 1px solid #f1f5f9; }
 .sidebar-logout { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 500; color: #ef4444; cursor: pointer; transition: all 0.15s; border: none; background: none; width: 100%; text-align: left; }
 .sidebar-logout:hover { background: #fef2f2; color: #dc2626; }
 .sidebar-logout svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
+/* ==================== মেইন এরিয়া ==================== */
+/* flex: 1 — remaining space নেবে, grow করবে                          */
+/* margin-left: 260px — sidebar occupies left, content right           */
+/* min-height: calc(100vh - 64px) — full remaining viewport height     */
+/* justify-content: center — content horizontally center               */
+/* padding: 28px 32px —上下 28px,左右 32px generous spacing           */
 .main-area { flex: 1; margin-left: 260px; min-height: calc(100vh - 64px); display: flex; justify-content: center; padding: 28px 32px; }
 .content { max-width: 1200px; width: 100%; }
 
+/* ==================== পিপল পেজ ==================== */
 .people-page { }
 .people-breadcrumb { font-size: 0.78rem; color: #64748b; margin-bottom: 8px; }
 .people-breadcrumb span { color: #0f172a; font-weight: 600; }
 .people-title { font-size: 1.75rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; margin-bottom: 6px; }
 .people-subtitle { font-size: 0.88rem; color: #64748b; font-weight: 400; margin-bottom: 24px; }
 
+/* ---------- টুলবার ---------- */
+/* flex row, gap 12px, wrap — search + filter buttons horizontally     */
 .people-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
 .people-search { flex: 1; min-width: 240px; position: relative; }
 .people-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; fill: none; stroke: #94a3b8; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -64,20 +126,41 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .people-view-btn:hover { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
 .people-view-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ==================== পিপল গ্রিড ==================== */
+/* autofill min 260px → 3→2→1 কলাম automatically at different widths */
 .people-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+/* ---------- পিপল কার্ড ---------- */
+/* white, border, radius 14px, padding 22px 24px, shadow              */
+/* hover: lift translateY(-2px), shadow strengthen, border-color চেঞ্জ */
 .people-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s; cursor: pointer; display: flex; align-items: center; gap: 16px; }
 .people-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.03); transform: translateY(-2px); border-color: #cbd5e1; }
+
+/* ---------- অ্যাভাটার ---------- */
+/* 56x56px, circle, border 2px, gradient placeholder                  */
 .people-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid #e2e8f0; background: #f1f5f9; }
 .people-avatar-placeholder { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 700; color: #334155; flex-shrink: 0; }
+
+/* ---------- পিপল ইনফো ---------- */
 .people-info { flex: 1; min-width: 0; }
 .people-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
 .people-name { font-size: 0.95rem; font-weight: 700; color: #0f172a; }
+
+/* ---------- রোল ব্যাজ ---------- */
+/* pill shape, variant: student/admin/researcher                       */
 .people-role { font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 .people-role.student { background: #f0fdf4; color: #16a34a; }
 .people-role.admin { background: #eff6ff; color: #2563eb; }
 .people-role.researcher { background: #fefce8; color: #ca8a04; }
+
+/* ---------- মেটা ---------- */
 .people-meta { font-size: 0.78rem; color: #64748b; margin-bottom: 6px; }
+
+/* ---------- ডেসক্রিপশন ---------- */
+/* clamp 2 লাইন, overflow hidden — line-clamp untuk bio               */
 .people-desc { font-size: 0.78rem; color: #475569; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 10px; }
+
+/* ---------- অ্যাকশন ---------- */
 .people-actions { display: flex; align-items: center; gap: 10px; }
 .people-link { font-size: 0.78rem; font-weight: 600; color: #0f172a; text-decoration: none; }
 .people-link:hover { text-decoration: underline; }
@@ -87,24 +170,33 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .people-msg:hover { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
 .people-msg svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ==================== পেজিনেশন ==================== */
+/* flex center, gap 8px, margin-top 28px */
 .people-pagination { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 28px; }
 .page-btn { min-width: 36px; height: 36px; padding: 0 10px; border-radius: 10px; border: 1.5px solid #e2e8f0; background: #ffffff; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: #334155; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; }
 .page-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
 .page-btn.active { background: #0f172a; color: #ffffff; border-color: #0f172a; }
 .page-ellipsis { color: #94a3b8; font-size: 0.85rem; }
 
+/* ==================== টোস্ট ==================== */
 .toast { position: fixed; bottom: 24px; right: 24px; background: #0f172a; color: #ffffff; padding: 14px 20px; border-radius: 12px; font-size: 0.88rem; font-weight: 500; box-shadow: 0 8px 24px rgba(15,23,42,0.2); transform: translateY(120%); transition: transform 0.3s ease, visibility 0.3s ease; visibility: hidden; z-index: 1000; max-width: 360px; }
 .toast.show { transform: translateY(0); visibility: visible; }
 .toast.success { background: #059669; }
 
+/* ==================== মোডাল ==================== */
+/* overlay: fixed, inset 0, bg rgba(15,23,42,0.5), z-index 300       */
 .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.5); z-index: 300; display: none; align-items: center; justify-content: center; padding: 24px; }
 .modal-overlay.show { display: flex; }
+
+/* card: white, radius 16px, max-width 480px, shadow                   */
 .modal-card { background: #ffffff; border-radius: 16px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(15,23,42,0.2); }
 .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid #f1f5f9; }
 .modal-title { font-size: 1rem; font-weight: 700; color: #0f172a; }
 .modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: transparent; cursor: pointer; font-size: 1.2rem; color: #64748b; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; }
 .modal-close:hover { background: #f1f5f9; color: #0f172a; }
 .modal-body { padding: 24px; }
+
+/* ---------- প্রোফাইল ---------- */
 .profile-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: #334155; margin: 0 auto 12px; }
 .profile-name { text-align: center; font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
 .profile-dept { text-align: center; font-size: 0.82rem; color: #64748b; margin-bottom: 20px; }
@@ -117,9 +209,17 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .profile-stat-value { display: block; font-size: 1.2rem; font-weight: 800; color: #0f172a; }
 .profile-stat-label { font-size: 0.72rem; color: #64748b; font-weight: 500; }
 
+/* ==================== রেসপন্সিভ ==================== */
+
+/* ---------- 1024px ---------- */
+/* grid minmax 220px → 2 কলাম */
 @media (max-width: 1024px) {
     .people-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 }
+
+/* ---------- 768px (Mobile) ---------- */
+/* sidebar full-width relative, main margin-left 0,                  */
+/* grid 1 কলাম, toolbar column                                     */
 @media (max-width: 768px) {
     .sidebar { width: 100%; position: relative; top: 0; }
     .main-area { margin-left: 0; flex-direction: column; }

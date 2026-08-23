@@ -1,17 +1,30 @@
+<!-- ============================================ -->
+<!-- Student Home - iShare IUBAT                   -->
+<!-- স্টুডেন্ট হোম: নোট ফিড, সার্চ, নোট পোস্ট          -->
+<!-- ============================================ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- মেটা সেটিংস -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - iShare IUBAT</title>
+
+    <!-- গুগল ফন্টস -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- স্টুডেন্ট হোম CSS -->
     <link rel="stylesheet" href="student-home.css">
 </head>
 <body>
+
+    <!-- ==================== টপবার ==================== -->
     <header class="topbar">
         <div class="topbar-left">
+            <!-- লোগো লিংক -->
             <a href="#" class="topbar-logo">
                 <div class="topbar-logo-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 2L2 9l10 7 10-7-10-7z"/><path d="M7 12l5 3.5 5-3.5"/><path d="M12 16v4"/><circle cx="12" cy="21" r="1"/></svg>
@@ -22,17 +35,23 @@
                 </div>
             </a>
         </div>
+
+        <!-- সেন্টার: নোট সার্চ বক্স -->
         <div class="topbar-center">
             <div class="topbar-search-wrapper">
                 <svg class="topbar-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <input type="text" class="topbar-search" placeholder="Search notes, slides, course codes (e.g. CSE321)..." id="homeSearch">
             </div>
         </div>
+
         <div class="topbar-actions">
+            <!-- AI অ্যাসিস্ট্যান্ট বাটন -->
             <button class="topbar-ai-btn" type="button">
                 <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>
                 Gemma 3 AI
             </button>
+
+            <!-- নোটিফিকেশন -->
             <div class="notification-wrapper" id="notificationWrapper">
                 <button class="topbar-icon-btn" id="notificationBtn" title="Notifications" type="button">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
@@ -51,11 +70,15 @@
                     </div>
                 </div>
             </div>
+
+            <!-- প্রোফাইল অ্যাভাটার (ক্লিক করলে প্রোফাইল মোডাল ওপেন) -->
             <div class="topbar-avatar" id="studentAvatar" title="My Profile">TP</div>
         </div>
     </header>
 
+    <!-- ==================== লেআউট ==================== -->
     <div class="layout">
+        <!-- লেফট সাইডবার: প্রোফাইল ও নেভিগেশন -->
         <aside class="sidebar">
             <div class="sidebar-profile">
                 <div class="sidebar-profile-card">
@@ -67,20 +90,24 @@
                 </div>
             </div>
             <nav class="sidebar-nav">
+                <!-- হোম পেজ (অ্যাকটিভ) -->
                 <button class="nav-item active" type="button" onclick="window.location.href='student-home.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
                     Home
                 </button>
+                <!-- পিপল ডিরেক্টরি -->
                 <button class="nav-item" type="button" onclick="window.location.href='student-people.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4v2a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                     People
                 </button>
+                <!-- মেসেজিং -->
                 <button class="nav-item" type="button" onclick="window.location.href='student-messaging.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
                     Messaging
                     <span class="nav-dot"></span>
                 </button>
             </nav>
+            <!-- লগআউট বাটন -->
             <div class="sidebar-footer">
                 <button class="sidebar-logout" type="button" id="sidebarLogoutBtn">
                     <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -89,10 +116,13 @@
             </div>
         </aside>
 
+        <!-- ==================== মেইন কনটেন্ট এরিয়া ==================== -->
         <div class="main-area">
             <main class="content">
+                <!-- অ্যানাউন্সমেন্ট/নোটিস কন্টেইনার -->
                 <div id="noticeContainer"></div>
 
+                <!-- ডিপার্টমেন্ট হেডার: ব্যাজ, টাইটেল, ডেসক্রিপশন -->
                 <div class="dept-header">
                     <div class="dept-badge">
                         <span class="dept-badge-dot"></span>
@@ -101,6 +131,7 @@
                     <div class="dept-title" id="deptTitle">Loading...</div>
                     <div class="dept-desc" id="deptDesc">Loading...</div>
                     <div class="dept-header-actions">
+                        <!-- নতুন নোট পোস্ট বাটন -->
                         <button class="dept-post-btn" type="button" id="openPostNoteBtn">
                             <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                             Post New Note
@@ -108,13 +139,16 @@
                     </div>
                 </div>
 
+                <!-- সাবজেক্ট ট্যাব: All Subjects + বিভিন্ন কোর্স -->
                 <div class="subject-tabs" id="subjectTabs">
                     <button class="subject-tab active" type="button" data-subject="all">All Subjects</button>
                 </div>
 
+                <!-- নোটস কন্টেইনার: সব নোট কার্ড এখানে রেন্ডার হবে -->
                 <div id="notesContainer"></div>
             </main>
 
+            <!-- রাইট সাইডবার: স্ট্যাটistik কার্ড -->
             <aside class="sidebar-right">
                 <div class="stats-card">
                     <div class="stats-list">
@@ -136,8 +170,10 @@
         </div>
     </div>
 
+    <!-- টোস্ট নোটিফিকেশন -->
     <div class="toast" id="toast"></div>
 
+    <!-- ==================== নোট পোস্ট মোডাল ==================== -->
     <div class="modal-overlay" id="postNoteModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -145,15 +181,19 @@
                 <button class="modal-close" id="closePostNoteModal" type="button">&times;</button>
             </div>
             <div class="modal-body">
+                <!-- টাইটেল -->
                 <label class="field-label">Title</label>
                 <input class="field-input" id="postNoteTitle" placeholder="e.g. Midterm Summary - CSE321">
 
+                <!-- কোর্স কোড -->
                 <label class="field-label">Course Code</label>
                 <input class="field-input" id="postNoteCourseCode" placeholder="e.g. CSE321">
 
+                <!-- বর্ণনা -->
                 <label class="field-label">Description</label>
                 <textarea class="field-input field-textarea" id="postNoteDescription" placeholder="Write a short description about this note..." rows="3"></textarea>
 
+                <!-- ফাইল টাইপ সিলেক্ট -->
                 <label class="field-label">File Type</label>
                 <select class="field-input" id="postNoteFileType">
                     <option value="pdf">PDF</option>
@@ -162,9 +202,11 @@
                     <option value="code">Code</option>
                 </select>
 
+                <!-- PDF আপলোড -->
                 <label class="field-label">Upload PDF</label>
                 <input class="field-input" type="file" id="postNoteFile" accept="application/pdf" style="padding: 8px 12px;">
 
+                <!-- নোট URL -->
                 <label class="field-label">Note URL</label>
                 <input class="field-input" id="postNoteUrl" placeholder="https://...">
             </div>
@@ -175,6 +217,7 @@
         </div>
     </div>
 
+    <!-- ==================== প্রোফাইল মোডাল ==================== -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-card profile-modal">
             <div class="modal-header">
@@ -219,18 +262,24 @@
         </div>
     </div>
 
+    <!-- ============================================ -->
+    <!-- স্টুডেন্ট হোমের JavaScript                        -->
+    <!-- ============================================ -->
     <script>
+        // স্টোরেজ কeys কনস্ট্যান্ট
         const STORAGE_KEY = 'ishare_announcements';
         const NOTES_KEY = 'ishare_notes';
         const DEPT_KEY = 'ishare_departments';
         const NOTIF_KEY = 'ishare_notifications';
 
+        // HTML escpape: XSS প্রিভেনশন
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
+        // টাইম ফরম্যাট: "Just now", "5m ago", "2h ago", "3d ago"
         function formatTime(timestamp) {
             if (!timestamp) return '';
             const diff = Date.now() - timestamp;
@@ -244,18 +293,22 @@
             return new Date(timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
+        // অ্যানাউন্সমেন্ট লোড
         function getAnnouncements() {
             try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
         }
 
+        // নোটস লোড
         function getNotes() {
             try { return JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'); } catch { return []; }
         }
 
+        // ডিপার্টমেন্ট লোড
         function getDepartments() {
             try { return JSON.parse(localStorage.getItem(DEPT_KEY) || '[]'); } catch { return []; }
         }
 
+        // টোস্ট মেসেজ
         function showToast(message, type) {
             type = type || 'success';
             const toast = document.getElementById('toast');
@@ -265,39 +318,37 @@
             setTimeout(function() { toast.classList.remove('show'); }, 3500);
         }
 
+        // নোটিফিকেশন লোড
         function getNotifications() {
             try { return JSON.parse(localStorage.getItem(NOTIF_KEY) || '[]'); } catch { return []; }
         }
+        function saveNotifications(notifications) { localStorage.setItem(NOTIF_KEY, JSON.stringify(notifications)); }
 
-        function saveNotifications(notifications) {
-            localStorage.setItem(NOTIF_KEY, JSON.stringify(notifications));
-        }
-
+        // ডাউনলোড কাউন্টার
         function getUserDownloads() {
             try { return parseInt(localStorage.getItem('ishare_user_downloads') || '0', 10); } catch { return 0; }
         }
-
         function addUserDownload() {
             const count = getUserDownloads() + 1;
             localStorage.setItem('ishare_user_downloads', count);
             return count;
         }
-
         function updateDownloadsStat() {
             const el = document.getElementById('totalDownloadsStat');
             if (el) el.textContent = getUserDownloads().toLocaleString();
         }
 
+        // বর্তমান ইউজারের নোটস ফিল্টার
         function getUserNotes() {
             const notes = getNotes();
             const userId = localStorage.getItem('ishare_user_id');
             return notes.filter(function(n) { return n.authorId === userId; });
         }
 
+        // লাইক সিস্টেম: ইউজার কি এই নোটকে লাইক করেছে?
         function getUserLikedNotes() {
             try { return JSON.parse(localStorage.getItem('ishare_user_likes') || '[]'); } catch { return []; }
         }
-
         function setUserLikedNote(noteId, liked) {
             let likedNotes = getUserLikedNotes();
             const userId = localStorage.getItem('ishare_user_id') || '';
@@ -306,21 +357,19 @@
             if (liked) likedNotes.push(key);
             localStorage.setItem('ishare_user_likes', JSON.stringify(likedNotes));
         }
-
         function hasUserLikedNote(noteId) {
             const likedNotes = getUserLikedNotes();
             const userId = localStorage.getItem('ishare_user_id') || '';
             return likedNotes.indexOf(userId + '::' + noteId) !== -1;
         }
 
+        // সাবজেক্ট ম্যানেজমেন্ট
         function getSubjects() {
             try { return JSON.parse(localStorage.getItem('ishare_subjects') || '[]'); } catch { return []; }
         }
+        function saveSubjects(subjects) { localStorage.setItem('ishare_subjects', JSON.stringify(subjects)); }
 
-        function saveSubjects(subjects) {
-            localStorage.setItem('ishare_subjects', JSON.stringify(subjects));
-        }
-
+        // সাবজেক্ট ট্যাব রেন্ডার
         function renderSubjectTabs() {
             const container = document.getElementById('subjectTabs');
             if (!container) return;
@@ -342,6 +391,7 @@
             });
         }
 
+        // সাবজেক্ট অনুযায়ী নোট ফিল্টার
         function filterNotesBySubject(subject) {
             const notes = getNotes();
             const currentUserDept = localStorage.getItem('ishare_user_department');
@@ -355,6 +405,7 @@
             renderNotes(filtered);
         }
 
+        // সার্চ ফাংশন: টাইটেল, কোর্স কোড, ডেসক্রিপশন, অথর দিয়ে সার্চ
         function searchNotes(query) {
             const notes = getNotes();
             const currentUserDept = localStorage.getItem('ishare_user_department');
@@ -369,6 +420,7 @@
             renderNotes(filtered);
         }
 
+        // নোটস রেন্ডার: সব নোট কার্ড তৈরি করে শো
         function renderNotes(notes) {
             const notesContainer = document.getElementById('notesContainer');
             if (!notesContainer) return;
@@ -417,6 +469,7 @@
             }).join('');
         }
 
+        // স্ট্যাটistik আপডেট: ডকুমেন্ট কাউন্ট, কোর্স কোড, ডাউনলোড
         function updateStudyDocumentsStat() {
             const el = document.getElementById('totalStudyDocumentsStat');
             if (!el) return;
@@ -425,7 +478,6 @@
             const deptNotes = currentUserDept ? notes.filter(function(n) { return n.department === currentUserDept; }) : notes;
             el.textContent = deptNotes.length.toLocaleString();
         }
-
         function updateActiveCourseCodesStat() {
             const el = document.getElementById('activeCourseCodesStat');
             if (!el) return;
@@ -433,41 +485,34 @@
             const currentUserDept = localStorage.getItem('ishare_user_department');
             const deptNotes = currentUserDept ? notes.filter(function(n) { return n.department === currentUserDept; }) : notes;
             const courseCodes = new Set();
-            deptNotes.forEach(function(n) {
-                if (n.courseCode && n.courseCode.trim()) {
-                    courseCodes.add(n.courseCode.trim().toUpperCase());
-                }
-            });
+            deptNotes.forEach(function(n) { if (n.courseCode && n.courseCode.trim()) { courseCodes.add(n.courseCode.trim().toUpperCase()); } });
             el.textContent = courseCodes.size.toLocaleString();
         }
 
+        // নোট সেভ ফাংশন
         function saveUserNote(note) {
             const notes = getNotes();
             notes.push(note);
             localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
         }
 
+        // পোস্ট নোট মোডাল ওপেন
         function openPostNoteModal() {
             const modal = document.getElementById('postNoteModal');
             if (!modal) return;
             modal.classList.add('show');
-            const titleInput = document.getElementById('postNoteTitle');
-            if (titleInput) titleInput.value = '';
-            const courseInput = document.getElementById('postNoteCourseCode');
-            if (courseInput) courseInput.value = '';
-            const descriptionInput = document.getElementById('postNoteDescription');
-            if (descriptionInput) descriptionInput.value = '';
-            const urlInput = document.getElementById('postNoteUrl');
-            if (urlInput) urlInput.value = '';
+            ['postNoteTitle', 'postNoteCourseCode', 'postNoteDescription', 'postNoteUrl'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.value = '';
+            });
             const fileInput = document.getElementById('postNoteFile');
             if (fileInput) fileInput.value = '';
         }
-
         function closePostNoteModal() {
             const modal = document.getElementById('postNoteModal');
             if (modal) modal.classList.remove('show');
         }
 
+        // ফাইল রিড: PDF ফাইল Data URL হিসেবে রিড
         function readFileAsDataURL(file) {
             return new Promise(function(resolve, reject) {
                 const reader = new FileReader();
@@ -477,6 +522,7 @@
             });
         }
 
+        // নোট পোস্ট হ্যান্ডলার
         function handlePostNote() {
             const title = document.getElementById('postNoteTitle').value.trim();
             const courseCode = document.getElementById('postNoteCourseCode').value.trim();
@@ -493,17 +539,10 @@
             function saveNote(storedUrl) {
                 const note = {
                     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
-                    title: title,
-                    courseCode: courseCode,
-                    description: description,
-                    fileType: fileType,
-                    url: storedUrl || '#',
-                    author: userName,
-                    authorId: userId,
-                    department: userDept,
-                    downloads: 0,
-                    likes: 0,
-                    createdAt: Date.now()
+                    title: title, courseCode: courseCode, description: description,
+                    fileType: fileType, url: storedUrl || '#',
+                    author: userName, authorId: userId, department: userDept,
+                    downloads: 0, likes: 0, createdAt: Date.now()
                 };
                 saveUserNote(note);
                 updateStudyDocumentsStat();
@@ -511,60 +550,41 @@
                 ensureNotifications();
                 updateBadge();
                 const activeTab = document.querySelector('.subject-tab.active');
-                if (activeTab) {
-                    const subject = activeTab.getAttribute('data-subject');
-                    filterNotesBySubject(subject);
-                } else {
-                    renderNotes(getNotes());
-                }
+                if (activeTab) { const subject = activeTab.getAttribute('data-subject'); filterNotesBySubject(subject); }
+                else { renderNotes(getNotes()); }
                 closePostNoteModal();
                 showToast('Note posted successfully!');
             }
 
+            // PDF ফাইল আপলোড হ্যান্ডল
             if (fileInput && fileInput.files && fileInput.files[0]) {
                 const file = fileInput.files[0];
-                if (file.type !== 'application/pdf') {
-                    showToast('Please upload a PDF file', 'error');
-                    return;
-                }
-                readFileAsDataURL(file).then(function(dataUrl) {
-                    saveNote(dataUrl);
-                }).catch(function() {
-                    showToast('Failed to read file', 'error');
-                });
+                if (file.type !== 'application/pdf') { showToast('Please upload a PDF file', 'error'); return; }
+                readFileAsDataURL(file).then(function(dataUrl) { saveNote(dataUrl); }).catch(function() { showToast('Failed to read file', 'error'); });
             } else {
                 saveNote(url);
             }
         }
 
+        // নোটিফিকেশন ব্যাজ আপডেট
         function updateBadge() {
             const notifications = getNotifications();
             const unreadCount = notifications.filter(n => !n.read).length;
             const badge = document.getElementById('notificationBadge');
-            if (unreadCount > 0) {
-                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-                badge.style.display = 'inline-flex';
-            } else {
-                badge.style.display = 'none';
-            }
+            if (unreadCount > 0) { badge.textContent = unreadCount > 99 ? '99+' : unreadCount; badge.style.display = 'inline-flex'; }
+            else { badge.style.display = 'none'; }
         }
 
+        // অ্যানাউন্সমেন্ট রেন্ডার: নোটিস কার্ড তৈরি
         function renderNotices() {
             const container = document.getElementById('noticeContainer');
             if (!container) return;
-
             let announcements;
-            try {
-                announcements = JSON.parse(localStorage.getItem('ishare_announcements') || '[]');
-            } catch {
-                announcements = [];
-            }
-
+            try { announcements = JSON.parse(localStorage.getItem('ishare_announcements') || '[]'); } catch { announcements = []; }
             if (!Array.isArray(announcements) || announcements.length === 0) {
                 container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-title">No announcements yet</div><div class="empty-state-desc">Check back later for updates from admin.</div></div>';
                 return;
             }
-
             container.innerHTML = announcements.map(function(a) {
                 const time = a.createdAt ? new Date(a.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
                 return '<div class="notice-card">' +
@@ -584,13 +604,11 @@
             }).join('');
         }
 
+        // নোটিফিকেশন রেন্ডার
         function renderNotifications() {
             const notifications = getNotifications();
             const listEl = document.getElementById('notificationList');
-            if (notifications.length === 0) {
-                listEl.innerHTML = '<div class="notification-empty">No notifications yet.</div>';
-                return;
-            }
+            if (notifications.length === 0) { listEl.innerHTML = '<div class="notification-empty">No notifications yet.</div>'; return; }
             const iconMap = { system: '&#9881;', user: '&#128100;', alert: '&#9888;', info: '&#8505;' };
             listEl.innerHTML = notifications.slice(0, 20).map(n => {
                 return '<div class="notification-item ' + (n.read ? '' : 'unread') + '" data-id="' + n.id + '">' +
@@ -612,27 +630,20 @@
                     const id = this.getAttribute('data-id');
                     const notifs = getNotifications();
                     const target = notifs.find(n => n.id === id);
-                    if (target && !target.read) {
-                        target.read = true;
-                        saveNotifications(notifs);
-                        updateBadge();
-                        this.classList.remove('unread');
-                    }
+                    if (target && !target.read) { target.read = true; saveNotifications(notifs); updateBadge(); this.classList.remove('unread'); }
                 });
             });
-
             listEl.querySelectorAll('.notification-delete').forEach(function(btn) {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const id = this.getAttribute('data-id');
                     const notifs = getNotifications().filter(n => n.id !== id);
-                    saveNotifications(notifs);
-                    updateBadge();
-                    renderNotifications();
+                    saveNotifications(notifs); updateBadge(); renderNotifications();
                 });
             });
         }
 
+        // নোটিফিকেশন এনশার: অ্যানাউন্সমেন্ট ও নোট থেকে নোটিফিকেশন জেনারেট
         function ensureNotifications() {
             const currentUserId = localStorage.getItem('ishare_user_id');
             const currentUserDept = localStorage.getItem('ishare_user_department');
@@ -641,37 +652,22 @@
             const existingNotifications = getNotifications();
             const notifications = [];
             const now = Date.now();
-
             const existingMap = {};
-            existingNotifications.forEach(function(n) {
-                existingMap[n.id] = n;
-            });
+            existingNotifications.forEach(function(n) { existingMap[n.id] = n; });
 
+            // অ্যানাউন্সমেন্ট থেকে নোটিফিকেশন
             announcements.forEach(function(a) {
                 const id = 'announcement-' + a.id;
                 const existing = existingMap[id];
-                notifications.push({
-                    id: id,
-                    title: a.title || 'New Announcement',
-                    message: a.body || '',
-                    type: 'info',
-                    time: a.createdAt || now,
-                    read: existing ? existing.read : false
-                });
+                notifications.push({ id: id, title: a.title || 'New Announcement', message: a.body || '', type: 'info', time: a.createdAt || now, read: existing ? existing.read : false });
             });
 
+            // নোট থেকে নোটিফিকেশন (নোটের অথর !== বর্তমান ইউজার)
             notes.forEach(function(note) {
                 if (note.authorId !== currentUserId && note.department === currentUserDept) {
                     const id = 'note-' + note.id;
                     const existing = existingMap[id];
-                    notifications.push({
-                        id: id,
-                        title: 'New note: ' + (note.title || 'Untitled'),
-                        message: note.author + ' posted a note in ' + (note.courseCode || 'General'),
-                        type: 'user',
-                        time: note.createdAt || now,
-                        read: existing ? existing.read : false
-                    });
+                    notifications.push({ id: id, title: 'New note: ' + (note.title || 'Untitled'), message: note.author + ' posted a note in ' + (note.courseCode || 'General'), type: 'user', time: note.createdAt || now, read: existing ? existing.read : false });
                 }
             });
 
@@ -680,6 +676,46 @@
             return notifications;
         }
 
+        // ==================== প্রোফাইল মোডাল ====================
+        function closeProfileModal() {
+            const modal = document.getElementById('profileModal');
+            if (modal) modal.classList.remove('show');
+        }
+        function openProfileModal() {
+            const modal = document.getElementById('profileModal');
+            if (!modal) return;
+            const userName = localStorage.getItem('ishare_user_name') || 'Student';
+            const userDept = localStorage.getItem('ishare_user_department') || '';
+            const userId = localStorage.getItem('ishare_user_id') || '';
+            const userType = localStorage.getItem('ishare_user_type') || 'Student';
+            const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+            const account = accounts.find(function(a) { return a.studentId === userId; });
+            const userEmail = account ? account.email : '';
+            const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
+            const avatarEl = document.getElementById('profileModalAvatar');
+            if (avatarEl) avatarEl.textContent = initials || 'S';
+            const nameEl = document.getElementById('profileModalName');
+            if (nameEl) nameEl.textContent = userName;
+            const deptEl = document.getElementById('profileModalDept');
+            if (deptEl) deptEl.textContent = (userDept || 'Student').slice(0, 30);
+            const studentIdEl = document.getElementById('profileModalStudentId');
+            if (studentIdEl) studentIdEl.textContent = userId || '-';
+            const deptDetailEl = document.getElementById('profileModalDeptDetail');
+            if (deptDetailEl) deptDetailEl.textContent = userDept || '-';
+            const typeEl = document.getElementById('profileModalType');
+            if (typeEl) typeEl.textContent = userType || '-';
+            const emailEl = document.getElementById('profileModalEmail');
+            if (emailEl) emailEl.textContent = userEmail || '-';
+            const notesEl = document.getElementById('profileModalNotes');
+            if (notesEl) notesEl.textContent = getUserNotes().length;
+            const downloadsEl = document.getElementById('profileModalDownloads');
+            if (downloadsEl) downloadsEl.textContent = getUserDownloads();
+
+            modal.classList.add('show');
+        }
+
+        // ==================== ডমContentLoaded ====================
         document.addEventListener('DOMContentLoaded', function() {
             const userId = localStorage.getItem('ishare_user_id');
             const userName = localStorage.getItem('ishare_user_name');
@@ -687,11 +723,10 @@
             const userDept = localStorage.getItem('ishare_user_department');
             const userEmail = localStorage.getItem('ishare_user_email');
 
-            if (!userId || userType !== 'Student') {
-                window.location.href = 'index.html';
-                return;
-            }
+            // স্টুডেন্ট নন হলে লগিন পেজে রিডাইরেক্ট
+            if (!userId || userType !== 'Student') { window.location.href = 'index.html'; return; }
 
+            // সাইডবারে ইউজার তথ্য সেট
             if (userName) {
                 const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
                 const avatar = document.getElementById('studentAvatar');
@@ -717,6 +752,7 @@
                 }
             }
 
+            // নোটিফিকেশন ড্রপডাউন
             const notificationWrapper = document.getElementById('notificationWrapper');
             const notificationBtn = document.getElementById('notificationBtn');
             const notificationDropdown = document.getElementById('notificationDropdown');
@@ -727,46 +763,29 @@
                 notificationBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const isShown = notificationDropdown.classList.contains('show');
-                    if (isShown) {
-                        notificationDropdown.classList.remove('show');
-                    } else {
-                        renderNotifications();
-                        notificationDropdown.classList.add('show');
-                    }
+                    if (isShown) { notificationDropdown.classList.remove('show'); }
+                    else { renderNotifications(); notificationDropdown.classList.add('show'); }
                 });
             }
-
             if (markAllReadBtn) {
                 markAllReadBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    const notifs = getNotifications();
-                    let changed = false;
+                    const notifs = getNotifications(); let changed = false;
                     notifs.forEach(n => { if (!n.read) { n.read = true; changed = true; } });
-                    if (changed) {
-                        saveNotifications(notifs);
-                        updateBadge();
-                        renderNotifications();
-                    }
+                    if (changed) { saveNotifications(notifs); updateBadge(); renderNotifications(); }
                 });
             }
-
             if (deleteAllBtn) {
                 deleteAllBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    if (confirm('Delete all notifications? This cannot be undone.')) {
-                        saveNotifications([]);
-                        updateBadge();
-                        renderNotifications();
-                    }
+                    if (confirm('Delete all notifications? This cannot be undone.')) { saveNotifications([]); updateBadge(); renderNotifications(); }
                 });
             }
-
             document.addEventListener('click', function(e) {
-                if (notificationWrapper && !notificationWrapper.contains(e.target)) {
-                    notificationDropdown.classList.remove('show');
-                }
+                if (notificationWrapper && !notificationWrapper.contains(e.target)) { notificationDropdown.classList.remove('show'); }
             });
 
+            // নোট কার্ডের অ্যাকশন: ডাউনলোড ও লাইক
             const notesContainer = document.getElementById('notesContainer');
             if (notesContainer) {
                 notesContainer.addEventListener('click', function(e) {
@@ -783,12 +802,8 @@
                         updateDownloadsStat();
                         if (noteUrl && noteUrl !== '#') {
                             const a = document.createElement('a');
-                            a.href = noteUrl;
-                            a.download = noteTitle.replace(/[^a-z0-9]/gi, '_') + '.pdf';
-                            a.target = '_blank';
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
+                            a.href = noteUrl; a.download = noteTitle.replace(/[^a-z0-9]/gi, '_') + '.pdf'; a.target = '_blank';
+                            document.body.appendChild(a); a.click(); document.body.removeChild(a);
                         }
                         showToast('Downloaded successfully! Total downloads: ' + newCount);
                     }
@@ -821,113 +836,29 @@
                 });
             }
 
+            // পোস্ট নোট মোডাল ইভেন্ট
             const openPostNoteBtn = document.getElementById('openPostNoteBtn');
-            if (openPostNoteBtn) {
-                openPostNoteBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    openPostNoteModal();
-                });
-            }
-
+            if (openPostNoteBtn) { openPostNoteBtn.addEventListener('click', function(e) { e.stopPropagation(); openPostNoteModal(); }); }
             const closePostNoteModalBtn = document.getElementById('closePostNoteModal');
-            if (closePostNoteModalBtn) {
-                closePostNoteModalBtn.addEventListener('click', closePostNoteModal);
-            }
-
+            if (closePostNoteModalBtn) { closePostNoteModalBtn.addEventListener('click', closePostNoteModal); }
             const cancelPostNote = document.getElementById('cancelPostNote');
-            if (cancelPostNote) {
-                cancelPostNote.addEventListener('click', closePostNoteModal);
-            }
-
+            if (cancelPostNote) { cancelPostNote.addEventListener('click', closePostNoteModal); }
             const submitPostNote = document.getElementById('submitPostNote');
-            if (submitPostNote) {
-                submitPostNote.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    handlePostNote();
-                });
-            }
-
+            if (submitPostNote) { submitPostNote.addEventListener('click', function(e) { e.stopPropagation(); handlePostNote(); }); }
             const postNoteModal = document.getElementById('postNoteModal');
-            if (postNoteModal) {
-                postNoteModal.addEventListener('click', function(e) {
-                    if (e.target === postNoteModal) closePostNoteModal();
-                });
-            }
+            if (postNoteModal) { postNoteModal.addEventListener('click', function(e) { if (e.target === postNoteModal) closePostNoteModal(); }); }
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePostNoteModal(); });
 
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') closePostNoteModal();
-            });
-
-            function closeProfileModal() {
-                const modal = document.getElementById('profileModal');
-                if (modal) modal.classList.remove('show');
-            }
-
-            function openProfileModal() {
-                const modal = document.getElementById('profileModal');
-                if (!modal) return;
-
-                const userName = localStorage.getItem('ishare_user_name') || 'Student';
-                const userDept = localStorage.getItem('ishare_user_department') || '';
-                const userId = localStorage.getItem('ishare_user_id') || '';
-                const userType = localStorage.getItem('ishare_user_type') || 'Student';
-
-                const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
-                const account = accounts.find(function(a) { return a.studentId === userId; });
-                const userEmail = account ? account.email : '';
-
-                const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-
-                const avatarEl = document.getElementById('profileModalAvatar');
-                if (avatarEl) avatarEl.textContent = initials || 'S';
-
-                const nameEl = document.getElementById('profileModalName');
-                if (nameEl) nameEl.textContent = userName;
-
-                const deptEl = document.getElementById('profileModalDept');
-                if (deptEl) deptEl.textContent = (userDept || 'Student').slice(0, 30);
-
-                const studentIdEl = document.getElementById('profileModalStudentId');
-                if (studentIdEl) studentIdEl.textContent = userId || '-';
-
-                const deptDetailEl = document.getElementById('profileModalDeptDetail');
-                if (deptDetailEl) deptDetailEl.textContent = userDept || '-';
-
-                const typeEl = document.getElementById('profileModalType');
-                if (typeEl) typeEl.textContent = userType || '-';
-
-                const emailEl = document.getElementById('profileModalEmail');
-                if (emailEl) emailEl.textContent = userEmail || '-';
-
-                const notesEl = document.getElementById('profileModalNotes');
-                if (notesEl) notesEl.textContent = getUserNotes().length;
-
-                const downloadsEl = document.getElementById('profileModalDownloads');
-                if (downloadsEl) downloadsEl.textContent = getUserDownloads();
-
-                modal.classList.add('show');
-            }
-
-            const studentAvatar = document.getElementById('studentAvatar');
-            if (studentAvatar) {
-                studentAvatar.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    openProfileModal();
-                });
-            }
-
+            // প্রোফাইল মোডাল ইভেন্ট
             const closeProfileModalBtn = document.getElementById('closeProfileModal');
-            if (closeProfileModalBtn) {
-                closeProfileModalBtn.addEventListener('click', closeProfileModal);
-            }
-
+            if (closeProfileModalBtn) { closeProfileModalBtn.addEventListener('click', closeProfileModal); }
             const profileModal = document.getElementById('profileModal');
-            if (profileModal) {
-                profileModal.addEventListener('click', function(e) {
-                    if (e.target === profileModal) closeProfileModal();
-                });
-            }
+            if (profileModal) { profileModal.addEventListener('click', function(e) { if (e.target === profileModal) closeProfileModal(); }); }
+            const studentAvatar = document.getElementById('studentAvatar');
+            if (studentAvatar) { studentAvatar.addEventListener('click', function(e) { e.stopPropagation(); openProfileModal(); }); }
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProfileModal(); });
 
+            // স্ট্যাটistik আপডেট
             updateDownloadsStat();
             updateStudyDocumentsStat();
             updateActiveCourseCodesStat();
@@ -935,6 +866,7 @@
             updateBadge();
             renderNotices();
 
+            // লগআউট
             const logoutBtn = document.getElementById('sidebarLogoutBtn');
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', function(e) {
@@ -952,17 +884,13 @@
                 });
             }
 
+            // হোম সার্চ
             const homeSearch = document.getElementById('homeSearch');
-            if (homeSearch) {
-                homeSearch.addEventListener('input', function() {
-                    searchNotes(this.value);
-                });
-            }
+            if (homeSearch) { homeSearch.addEventListener('input', function() { searchNotes(this.value); }); }
 
+            // ডিফল্ট সাবজেক্ট সেভ
             const existingSubjects = getSubjects();
-            if (existingSubjects.length === 0) {
-                saveSubjects(['Algorithms', 'Operating Systems', 'Database Systems', 'Networking']);
-            }
+            if (existingSubjects.length === 0) { saveSubjects(['Algorithms', 'Operating Systems', 'Database Systems', 'Networking']); }
             renderSubjectTabs();
             renderNotes(getNotes());
         });

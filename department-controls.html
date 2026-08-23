@@ -1,17 +1,28 @@
+<!-- ============================================ -->
+<!-- Department Controls - iShare IUBAT             -->
+<!-- ডিপার্টমেন্ট কন্ট্রোল: অনুমতি, ভিজিবিলিটি, মট্রিক -->
+<!-- ============================================ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- মেটা সেটিংস -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Department Controls - iShare IUBAT</title>
+
+    <!-- গুগল ফন্টস -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- অ্যাডমিন ড্যাশবোর্ড CSS ও ডিপার্টমেন্ট কন্ট্রোল CSS -->
     <link rel="stylesheet" href="admin-dashboard.css">
     <link rel="stylesheet" href="department-controls.css">
 </head>
 <body>
     <div class="dashboard-wrapper">
+        <!-- ==================== সাইডবার ==================== -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">
@@ -31,7 +42,7 @@
                     Platform Overview
                 </button>
                 <button class="nav-item" type="button" onclick="window.location.href='user-management.html'">
-                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4v2a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                     User Management
                 </button>
                 <button class="nav-item active" type="button" onclick="window.location.href='department-controls.html'">
@@ -66,6 +77,8 @@
             </div>
         </aside>
         <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
+
+        <!-- ==================== মেইন কনটেন্ট ==================== -->
         <main class="main-content">
             <header class="topbar">
                 <div class="topbar-left">
@@ -87,8 +100,8 @@
                             <div class="notification-header">
                                 <h3>Notifications</h3>
                                 <div class="notification-header-actions">
-                                    <button class="mark-all-read" id="markAllRead" type="button">Mark all as read</button>
-                                    <button class="delete-all" id="deleteAllNotifications" type="button">Delete all</button>
+                                    <button class="mark-all-read" id="markAllRead">Mark all as read</button>
+                                    <button class="delete-all" id="deleteAllNotifications">Delete all</button>
                                 </div>
                             </div>
                             <div class="notification-list" id="notificationList">
@@ -99,6 +112,8 @@
                     <div class="topbar-avatar" title="User Menu">SI</div>
                 </div>
             </header>
+
+            <!-- ==================== কনটেন্ট ==================== -->
             <div class="content-area">
                 <div class="page-header">
                     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
@@ -119,6 +134,7 @@
         </main>
     </div>
 
+    <!-- ==================== নতুন ডিপার্টমেন্ট মোডাল ==================== -->
     <div class="modal-overlay" id="newDeptModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -155,7 +171,11 @@
         </div>
     </div>
 
+    <!-- ============================================ -->
+    <!-- ডিপার্টমেন্ট কন্ট্রোল JavaScript                      -->
+    <!-- ============================================ -->
     <script>
+        // ডিফল্ট ডিপার্টমেন্ট লিস্ট
         const departments = [
             { code: 'BCSE', name: 'Computer Science & Engineering', type: 'ENGINEERING', enabled: true },
             { code: 'BSEEE', name: 'Electrical & Electronic Engineering', type: 'ENGINEERING', enabled: true },
@@ -171,6 +191,7 @@
 
         const STORAGE_KEY = 'ishare_departments';
 
+        // localStorage থেকে ডিপার্টমেন্ট লোড
         function loadDepartments() {
             try {
                 const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
@@ -187,21 +208,20 @@
                     });
                 }
                 saveDepartments();
-            } catch {
-                saveDepartments();
-            }
+            } catch { saveDepartments(); }
         }
 
-        function saveDepartments() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(departments));
-        }
+        // ডিপার্টমেন্ট লিস্ট সেভ
+        function saveDepartments() { localStorage.setItem(STORAGE_KEY, JSON.stringify(departments)); }
 
+        // ডিপার্টমেন্ট টগল: এনেবল/ডিসেবল
         function toggleDepartment(index) {
             departments[index].enabled = !departments[index].enabled;
             saveDepartments();
             renderDepartments();
         }
 
+        // নতুন ডিপার্টমেন্ট মোডাল ওপেন
         function openNewDeptModal() {
             const modal = document.getElementById('newDeptModal');
             if (!modal) { console.error('Modal element not found'); return; }
@@ -217,33 +237,23 @@
             } catch (e) { console.error('Error opening modal:', e); }
         }
 
-        function closeNewDeptModal() {
-            document.getElementById('newDeptModal').classList.remove('show');
-        }
+        function closeNewDeptModal() { document.getElementById('newDeptModal').classList.remove('show'); }
 
+        // নতুন ডিপার্টমেন্ট অ্যাড
         function addNewDepartment() {
             const code = document.getElementById('newDeptCode').value.trim().toUpperCase();
             const name = document.getElementById('newDeptName').value.trim();
             const type = document.getElementById('newDeptType').value;
-
             if (!code) { alert('Please enter a department code'); return; }
             if (!name) { alert('Please enter a department name'); return; }
             if (departments.find(d => d.code === code)) { alert('A department with this code already exists'); return; }
-
             departments.push({ code, name, type, enabled: true });
             saveDepartments();
             renderDepartments();
             closeNewDeptModal();
         }
 
-        document.getElementById('newDeptModal').addEventListener('click', function(e) {
-            if (e.target === this) closeNewDeptModal();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeNewDeptModal();
-        });
-
+        // ডিপার্টমেন্ট গ্রিড রেন্ডার
         function renderDepartments() {
             const grid = document.getElementById('deptGrid');
             if (!grid) return;
@@ -351,14 +361,17 @@
             renderDepartments();
         }
 
+        // ড্রপডাউন ক্লোজ: ক্লিক বাইরে হলে মেনু বন্ধ
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.dept-actions')) closeAllDeptMenus();
         });
 
+        // ESC key: মোডাল ও মেনু ক্লোজ
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') { closeNewDeptModal(); closeAllDeptMenus(); }
         });
 
+        // নোটিফিকেশন সিস্টেম
         function initNotifications() {
             const STORAGE_KEY = 'ishare_notifications';
             const notificationBtn = document.getElementById('notificationBtn');
@@ -432,8 +445,7 @@
             function toggleDropdown(e) { e.stopPropagation(); const isShown = notificationDropdown.classList.contains('show'); if (isShown) { notificationDropdown.classList.remove('show'); } else { renderNotifications(); notificationDropdown.classList.add('show'); } }
             function closeDropdown() { notificationDropdown.classList.remove('show'); }
             function markAllAsRead() {
-                const notifications = getNotifications();
-                let changed = false;
+                const notifications = getNotifications(); let changed = false;
                 notifications.forEach(n => { if (!n.read) { n.read = true; changed = true; } });
                 if (changed) { saveNotifications(notifications); updateBadge(); renderNotifications(); }
             }
@@ -458,13 +470,13 @@
             updateBadge();
         }
 
+        // ডমContentLoaded: সব ইনিশিয়ালাইজেশন
         document.addEventListener('DOMContentLoaded', function() {
             loadDepartments();
             renderDepartments();
             initNotifications();
-        });
 
-        (function() {
+            // মোবাইল সাইডবার
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.getElementById('mobileSidebarOverlay');
@@ -477,28 +489,16 @@
 
             if (mobileMenuBtn) {
                 mobileMenuBtn.addEventListener('click', function() {
-                    if (sidebar && sidebar.classList.contains('open')) {
-                        closeMobileSidebar();
-                    } else {
-                        if (sidebar) sidebar.classList.add('open');
-                        if (overlay) overlay.classList.add('show');
-                        document.body.style.overflow = 'hidden';
-                    }
+                    if (sidebar && sidebar.classList.contains('open')) { closeMobileSidebar(); }
+                    else { if (sidebar) sidebar.classList.add('open'); if (overlay) overlay.classList.add('show'); document.body.style.overflow = 'hidden'; }
                 });
             }
-
-            if (overlay) {
-                overlay.addEventListener('click', closeMobileSidebar);
-            }
+            if (overlay) { overlay.addEventListener('click', closeMobileSidebar); }
 
             document.querySelectorAll('.sidebar-nav .nav-item, .sidebar-bottom-item').forEach(function(item) {
-                item.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        closeMobileSidebar();
-                    }
-                });
+                item.addEventListener('click', function() { if (window.innerWidth <= 768) { closeMobileSidebar(); } });
             });
-        })();
+        });
     </script>
 </body>
 </html>

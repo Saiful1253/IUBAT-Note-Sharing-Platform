@@ -1,184 +1,487 @@
+/* ========================================================= */
+/* Admin Dashboard CSS - iShare IUBAT                        */
+/*                                                          */
+/* এই CSS ফাইলের পুরো কাজটি নিচে ধাপে ধাপে ব্যাখ্যা করা হলো: */
+/*                                                          */
+/* ১. গ্লোবাল রিসেট:                                            */
+/*    ব্রাউজারগুলো ডিফল্টভাবে সব HTML ট্যাগের margin ও padding */
+/*    দেয়। এই রিসেট rule টা সব ট্যাগের margin ও padding 0 করে   */
+/*    দেয় এবং box-sizing: border-box সেট করে। এর ফলশ্রুতিতে       */
+/*    element-এর width/height মিলিয়ে নিলে padding ও border পসরা */
+/*    বাইরে যায় না, sondern element-এর ভিতরে স্থান নেয়।            */
+/*    এটি রেস্পন্সিভ লেআউটের জন্য অত্যন্তจำเป็น।                  */
+/*                                                          */
+/* ২. বডি (body):                                              */
+/*    font-family: 'Inter' — এটি Google Fonts থেকে একটিModern     */
+/*    Sans-serif font। fallback system fonts দেওয়া হয়েছে যেন     */
+/*    network সমস্যায়েও font正常 দেখায়।                            */
+/*    background: #f4f6f9 — এটি হালকা ধূসর বintang фон,             */
+/*    Admin panel-কে ক্যামেল বক্সের মতো আলাদা অ fondo নিয়েছে।      */
+/*    min-height: 100vh — viewport-এর পুরো উচ্চতা নেয়,            */
+/*    sidebar + main-content কoum flex-row-এ properly grow হবে।    */
+/*    color: #1a1a1a — টেক্সটের মৌলিক কালার, dark gray,            */
+/*    এটা black (#000) নয়, যেন reading comfortable হয়।            */
+/*                                                          */
+/* ৩. .dashboard-wrapper:                                      */
+/*    এটি মূল flex container। sidebar (fixed 260px) এবং          */
+/*    main-content (flex: 1) — এই দুইটা sibling element           */
+/*    side-by-side বসে। flex-direction: row (ডিফল্ট) হওয়ায়       */
+/*    sidebar বামে, main-content ডানে উঠবে। min-height: 100vh    */
+/*    দিয়েছে যেন ওভারফ্লো না হয় এবং পুরো স্ক্রিন কভার করে।       */
+/* ========================================================= */
+
+/* ---------- গ্লোবাল রিসেট ---------- */
+/* সব HTML ট্যাগের ডিফল্ট margin/padding শূন্য করা                     */
+/* box-sizing: border-box নিয়েছে যেন width/height-এ padding+border */
+/* আলাদা計算 না হয়, element-এর total size consistency থাকে।          */
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ---------- বডি গ্লোবাল ---------- */
+/* font-family: Inter + system fallbacks — modern sans-serif           */
+/* background: #f4f6f9 (hsl°220, sat°15, light°93) — light cool gray */
+/* min-height: 100vh — flex container পুরো viewport কভার করবে        */
+/* color: #1a1a1a — near-black, comfortable reading, softer than pure  */
 body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f6f9; min-height: 100vh; color: #1a1a1a; }
 
+/* ==================== মেইন র‍্যাপার ==================== */
+/* flex container: sidebar (fixed 260px) + main-content (flex:1)       */
+/* use-case: সব অ্যাডমিন পেজে এই wrapper হবে root layout              */
 .dashboard-wrapper { display: flex; min-height: 100vh; }
 
+/* ==================== সাইডবার ==================== */
+/* ফিক্সড পজিশন: left=0, top=0, bottom=0, width=260px, z-index=100   */
+/* use-case: সব অ্যাডমিন পেজে নেভিগেশন মেনু, স্ক্রল করার সময় fixed   */
+/* transition: transform 0.3s ease — মোবাইলে slide-in করার জন্য      */
 .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; position: fixed; left: 0; top: 0; bottom: 0; z-index: 100; transition: transform 0.3s ease; }
+
+/* ---------- সাইডবার হেডার ---------- */
+/* padding: top 20px, bottom 16px, left/right 20px                     */
+/* border-bottom: 1px #f1f5f9 — হালকা separator, content divide করে   */
 .sidebar-header { padding: 20px 20px 16px; border-bottom: 1px solid #f1f5f9; }
+
+/* ---------- লোগো কন্টেইনার ---------- */
+/* flex row, horizontally center, gap 10px                            */
 .sidebar-logo { display: flex; align-items: center; gap: 10px; }
+
+/* ---------- লোগো আইকন বক্স ---------- */
+/* 36x36px square, bg #0f172a (dark navy), radius 10px,               */
+/* box-shadow: 0 2px 8px rgba(15,23,42,0.1) — subtle elevation        */
+/* display: flex + center — icon SVG horizontally+vertically center    */
 .sidebar-logo-icon { width: 36px; height: 36px; background: #0f172a; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(15,23,42,0.1); }
+
+/* ---------- লোগো SVG ---------- */
+/* parent container 36x36px, icon 20x20px — padding দিয়ে center       */
+/* fill: none — icon outline only, no fill                           */
+/* stroke: #ffffff — white stroke on dark bg                         */
+/* stroke-width: 2 — moderate thickness                              */
+/* stroke-linecap: round — line endings rounded                      */
+/* stroke-linejoin: round — line corners rounded                     */
 .sidebar-logo-icon svg { width: 20px; height: 20px; fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- ব্র্যান্ড নেম ---------- */
+/* font-family: Playfair Display — elegant serif, brand identity      */
+/* font-size: 1.3rem (20.8px) — prominent but not too large           */
+/* font-weight: 700 — bold, stands out                                */
+/* letter-spacing: -0.3px — slight tightening for modern feel         */
 .sidebar-brand { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; }
+
+/* ---------- IUBAT ব্যাজ ---------- */
+/* font-size: 0.6rem (9.6px) — very small, sub-text                  */
+/* letter-spacing: 1.5px — wide spacing for uppercase labels          */
+/* text-transform: uppercase — all caps                               */
+/* color: #64748b (slate) — muted gray                               */
 .sidebar-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px; color: #64748b; text-transform: uppercase; margin-top: 2px; }
+
+/* ==================== নেভিগেশন ==================== */
+/* flex: 1 — remaining space নেবে, expand করবে                       */
+/* padding: 16px top/bottom, 12px left/right — compact spacing       */
+/* overflow-y: auto — if menu items exceed height, scroll দেখাবে      */
+.sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
+
+/* ---------- সেকশন টাইটেল ---------- */
+/* font-size: 0.65rem (10.4px) — small caps section label            */
+/* letter-spacing: 1.5px — wide tracking for uppercase               */
+/* color: #94a3b8 — light slate, muted                               */
+/* padding: 8px top, 12px left/right, 6px bottom                     */
 .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
 .nav-section-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; color: #94a3b8; text-transform: uppercase; padding: 8px 12px 6px; margin-top: 8px; }
+
+/* ---------- নেভ বাটন ---------- */
+/* display: flex — icon + text horizontally aligned                   */
+/* padding: 10px 12px — generous tap target for mobile                */
+/* border-radius: 8px — slightly rounded, modern look                 */
+/* border: none; background: none — reset button defaults             */
+/* width: 100% — full sidebar width নেবে                             */
+/* text-align: left — text left-aligned                               */
+/* transition: all 0.15s — smooth hover/active transition              */
 .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: #475569; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; text-decoration: none; border: none; background: none; width: 100%; text-align: left; }
 .nav-item:hover { background: #f8fafc; color: #0f172a; }
 .nav-item.active { background: #f1f5f9; color: #0f172a; font-weight: 600; box-shadow: inset 2px 0 0 #0f172a; }
+
+/* ---------- নেভ আইকন ---------- */
+/* opacity: 0.6 — inactive state দেখায় হালকা                        */
+/* active page-এ opacity: 1 — active রঙ dark এবং opaque              */
 .nav-item .nav-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; opacity: 0.6; flex-shrink: 0; }
 .nav-item .nav-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .nav-item.active .nav-icon { opacity: 1; }
+
+/* ---------- নেভ ব্যাজ (Announcement) ---------- */
+/* margin-left: auto — right edge-এ push করে                         */
+/* blue bg #dbeafe, text #1d4ed8 — small notification pill           */
 .nav-badge { margin-left: auto; background: #dbeafe; color: #1d4ed8; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
+
+/* ---------- নেভ অ্যারো (Student View) ---------- */
 .nav-item .nav-arrow { margin-left: auto; opacity: 0.4; }
 .nav-item .nav-arrow svg { width: 14px; height: 14px; }
 
+/* ==================== সাইডবার ফুটার ==================== */
+/* AI অ্যাসিস্ট্যান্ট + লগআউট button residing area                     */
 .sidebar-footer { padding: 12px; border-top: 1px solid #f1f5f9; }
+
+/* ---------- AI অ্যাসিস্ট্যান্ট ---------- */
+/* gradient bg #f0f9ff→#e0f2fe — cool sky blue gradient              */
+/* border #bae6fd — light blue border                                */
 .sidebar-ai { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid #bae6fd; border-radius: 10px; margin-bottom: 8px; }
 .sidebar-ai-icon { width: 28px; height: 28px; background: #0f172a; border-radius: 7px; display: flex; align-items: center; justify-content: center; }
 .sidebar-ai-icon svg { width: 16px; height: 16px; fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .sidebar-ai-text { font-size: 0.78rem; font-weight: 700; color: #0f172a; }
 .sidebar-ai-sub { font-size: 0.68rem; color: #64748b; }
+
+/* ---------- লগআউট ---------- */
+/* color: #ef4444 — red danger color, hover darker red #dc2626       */
 .sidebar-bottom-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 500; color: #64748b; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left; }
 .sidebar-bottom-item:hover { background: #f8fafc; color: #0f172a; }
 .sidebar-bottom-item svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
+/* ==================== মোবাইল ওভারলে ==================== */
+/* রঙিন পর্দা, z-index 99 — sidebar এর নিচে, content এর উপর         */
 .mobile-sidebar-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.5); z-index: 99; display: none; }
 .mobile-sidebar-overlay.show { display: block; }
+
+/* ---------- মোবাইল মেনু বাটন ---------- */
+/* show:none → 768px-এ inline-flex — desktop-এ hidden, mobile-এ দেখাবে */
 .mobile-menu-btn { display: none; width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid #e2e8f0; background: #ffffff; cursor: pointer; align-items: center; justify-content: center; color: #334155; margin-right: 12px; }
 .mobile-menu-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ==================== টপবার ==================== */
+/* sticky top — scroll করলেও topbar fixed থাকবে                       */
+/* height: 64px — standard header height                              */
+/* padding: 12px 32px —上下 12px,左右 32px horizontal spacing         */
+/* border-bottom: 1px #e2e8f0 — subtle divider from content            */
+/* z-index: 50 — sidebar (100) এর নিচ, content এর উপর                 */
+/* min-width: 0 — flex item shrink allow করা, overflow prevention     */
 .main-content { flex: 1; margin-left: 260px; display: flex; flex-direction: column; min-height: 100vh; }
 .topbar { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 32px; display: flex; align-items: center; position: sticky; top: 0; z-index: 50; height: 64px; min-width: 0; }
+
+/* ---------- টপবার বাম ---------- */
+/* flex-shrink: 0 — logo area shrink না করবে, fixed width রাখবে       */
 .topbar-left { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+
+/* ---------- টপবার ডান ---------- */
+/* margin-left: auto — ডান দিকে push করে,flexbox trick                */
 .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+
+/* ---------- টপবার বাটন ---------- */
+/* padding 9px 16px —上下 9px,左右 16px, touch-friendly               */
+/* border: 1.5px #e2e8f0 — light gray border                          */
+/* border-radius: 10px — rounded corners                               */
+/* font-family: Inter, 0.82rem (13.12px), weight 600 — medium         */
+/* transition: all 0.2s — smooth hover                                */
+/* white-space: nowrap — button text line break না করবে               */
 .topbar-btn { padding: 9px 16px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #ffffff; font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: #334155; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; white-space: nowrap; }
 .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+/* ---------- প্রাইমারি বাটন ---------- */
+/* linear-gradient(135deg, ...) — 135 degree diagonal gradient        */
+/* dari #0f172a (dark navy) to #1e3a5f (slightly lighter navy)        */
+/* box-shadow: 双层 shadow — subtle depth                             */
+/* hover: translateY(-1px) — lift effect, 3D button feel              */
 .topbar-btn.primary { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); color: #ffffff; border-color: transparent; box-shadow: 0 1px 3px rgba(15,23,42,0.25), 0 1px 2px rgba(15,23,42,0.15); }
 .topbar-btn.primary:hover { background: linear-gradient(135deg, #1e293b 0%, #1e3a5f 100%); box-shadow: 0 2px 6px rgba(15,23,42,0.3), 0 1px 3px rgba(15,23,42,0.2); transform: translateY(-1px); }
+
+/* বাটন SVG 16x16 */
 .topbar-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- আইকন বাটন ---------- */
+/* position: relative — badge positioning এর জন্য parent context       */
 .topbar-icon-btn { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid #e2e8f0; background: #ffffff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; position: relative; color: #64748b; }
 .topbar-icon-btn:hover { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
 .topbar-icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- নোটিফিকেশন ব্যাজ ---------- */
+/* position: absolute — parent .topbar-icon-btn এর relative respect এ  */
+/* top: -4px, right: -4px — button-এর ক Miscellaneous */
+/* min-width: 18px —最少 width, number 1 digit বা 2 digit both show    */
+/* border-radius: 9px — half of 18px height = perfect pill/circle      */
 .topbar-badge { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: #dc2626; color: #ffffff; font-size: 0.68rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; position: absolute; top: -4px; right: -4px; }
+
+/* ---------- অ্যাভাটার ---------- */
+/* width/height: 40px — circle, border-radius: 50%                   */
+/* background: linear-gradient — fallback gradient no image available  */
+/* border: 2px #e2e8f0 — subtle border                                */
+/* overflow: hidden — content crop করবে                                */
+/* hover: translateY(-1px) — lift effect                               */
 .topbar-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); border: 2px solid #e2e8f0; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #334155; cursor: pointer; overflow: hidden; transition: all 0.2s; }
 .topbar-avatar:hover { border-color: #0f172a; color: #0f172a; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(15,23,42,0.15); }
 
+/* ==================== নোটিফিকেশন ড্রপডাউন ==================== */
+/* position: relative — dropdown parent context সৃষ্টি করবে             */
 .notification-wrapper { position: relative; }
+
+/* position: absolute — wrapper এর.right:0 corner-এ বসবে               */
+/* top: calc(100% + 8px) — button-এর নিচে 8px gap দিয়ে বসবে          */
+/* width: 360px — fixed width, dropdown width                          */
+/* max-height: 480px — scroll করবে যদি বেশি নোটিফিকেশন হয়            */
+/* z-index: 200 — sidebar (100), topbar (50) এর উপরে, overlay (99) এর ও উপরে */
+/* box-shadow: 2層 — elevation effect,.dropdown content highlight করে  */
+/* display: none → flex — hidden by default, .show class-এ appear     */
 .notification-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 360px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 10px 40px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.06); z-index: 200; display: none; flex-direction: column; max-height: 480px; overflow: hidden; }
 .notification-dropdown.show { display: flex; }
+
+/* ---------- নোটিফিকেশন হেডার ---------- */
+/* justify-content: space-between — title বামে, actions ডানে          */
 .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f1f5f9; }
 .notification-header h3 { font-size: 0.9rem; font-weight: 700; color: #0f172a; }
 .notification-header-actions { display: flex; align-items: center; gap: 8px; }
+
+/* ---------- সব রিড / সব ডিলিট ---------- */
+/* background: none; border: none — button reset                      */
 .mark-all-read { font-size: 0.75rem; font-weight: 600; color: #0f172a; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
 .mark-all-read:hover { background: #f1f5f9; }
 .delete-all { font-size: 0.75rem; font-weight: 600; color: #dc2626; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
 .delete-all:hover { background: #fef2f2; }
+
+/* ---------- নোটিফিকেশন লিস্ট ---------- */
+/* max-height: 420px — dropdown height এর ভিতরে scrollable           */
+/* overflow-y: auto — vertical scroll only                            */
 .notification-list { overflow-y: auto; max-height: 420px; }
+
+/* ---------- নোটিফিকেশন আইটেম ---------- */
+/* border-bottom: 1px #f8fafc — very light separator                 */
+/* position: relative — delete button absolute position করতে চাইবে     */
 .notification-item { display: flex; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #f8fafc; cursor: pointer; transition: background 0.15s; position: relative; }
 .notification-item:last-child { border-bottom: none; }
 .notification-item:hover { background: #fafbfc; }
 .notification-item.unread { background: #f8fafc; }
+
+/* ---------- নোটিফিকেশন আইকন ---------- */
+/* width/height: 32px — small icon box                                */
+/* border-radius: 8px — slightly rounded                              */
+/* variant classes: system/user/alert/info — different bg+text colors  */
 .notification-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem; }
 .notification-icon.system { background: #f0f9ff; color: #0284c7; }
 .notification-icon.user { background: #f0fdf4; color: #16a34a; }
 .notification-icon.alert { background: #fefce8; color: #ca8a04; }
 .notification-icon.info { background: #fef2f2; color: #dc2626; }
+
+/* ---------- নোটিফিকেশন বডি ---------- */
+/* flex: 1 — remaining space নেবে, title+message grow করবে           */
+/* min-width: 0 — flexbox overflow ellipsis-এর জন্য necessary         */
 .notification-body { flex: 1; min-width: 0; }
 .notification-title { font-size: 0.82rem; font-weight: 600; color: #0f172a; margin-bottom: 2px; line-height: 1.3; }
 .notification-message { font-size: 0.78rem; color: #64748b; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .notification-time { font-size: 0.72rem; color: #94a3b8; font-weight: 500; margin-top: 4px; }
+
+/* ---------- নোটিফিকেশন ডিলিট ---------- */
+/* opacity: 0 — hidden by default                                     */
+/* .notification-item:hover .notification-delete → hover-এ opacity 1 */
 .notification-delete { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: #94a3b8; transition: all 0.15s; flex-shrink: 0; align-self: center; opacity: 0; }
 .notification-item:hover .notification-delete { opacity: 1; }
 .notification-delete:hover { background: #fef2f2; color: #dc2626; }
 .notification-delete svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- নোটিফিকেশন এম্পটি ---------- */
 .notification-empty { text-align: center; padding: 32px 16px; color: #94a3b8; font-size: 0.85rem; }
 
+/* ==================== কনটেন্ট এরিয়া ==================== */
+/* padding: 28px 32px —上下 28px,左右 32px, generous content spacing  */
+/* flex: 1 — remaining space নেবে, grow করবে sidebar এর সাথে balance  */
 .content-area { padding: 28px 32px; flex: 1; }
+
+/* ---------- পেজ হেডার ---------- */
+/* margin-bottom: 24px — next content (stats grid) থেকে separation      */
 .page-header { margin-bottom: 24px; }
 .page-title { font-size: 1.75rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; margin-bottom: 4px; }
 .page-subtitle { font-size: 0.88rem; color: #64748b; font-weight: 400; }
 
+/* ==================== স্ট্যাটistik গ্রিড ==================== */
+/* grid-template-columns: repeat(4, 1fr) — 4 equal width column       */
+/* gap: 20px — card-to-card spacing                                    */
+/* margin-bottom: 24px — stats থেকে dashboard grid পর্যন্ত separation */
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 24px; }
+
+/* ---------- স্ট্যাট কার্ড ---------- */
+/* border-radius: 14px — modern rounded corners                        */
+/* box-shadow: 2-layer subtle shadow — card elevation effect            */
+/* transition: box-shadow 0.2s — smooth hover state change             */
 .stat-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.03); transition: box-shadow 0.2s; }
 .stat-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.03); }
-.stat-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+
+/* ---------- স্ট্যাট লেবেল ---------- */
+/* text-transform: uppercase — small caps label style                   */
+/* letter-spacing: 1px — wide tracking for uppercase                   */
 .stat-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; color: #94a3b8; text-transform: uppercase; }
+
+/* ---------- স্ট্যাট আইকন ---------- */
+/* width/height: 36px, border-radius: 9px — square with round corners  */
+/* variant classes: users/uptime/storage/notes — colored per metric    */
 .stat-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
 .stat-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .stat-icon.users { background: #f0f9ff; color: #0284c7; }
 .stat-icon.uptime { background: #f0fdf4; color: #16a34a; }
 .stat-icon.storage { background: #fefce8; color: #ca8a04; }
 .stat-icon.notes { background: #fef2f2; color: #dc2626; }
+
+/* ---------- স্ট্যাট ভ্যালু ---------- */
+/* font-size: 2.2rem (35.2px) — large metric number                    */
+/* letter-spacing: -1px — tight spacing for large numbers              */
 .stat-value { font-size: 2.2rem; font-weight: 800; color: #0f172a; letter-spacing: -1px; line-height: 1; margin-bottom: 4px; }
+
+/* ---------- স্ট্যাট চেঞ্জ ---------- */
+/* display: flex + align-items: center — arrow icon + text vertically  */
 .stat-change { font-size: 0.78rem; font-weight: 600; color: #16a34a; display: flex; align-items: center; gap: 4px; }
 .stat-change svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .stat-sub { font-size: 0.82rem; color: #64748b; margin-top: 4px; }
 
+/* ==================== ড্যাশবোর্ড গ্রিড ==================== */
+/* grid-template-columns: 2fr 1fr — left panel wider (activity log),   */
+/* right panel narrower (quick actions), 2:1 ratio                     */
 .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+/* ---------- প্যানেল ---------- */
+/* same card style as stat-card — consistent design language           */
 .panel { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.03); }
+
+/* ---------- প্যানেল হেডার ---------- */
+/* justify-content: space-between — title বামে, link ডানে            */
 .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 .panel-title { font-size: 0.95rem; font-weight: 700; color: #0f172a; }
+
+/* ---------- প্যানেল লিংক ---------- */
+/* opacity: 0.7 default, hover-এ 1 — subtle fade effect                */
 .panel-link { font-size: 0.8rem; font-weight: 600; color: #0f172a; text-decoration: none; display: flex; align-items: center; gap: 4px; }
 .panel-link:hover { opacity: 0.7; }
 .panel-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ==================== কুইক অ্যাকশন ==================== */
+/* flex-direction: column — buttons vertically stacked                 */
 .quick-actions { display: flex; flex-direction: column; gap: 10px; }
+
+/* ---------- অ্যাকশন বাটন ---------- */
+/* background: #fafbfc — very light gray, subtle                       */
+/* hover: translateY(-1px) implicit via background/border change       */
 .action-btn { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #fafbfc; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500; color: #334155; width: 100%; text-align: left; }
 .action-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
 .action-btn svg { width: 18px; height: 18px; fill: none; stroke: #64748b; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
+/* ==================== স্টোরেজ বার ==================== */
+/* height: 10px — thin progress bar                                   */
+/* border-radius: 10px — fully rounded, pill shape                     */
+/* overflow: hidden — child .storage-fill radius respect করবে         */
 .storage-bar { height: 10px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin-top: 10px; }
 .storage-fill { height: 100%; width: 42%; background: linear-gradient(90deg, #0f172a 0%, #334155 100%); border-radius: 10px; transition: width 0.6s ease; }
 .storage-info { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
 .storage-value { font-size: 0.82rem; font-weight: 600; color: #0f172a; }
 .storage-sub { font-size: 0.78rem; color: #64748b; }
 
+/* ==================== অডিট লগ ==================== */
+/* flex-direction: column — entries stacked vertically                 */
 .audit-log { display: flex; flex-direction: column; gap: 14px; }
+
+/* ---------- অডিট এন্ট্রি ---------- */
+/* background: #f8fafc — very light gray, subtle highlight            */
+/* border: 1px #f1f5f9 — very light border                            */
 .audit-log-entry { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; background: #f8fafc; border: 1px solid #f1f5f9; }
 .audit-log-time { font-size: 0.72rem; color: #94a3b8; font-weight: 600; white-space: nowrap; }
+
+/* ---------- অডিট টাইপ ---------- */
+/* text-transform: uppercase — small caps style                        */
 .audit-log-type { font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 .audit-log-type.info { background: #f0f9ff; color: #0284c7; }
 .audit-log-type.success { background: #f0fdf4; color: #16a34a; }
 .audit-log-type.error { background: #fef2f2; color: #dc2626; }
 .audit-log-type.warning { background: #fefce8; color: #ca8a04; }
 .audit-log-msg { font-size: 0.82rem; color: #334155; flex: 1; }
+
+/* ---------- অডিট আইটেম ---------- */
+/* border-bottom: 1px #f1f5f9 — light separator                        */
 .audit-item { display: flex; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9; }
 .audit-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+/* ---------- অডিট ডট ---------- */
+/* width/height: 8px, border-radius: 50% — small colored dot          */
+/* margin-top: 6px — text-top-এ align করার জন্য                        */
 .audit-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
 .audit-dot.red { background: #ef4444; }
 .audit-dot.yellow { background: #f59e0b; }
 .audit-dot.blue { background: #3b82f6; }
+
+/* ---------- অডিট কনটেন্ট ---------- */
 .audit-content { flex: 1; }
 .audit-title { font-size: 0.82rem; font-weight: 600; color: #0f172a; margin-bottom: 2px; }
 .audit-desc { font-size: 0.78rem; color: #64748b; line-height: 1.4; }
 .audit-time { font-size: 0.72rem; color: #94a3b8; font-weight: 500; margin-top: 2px; }
+
+/* ---------- অডিট বিউ ---------- */
 .audit-btn { display: block; width: 100%; padding: 10px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: #334155; cursor: pointer; text-align: center; margin-top: 12px; transition: all 0.2s; }
 .audit-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
 
+/* ==================== অ্যাক্টিভিটি টেবিল ==================== */
+/* border-collapse: collapse — double borders remove, single line     */
 .activity-table { width: 100%; border-collapse: collapse; }
 .activity-table thead th { text-align: left; padding: 10px 12px; font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; color: #94a3b8; text-transform: uppercase; border-bottom: 1px solid #f1f5f9; }
 .activity-table tbody td { padding: 12px 12px; font-size: 0.85rem; color: #334155; border-bottom: 1px solid #f8fafc; vertical-align: middle; }
 .activity-table tbody tr:last-child td { border-bottom: none; }
 .activity-table tbody tr:hover { background: #fafbfc; }
+
+/* ---------- ইউজার সেল ---------- */
+/* flex-shrink: 0 — avatar width fixed, shrink না করবে               */
 .user-cell { display: flex; align-items: center; gap: 10px; }
 .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: #475569; flex-shrink: 0; }
 .user-info { display: flex; flex-direction: column; }
 .user-name { font-weight: 600; color: #0f172a; font-size: 0.84rem; }
 .user-email { font-size: 0.72rem; color: #94a3b8; }
+
+/* ---------- রোল ট্যাগ ---------- */
 .role-tag { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
 .role-tag.faculty { background: #f0f9ff; color: #0284c7; }
 .role-tag.student { background: #f0fdf4; color: #16a34a; }
 .role-tag.staff { background: #fefce8; color: #ca8a04; }
+
+/* ---------- স্ট্যাটাস ট্যাগ ---------- */
 .status-tag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
 .status-tag.active { background: #f0fdf4; color: #16a34a; }
 .status-tag .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; }
+
+/* ---------- ম্যানেজ লিংক ---------- */
 .manage-link { font-size: 0.8rem; font-weight: 600; color: #0f172a; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; }
 .manage-link:hover { opacity: 1; }
 
+/* ---------- সেকশন গ্রিড ---------- */
+/* 2 কলাম (ছাত্র/অন্যান্য পেইজের জন্য) */
 .section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
 
+/* ==================== রেসপন্সিভ ব্রেকপয়েন্ট ==================== */
+
+/* ---------- 1200px ---------- */
+/* লার্জ ল্যাপটপ/ডেস্কটপ: stats 4→2 কলাম, grid 2→1 কলাম              */
 @media (max-width: 1200px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .dashboard-grid { grid-template-columns: 1fr; }
     .section-grid { grid-template-columns: 1fr; }
 }
 
+/* ---------- 1024px ---------- */
+/* স্ট্যান্ডার্ড ল্যাপটপ: content padding কম, dropdown width变小        */
 @media (max-width: 1024px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .content-area { padding: 24px; }
     .notification-dropdown { width: 320px; }
 }
 
+/* ---------- 768px (Tablet/Mobile cutoff) ---------- */
+/* mobile menu visible, sidebar slide-in (translateX -100%→0),        */
+/* main-content margin-left 0, stats 1 কলাম, dropdown bottom sheet     */
 @media (max-width: 768px) {
     .mobile-menu-btn { display: inline-flex; }
     .sidebar { transform: translateX(-100%); width: 280px; position: fixed; top: 0; bottom: 0; }
@@ -194,6 +497,8 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
     .activity-table { min-width: 900px; }
 }
 
+/* ---------- 480px (Small phones) ---------- */
+/* smaller buttons, avatars, stat cards to fit narrow screens          */
 @media (max-width: 480px) {
     .topbar-btn { padding: 8px 12px; font-size: 0.78rem; }
     .topbar-btn svg { width: 14px; height: 14px; }
@@ -203,6 +508,9 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
     .stat-value { font-size: 1.6rem; }
     .panel { padding: 16px 18px; }
 }
+
+/* ---------- extra 768px fallback (duplicate for safety) ---------- */
+/* earlier 768px breakpoint এর duplicate, safety measure                */
 @media (max-width: 768px) {
     .sidebar { width: 100%; position: relative; }
     .main-content { margin-left: 0; }

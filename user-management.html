@@ -1,17 +1,28 @@
+<!-- ============================================ -->
+<!-- User Management - iShare IUBAT                 -->
+<!-- ব্যবহারকারী ব্যবস্থাপনা: ইউজার টেবিল, ফিল্টার, ডিসциплиন -->
+<!-- ============================================ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- মেটা সেটিংস -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management - iShare IUBAT</title>
+
+    <!-- গুগল ফন্টস -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- অ্যাডমিন ড্যাশবোর্ড CSS ও ইউজার ম্যানেজমেন্ট CSS -->
     <link rel="stylesheet" href="admin-dashboard.css">
     <link rel="stylesheet" href="user-management.css">
 </head>
 <body>
     <div class="dashboard-wrapper">
+        <!-- ==================== সাইডবার ==================== -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">
@@ -31,7 +42,7 @@
                     Platform Overview
                 </button>
                 <button class="nav-item active">
-                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                    <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4v2a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                     User Management
                 </button>
                 <button class="nav-item" type="button" onclick="window.location.href='department-controls.html'">
@@ -66,6 +77,8 @@
             </div>
         </aside>
         <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
+
+        <!-- ==================== মেইন কনটেন্ট ==================== -->
         <main class="main-content">
             <header class="topbar">
                 <div class="topbar-left">
@@ -99,7 +112,10 @@
                     <div class="topbar-avatar" title="User Menu">SI</div>
                 </div>
             </header>
+
+            <!-- ==================== কনটেন্ট এরিয়া ==================== -->
             <div class="content-area">
+                <!-- পেজ হেডার: টাইটেল, ফ্ল্যাগড ব্যাজ, অ্যাকশন -->
                 <div class="page-header-area">
                     <div class="page-title-row">
                         <h1 class="page-title">User Management & Conduct Control</h1>
@@ -118,6 +134,7 @@
                     </div>
                 </div>
 
+                <!-- ফিল্টার ট্যাব: All, Flagged, Active, Suspended -->
                 <div class="tabs-bar">
                     <button class="tab-btn active" data-filter="all" onclick="setFilter(this, 'all')">All Users <span class="tab-count" id="countAll">10</span></button>
                     <button class="tab-btn alert" data-filter="flagged" onclick="setFilter(this, 'flagged')">
@@ -128,6 +145,7 @@
                     <button class="tab-btn" data-filter="suspended" onclick="setFilter(this, 'suspended')">Suspended <span class="tab-count" id="countSuspended">1</span></button>
                 </div>
 
+                <!-- টুলবার: সার্চ ও ডিপার্টমেন্ট ফিল্টার -->
                 <div class="toolbar">
                     <div class="search-box">
                         <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -148,6 +166,7 @@
                     </select>
                 </div>
 
+                <!-- ইউজার টেবিল প্যানেল -->
                 <div class="table-panel">
                     <div class="table-wrapper">
                         <table>
@@ -175,6 +194,7 @@
         </main>
     </div>
 
+    <!-- ==================== ডিসciplিন মোডাল ==================== -->
     <div class="discipline-overlay" id="disciplineModal">
         <div class="discipline-modal">
             <div class="discipline-header">
@@ -247,17 +267,14 @@
                     <label class="discipline-form-label">Official Disciplinary Reason (কারণ):</label>
                     <textarea class="discipline-textarea" id="disciplineReason" placeholder="Violated Code of Conduct (Profanity & Abusive Language / গালীগলাচ ও অপশব্দের ভাষা)"></textarea>
                 </div>
-
                 <div class="discipline-form-group">
                     <label class="discipline-form-label">Administrator Internal Remarks / Note:</label>
                     <textarea class="discipline-textarea" id="disciplineRemarks" placeholder="Provide context for academic senate or central IT logs..."></textarea>
                 </div>
-
                 <div class="discipline-checkbox-row">
                     <input type="checkbox" id="disciplineEmailNotify" checked>
                     <label class="discipline-checkbox-label" for="disciplineEmailNotify">Dispatch formal violation notice to student's registrar email (<span id="disciplineEmailSpan">user@example.com</span>)</label>
                 </div>
-
                 <div class="discipline-actions">
                     <button class="discipline-cancel" onclick="closeDisciplineModal()">Cancel</button>
                     <button class="discipline-confirm" onclick="submitDisciplineAction()">
@@ -269,6 +286,7 @@
         </div>
     </div>
 
+    <!-- ==================== স্টুডেন্ট ডিটেইল মোডাল ==================== -->
     <div class="student-detail-overlay" id="studentDetailModal">
         <div class="student-detail-modal">
             <div class="student-detail-header">
@@ -298,7 +316,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="student-detail-grid">
                     <div class="student-detail-card">
                         <div class="student-detail-card-title">Conduct Record</div>
@@ -335,7 +352,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="student-detail-actions">
                     <button class="student-detail-btn student-detail-btn-discipline" onclick="closeStudentDetailModal(); setTimeout(() => openDisciplineModal(document.getElementById('studentDetailId').textContent.replace('ID: ', '')), 200);">Take Disciplinary Action</button>
                     <button class="student-detail-btn student-detail-btn-close" onclick="closeStudentDetailModal()">Close</button>
@@ -344,6 +360,7 @@
         </div>
     </div>
 
+    <!-- ইউজার ম্যানেজমেন্ট JavaScript -->
     <script src="user-management.js"></script>
 </body>
 </html>

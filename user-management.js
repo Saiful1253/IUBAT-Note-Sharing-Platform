@@ -1,7 +1,16 @@
+/* ============================================ */
+/* User Management JS - iShare IUBAT              */
+/* ইউজার ম্যানেজমেন্ট: টেবিল, ফিল্টার, ডিসciplিন    */
+/* ============================================ */
+
+/* প্রতি পেজে কতগুলো ইউজার দেখাবে */
 const ITEMS_PER_PAGE = 10;
+/* বর্তমান ফিল্টার: all, flagged, active, suspended */
 let currentFilter = 'all';
+/* বর্তমান পেজ নম্বর */
 let currentPage = 1;
 
+/* localStorage থেকে সব অ্যাকাউন্ট লোড করে ইউজার ফরম্যাটে রিটার্ন */
 function getUsers() {
     const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
     return accounts.map(acc => ({
@@ -18,6 +27,7 @@ function getUsers() {
     }));
 }
 
+/* সার্চ, ডিপার্টমেন্ট ফিল্টার, এবং ট্যাব ফিল্টার প্রয়োগ */
 function getFilteredUsers() {
     const searchInput = document.getElementById('searchInput');
     const deptFilter = document.getElementById('deptFilter');
@@ -51,16 +61,19 @@ function getFilteredUsers() {
     return users;
 }
 
+/* XSS প্রতিরোধ: HTML এস্কেপ */
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
+/* নাম থেকে ইনিশিয়ালস তৈরি */
 function getInitials(name) {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 }
 
+/* কন্ডাক্ট রেকর্ডের স্ট্যাটাস ব্যাজ রেন্ডার */
 function renderConductBadge(user) {
     if (user.conduct === 'clean') {
         return '<span class="conduct-badge clean"><span class="conduct-dot"></span>Clean Record</span>';
@@ -74,6 +87,7 @@ function renderConductBadge(user) {
     return '<span class="conduct-badge clean"><span class="conduct-dot"></span>Clean Record</span>';
 }
 
+/* অ্যাকাউন্ট স্ট্যাটাস ব্যাজ রেন্ডার */
 function renderStatusBadge(user) {
     const status = user.status || 'active';
     const label = status.toUpperCase();
@@ -86,6 +100,7 @@ function renderStatusBadge(user) {
     return '<span class="status-badge active"><span class="status-dot"></span>ACTIVE</span>';
 }
 
+/* অ্যাকশন বাটন রেন্ডার: Discipline, Suspend, Reactivate, Delete */
 function renderActions(user) {
     const isSuspended = user.status === 'suspended' || user.conduct === 'suspended';
     const isSystem = user.isSystem;
@@ -107,6 +122,7 @@ function renderActions(user) {
     return buttons;
 }
 
+/* ইউজার টেবিল রেন্ডার */
 function renderTable() {
     const tbody = document.getElementById('userTableBody');
     if (!tbody) return;
@@ -140,7 +156,7 @@ function renderTable() {
     if (pageItems.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7">
             <div class="empty-state">
-                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0 4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4v2a4 4 0 0 0 4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 <div class="empty-state-title">No users found</div>
                 <div class="empty-state-desc">Try adjusting your search or filter criteria.</div>
             </div>
@@ -174,6 +190,7 @@ function renderTable() {
     renderPagination(totalPages);
 }
 
+/* ইউজার এক্সপোর্ট: CSV ডাউনলোড */
 function exportUsers() {
     const users = getFilteredUsers();
     if (users.length === 0) {
@@ -208,6 +225,7 @@ function exportUsers() {
     URL.revokeObjectURL(url);
 }
 
+/* পেজিনেশন কন্ট্রোল রেন্ডার */
 function renderPagination(totalPages) {
     const controls = document.getElementById('paginationControls');
     if (!controls) return;
@@ -243,6 +261,7 @@ function renderPagination(totalPages) {
     controls.innerHTML = html;
 }
 
+/* নির্দিষ্ট পেজে নেভিগেট */
 function goToPage(page) {
     const filtered = getFilteredUsers();
     const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
@@ -251,6 +270,7 @@ function goToPage(page) {
     renderTable();
 }
 
+/* ফিল্টার ট্যাব সেট */
 function setFilter(btn, filter) {
     currentFilter = filter;
     currentPage = 1;
@@ -259,6 +279,7 @@ function setFilter(btn, filter) {
     renderTable();
 }
 
+/* ইউজার সাস্পেন্ড */
 function suspendUser(id) {
     if (!confirm('Are you sure you want to suspend this user?')) return;
     let accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
@@ -273,6 +294,7 @@ function suspendUser(id) {
     }
 }
 
+/* ইউজার রিএক্টিভেট */
 function reactivateUser(id) {
     if (!confirm('Are you sure you want to reactivate this user?')) return;
     let accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
@@ -287,6 +309,7 @@ function reactivateUser(id) {
     }
 }
 
+/* ইউজার ডিলিট */
 function deleteUser(id) {
     if (!confirm('Are you sure you want to permanently delete this user? This action cannot be undone.')) return;
     let accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
@@ -302,6 +325,7 @@ function deleteUser(id) {
     }
 }
 
+/* অ্যাড ইউজার মোডাল */
 function openAddUserModal() {
     const name = prompt('Enter full name:');
     if (name === null || !name.trim()) { if (name !== null) alert('Name is required'); return; }
@@ -331,6 +355,7 @@ function openAddUserModal() {
     alert('User added successfully.');
 }
 
+/* ডমContentLoaded: অ্যাডমিন সেশন চেক ও ইনিশিয়ালাইজ */
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('ishare_user_id');
     if (!userId) {
@@ -377,6 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+/* ==================== নোটিফিকেশন সিস্টেম ==================== */
 function initNotifications() {
     const STORAGE_KEY = 'ishare_notifications';
     const notificationBtn = document.getElementById('notificationBtn');
@@ -390,12 +416,16 @@ function initNotifications() {
     function getNotifications() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; } }
     function saveNotifications(notifications) { localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications)); }
     function getUnreadCount(notifications) { return notifications.filter(n => !n.read).length; }
+
+    /* ব্যেজ আপডেট */
     function updateBadge() {
         const notifications = getNotifications();
         const unreadCount = getUnreadCount(notifications);
         if (unreadCount > 0) { notificationBadge.textContent = unreadCount > 99 ? '99+' : unreadCount; notificationBadge.style.display = 'inline-flex'; }
         else { notificationBadge.style.display = 'none'; }
     }
+
+    /* টাইম ফরম্যাট */
     function formatTime(timestamp) {
         const diff = Date.now() - timestamp;
         const minutes = Math.floor(diff / 60000);
@@ -406,6 +436,8 @@ function initNotifications() {
         const days = Math.floor(hours / 24);
         return days + 'd ago';
     }
+
+    /* নোটিফিকেশন রেন্ডার */
     function renderNotifications() {
         const notifications = getNotifications();
         if (notifications.length === 0) { notificationList.innerHTML = '<div class="notification-empty">No notifications yet.</div>'; return; }
@@ -420,7 +452,7 @@ function initNotifications() {
                     <div class="notification-time">${formatTime(n.time)}</div>
                 </div>
                 <button class="notification-delete" data-id="${n.id}" title="Delete notification">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4"/></svg>
                 </button>
             </div>`;
         }).join('');
@@ -446,12 +478,12 @@ function initNotifications() {
             });
         });
     }
+
     function deleteAllNotifications() { saveNotifications([]); updateBadge(); renderNotifications(); }
     function toggleDropdown(e) { e.stopPropagation(); const isShown = notificationDropdown.classList.contains('show'); if (isShown) { notificationDropdown.classList.remove('show'); } else { renderNotifications(); notificationDropdown.classList.add('show'); } }
     function closeDropdown() { notificationDropdown.classList.remove('show'); }
     function markAllAsRead() {
-        const notifications = getNotifications();
-        let changed = false;
+        const notifications = getNotifications(); let changed = false;
         notifications.forEach(n => { if (!n.read) { n.read = true; changed = true; } });
         if (changed) { saveNotifications(notifications); updateBadge(); renderNotifications(); }
     }
@@ -476,6 +508,7 @@ function initNotifications() {
     updateBadge();
 }
 
+/* স্টুডেন্ট ডিটেইল মোডাল ওপেন */
 function openStudentDetailModal(id) {
     const modal = document.getElementById('studentDetailModal');
     if (!modal) return;
@@ -531,6 +564,7 @@ function openStudentDetailModal(id) {
     modal.classList.add('show');
 }
 
+/* স্টুডেন্ট ডিটেইল মোডাল ক্লোজ */
 function closeStudentDetailModal() {
     document.getElementById('studentDetailModal').classList.remove('show');
 }
@@ -539,6 +573,7 @@ document.getElementById('studentDetailModal').addEventListener('click', function
     if (e.target === this) closeStudentDetailModal();
 });
 
+/* ডিসciplিন মোডাল ওপেন */
 function openDisciplineModal(id) {
     const modal = document.getElementById('disciplineModal');
     if (!modal) return;
@@ -587,10 +622,12 @@ function openDisciplineModal(id) {
     modal.classList.add('show');
 }
 
+/* ডিসciplিন মোডাল ক্লোজ */
 function closeDisciplineModal() {
     document.getElementById('disciplineModal').classList.remove('show');
 }
 
+/* ডিসciplিন অ্যাকশন সাবমিট */
 function submitDisciplineAction() {
     const idEl = document.getElementById('disciplineUserId');
     const reasonEl = document.getElementById('disciplineReason');
@@ -669,6 +706,7 @@ function submitDisciplineAction() {
     alert('Disciplinary action recorded successfully. Case ID: ' + caseId);
 }
 
+/* ডিসciplিন অপশন সিলেক্ট */
 document.querySelectorAll('.discipline-option').forEach(option => {
     option.addEventListener('click', function(e) {
         if (e.target.tagName === 'INPUT') return;
@@ -690,6 +728,7 @@ document.getElementById('disciplineModal').addEventListener('click', function(e)
     if (e.target === this) closeDisciplineModal();
 });
 
+/* মোবাইল সাইডবার */
 (function() {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const sidebar = document.querySelector('.sidebar');

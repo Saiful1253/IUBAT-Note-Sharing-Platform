@@ -1,16 +1,27 @@
+<!-- ============================================ -->
+<!-- Messaging - iShare IUBAT                       -->
+<!-- মেসেজিং: ছাত্র-ছাত্রদের চ্যাট সিস্টেম                  -->
+<!-- ============================================ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- মেটা সেটিংস -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messaging - iShare IUBAT</title>
+
+    <!-- গুগল ফন্টস -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- স্টুডেন্ট হোম CSS (শেয়ার করা) ও মেসেজিং CSS -->
     <link rel="stylesheet" href="student-home.css">
     <link rel="stylesheet" href="student-messaging.css">
 </head>
 <body>
+    <!-- ==================== টপবার ==================== -->
     <header class="topbar">
         <div class="topbar-left">
             <a href="#" class="topbar-logo">
@@ -56,6 +67,7 @@
         </div>
     </header>
 
+    <!-- ==================== লেআউট ==================== -->
     <div class="layout">
         <aside class="sidebar">
             <div class="sidebar-profile">
@@ -90,16 +102,20 @@
             </div>
         </aside>
 
+        <!-- ==================== মেসেজিং এরিয়া ==================== -->
         <div class="main-area">
             <main class="content">
                 <div class="messaging-layout">
+                    <!-- লেফট: কনভারসেশন লিস্ট -->
                     <div class="messaging-sidebar">
                         <div class="messaging-sidebar-header">
                             <div class="messaging-sidebar-title">Conversations</div>
+                            <!-- কনভারসেশন সার্চ -->
                             <input type="text" class="messaging-search" placeholder="Search people..." id="messagingSearch">
                         </div>
                         <div class="messaging-list" id="messagingList"></div>
                     </div>
+                    <!-- রাইট: চ্যাট এরিয়া -->
                     <div class="messaging-main" id="messagingMain">
                         <div class="messaging-placeholder">
                             <div class="messaging-placeholder-icon">
@@ -114,8 +130,10 @@
         </div>
     </div>
 
+    <!-- টোস্ট -->
     <div class="toast" id="toast"></div>
 
+    <!-- প্রোফাইল মোডাল -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-card profile-modal">
             <div class="modal-header">
@@ -126,7 +144,6 @@
                 <div class="profile-avatar" id="profileModalAvatar">TP</div>
                 <div class="profile-name" id="profileModalName">Student</div>
                 <div class="profile-dept" id="profileModalDept">Student</div>
-
                 <div class="profile-details">
                     <div class="profile-detail-item">
                         <span class="profile-detail-label">Student ID</span>
@@ -145,7 +162,6 @@
                         <span class="profile-detail-value" id="profileModalEmail">-</span>
                     </div>
                 </div>
-
                 <div class="profile-stats">
                     <div class="profile-stat">
                         <span class="profile-stat-value" id="profileModalNotes">0</span>
@@ -160,6 +176,7 @@
         </div>
     </div>
 
+    <!-- মেসেজিং পেজের JavaScript -->
     <script src="student-messaging.js"></script>
 </body>
 </html>

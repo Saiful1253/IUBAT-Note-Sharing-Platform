@@ -1,40 +1,135 @@
+/* ========================================================= */
+/* Student Home CSS - iShare IUBAT                           */
+/*                                                          */
+/* এই CSS ফাইলের পুরো কাজটি নিচে ধাপে ধাপে ব্যাখ্যা করা হলো: */
+/*                                                          */
+/* ১. গ্লোবাল রিসেট:                                          */
+/*    সব HTML ট্যাগের margin/padding 0, box-sizing border-box।    */
+/*    এটি সব element-এর width/height calculation নির্ভরশীল না    */
+/*    করে, padding+border total size-এ অন্তর্ভুক্ত হবে।          */
+/*                                                          */
+/* ২. বডি (body):                                            */
+/*    background: #ffffff — Admin-এর #f4f6f9-র তুল্যায়,         */
+/*    student home এ পুরো ফাঁকা white background,                   */
+/*    কারণ এখানে কনটেন্ট বেশি এবং clean flat design opted।        */
+/*    font: Inter + system fallbacks — same modern stack।         */
+/*                                                          */
+/* ৩. টপবার (.topbar):                                      */
+/*    position: sticky + top: 0 — scroll করলেও topmost দেখাবে,    */
+/*    content scroll-এ চলে গেলেও header fixed থাকবে।               */
+/*    height: 64px — standard top bar height                      */
+/*    justify-content: space-between — বামে logo+dept, ডানে actions */
+/*    flex container-এ left+right automatically push করে।           */
+/*                                                          */
+/* ৪. লেয়াউট (.layout):                                    */
+/*    flex: row (ডিফল্ট) — sidebar(left, fixed) + main-area(right) */
+/*    min-height: calc(100vh - 64px) — topbar বাদ leaving viewport */
+/*                                                          */
+/* ৫. মেইন এরিয়া (.main-area):                              */
+/*    margin-left: 260px — sidebar width, content right-এ রাখবে    */
+/*    justify-content: center — content horizontally center         */
+/*    gap: 24px — content + right-card এর মধ্যে spacing             */
+/* ========================================================= */
+
+/* ---------- গ্লোবাল রিসেট ---------- */
+/* সব ট্যাগের margin/padding শূন্য, box-sizing border-box            */
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ---------- বডি ---------- */
+/* background: #ffffff — pure white, clean, flat design opted        */
+/* font-family: Inter — modern sans-serif, system fallback included  */
 body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #ffffff; min-height: 100vh; color: #1a1a1a; }
 
+/* ==================== টপবার ==================== */
+/* sticky top, height 64px, padding 12px 32px, justify-content: space-between */
 .topbar { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; height: 64px; }
+
+/* ---------- টপবার বাম ---------- */
+/* flex-shrink: 0 — logo area shrink না করবে, fixed width           */
 .topbar-left { display: flex; align-items: center; gap: 16px; }
+
+/* ---------- লোগো ---------- */
+/* flex row, gap 10px, no underline — brand identity                 */
 .topbar-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+/* ---------- লোগো আইকন ---------- */
+/* 32x32px square, bg #0f172a (dark navy), radius 8px               */
 .topbar-logo-icon { width: 32px; height: 32px; background: #0f172a; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 .topbar-logo-icon svg { width: 18px; height: 18px; fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- লোগো টেক্সট ---------- */
+/* font-family: Playfair Display — elegant serif for brand            */
+/* font-size: 1.1rem (17.6px) — slightly smaller than admin          */
 .topbar-logo-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #0f172a; }
 .topbar-logo-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 1px; color: #64748b; text-transform: uppercase; }
+
+/* ---------- ডিপার্টমেন্ট ড্রপডাউন ---------- */
+/* clickable, padding 6px 12px, radius 8px, hover bg — shows current */
+/* department, clicking opens department selector dropdown            */
 .topbar-dept { display: flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 600; color: #0f172a; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: background 0.15s; }
 .topbar-dept:hover { background: #f8fafc; }
 .topbar-dept svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- টপবার সেন্টার ---------- */
+/* flex: 1 — remaining space নেবে, grow করবে                         */
+/* max-width: 480px — search box excessively wide না হবে             */
+/* margin: 0 24px —左右 24px gap from left/right items               */
 .topbar-center { flex: 1; max-width: 480px; margin: 0 24px; }
+
+/* ---------- সার্চ ---------- */
+/* padding: 10px 16px 10px 40px — left 40px icon space holder,       */
+/* right 16px text space,上下 10px                                    */
+/* focus: border #0f172a, box-shadow 3px ring — focus indicator      */
 .topbar-search { width: 100%; padding: 10px 16px 10px 40px; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.85rem; background: #f8fafc; outline: none; transition: all 0.2s; }
 .topbar-search:focus { border-color: #0f172a; background: #ffffff; box-shadow: 0 0 0 3px rgba(15,23,42,0.08); }
 .topbar-search-wrapper { position: relative; }
 .topbar-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; fill: none; stroke: #94a3b8; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- টপবার অ্যাকশন ---------- */
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
+
+/* ---------- AI বাটন ---------- */
+/* dark bg #0f172a, white text, radius 10px                          */
+/* hover: lift translateY(-1px), shadow 0 4px 12px — depth effect   */
 .topbar-ai-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 10px; background: #0f172a; color: #ffffff; border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .topbar-ai-btn:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15,23,42,0.2); }
 .topbar-ai-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- আইকন বাটন ---------- */
+/* position: relative — badge positioning এর জন্য                     */
 .topbar-icon-btn { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid #e2e8f0; background: #ffffff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; position: relative; color: #64748b; }
 .topbar-icon-btn:hover { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
 .topbar-icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- নোটিফিকেশন ব্যাজ ---------- */
+/* absolute positioned: top -4px, right -4px — button-এর ক Miscellaneous */
 .topbar-badge { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: #dc2626; color: #ffffff; font-size: 0.68rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; position: absolute; top: -4px; right: -4px; }
+
+/* ---------- অ্যাভাটার ---------- */
+/* circle (radius 50%), gradient bg, border 2px, hover lift          */
 .topbar-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); border: 2px solid #e2e8f0; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #334155; cursor: pointer; overflow: hidden; transition: all 0.2s; }
 .topbar-avatar:hover { border-color: #0f172a; color: #0f172a; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(15,23,42,0.15); }
 
+/* ==================== লেআউট ==================== */
+/* flex row, min-height calc(100vh - 64px) — topbar height বাদ      */
 .layout { display: flex; min-height: calc(100vh - 64px); }
+
+/* ---------- সাইডবার ---------- */
+/* fixed, left 0, top 64px (below topbar), width 260px, z-index 100 */
 .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; position: fixed; left: 0; top: 64px; bottom: 0; z-index: 100; }
+
+/* ---------- সাইডবার প্রোফাইল ---------- */
+/* border-bottom: 1px #f1f5f9 — light separator from nav            */
 .sidebar-profile { padding: 20px; border-bottom: 1px solid #f1f5f9; }
 .sidebar-profile-card { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: #f8fafc; border: 1px solid #f1f5f9; }
 .sidebar-avatar { width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: #334155; flex-shrink: 0; }
 .sidebar-profile-info { flex: 1; min-width: 0; }
 .sidebar-profile-name { font-size: 0.85rem; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sidebar-profile-dept { font-size: 0.72rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+
+/* ---------- সাইডবার নেভ ---------- */
+/* flex: 1 — remaining space নেবে, flex-direction column             */
+/* overflow-y: auto — বড় হলে scroll হবে                            */
 .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
 .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: #475569; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; text-decoration: none; border: none; background: none; width: 100%; text-align: left; }
 .nav-item:hover { background: #f8fafc; color: #0f172a; }
@@ -43,17 +138,27 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .nav-item .nav-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .nav-item.active .nav-icon { opacity: 1; }
 .nav-item .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; margin-left: auto; }
+
+/* ---------- সাইডবার ফুটার ---------- */
 .sidebar-footer { padding: 12px; border-top: 1px solid #f1f5f9; }
 .sidebar-logout { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 500; color: #ef4444; cursor: pointer; transition: all 0.15s; border: none; background: none; width: 100%; text-align: left; }
 .sidebar-logout:hover { background: #fef2f2; color: #dc2626; }
 .sidebar-logout svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
+/* ==================== মেইন এরিয়া ==================== */
+/* flex: 1 — remaining space নেবে, grow করবে                          */
+/* margin-left: 260px — sidebar occupies left, content right           */
+/* min-height: calc(100vh - 64px) — full remaining viewport height     */
+/* justify-content: center — content horizontally center               */
+/* padding: 28px 32px —上下 28px,左右 32px generous spacing           */
 .main-area { flex: 1; margin-left: 260px; min-height: calc(100vh - 64px); display: flex; justify-content: center; gap: 24px; padding: 28px 32px; }
 .content { max-width: 800px; width: 100%; }
 
-.sidebar-right { width: 260px; flex-shrink: 0; }
-.stats-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px 20px; position: sticky; top: 84px; }
-
+/* ==================== নোটিশ ক্যামেল ==================== */
+/* gradient bg: linear-gradient(135deg, #fffbeb, #fef3c7) — amber    */
+/* border: 1px #fde68a — amber border                                 */
+/* border-radius: 12px — rounded corners                               */
+/* position: relative — close button absolute positioning              */
 .notice-card { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fde68a; border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; position: relative; }
 .notice-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .notice-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 6px; background: #fef3c7; color: #92400e; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -65,30 +170,48 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .notice-title { font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; line-height: 1.3; }
 .notice-desc { font-size: 0.82rem; color: #64748b; line-height: 1.5; }
 
+/* ==================== ডিপার্টমেন্ট হেডার ==================== */
 .dept-header { margin-bottom: 24px; }
 .dept-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 6px; background: #f1f5f9; color: #475569; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
 .dept-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; }
 .dept-title { font-size: 1.75rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; margin-bottom: 6px; }
 .dept-desc { font-size: 0.88rem; color: #64748b; line-height: 1.5; margin-bottom: 16px; }
 .dept-header-actions { display: flex; justify-content: flex-end; }
+
+/* ---------- পোস্ট বাটন ---------- */
+/* dark bg, white text, radius 10px, hover lift + shadow               */
 .dept-post-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 10px; background: #0f172a; color: #ffffff; border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .dept-post-btn:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15,23,42,0.2); }
 .dept-post-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ==================== সাবজেক্ট ট্যাব ==================== */
+/* pill shape, border 1.5px #e2e8f0, active: dark bg                  */
+/* overflow-x: auto — horizontal scroll if many tabs                  */
+/* flex-wrap: wrap — narrow view-এ line break                          */
 .subject-tabs { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 4px; flex-wrap: wrap; }
 .subject-tab { padding: 8px 18px; border-radius: 20px; border: 1.5px solid #e2e8f0; background: #ffffff; font-size: 0.82rem; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
 .subject-tab:hover { border-color: #cbd5e1; color: #0f172a; background: #f8fafc; }
 .subject-tab.active { background: #0f172a; color: #ffffff; border-color: #0f172a; }
 
+/* ==================== নোট কার্ড ==================== */
+/* white, border 1px #e2e8f0, radius 14px, padding 20px 24px        */
 .note-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px 24px; margin-bottom: 16px; transition: all 0.2s; cursor: pointer; }
 .note-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-color: #cbd5e1; }
+
+/* ---------- নোট হেডার ---------- */
 .note-card-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 10px; }
+
+/* ---------- নোট আইকন ---------- */
+/* 40x40px, radius 10px, variant: pdf/doc/slides/code — file type    */
 .note-icon { width: 40px; height: 40px; border-radius: 10px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .note-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .note-icon.pdf { color: #dc2626; background: #fef2f2; }
 .note-icon.doc { color: #2563eb; background: #eff6ff; }
 .note-icon.slides { color: #16a34a; background: #f0fdf4; }
 .note-icon.code { color: #9333ea; background: #faf5ff; }
+
+/* ---------- নোট ইনফো ---------- */
+/* flex: 1 — take remaining width, min-width: 0 — ellipsis work      */
 .note-info { flex: 1; min-width: 0; }
 .note-title { font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
 .note-meta { display: flex; align-items: center; gap: 12px; font-size: 0.78rem; color: #64748b; }
@@ -97,14 +220,19 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .note-desc { font-size: 0.85rem; color: #64748b; line-height: 1.5; margin-bottom: 12px; }
 .note-tags { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
 .note-tag { padding: 4px 10px; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; font-size: 0.72rem; font-weight: 600; color: #475569; }
+
+/* ---------- নোট অ্যাকশন ---------- */
 .note-actions { display: flex; gap: 8px; }
 .note-action-btn { width: 36px; height: 36px; border-radius: 8px; border: 1.5px solid #e2e8f0; background: #ffffff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: #64748b; transition: all 0.15s; }
 .note-action-btn:hover { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
 .note-action-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .note-action-btn.liked { color: #dc2626; border-color: #fecaca; background: #fef2f2; }
 
+/* ==================== রাইট সাইড কার্ড ==================== */
 .right-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px 24px; margin-bottom: 20px; }
 .right-card-title { font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 16px; }
+
+/* ---------- ডিপার্টমেন্ট কার্ড ---------- */
 .dept-card { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 10px; transition: all 0.15s; cursor: pointer; }
 .dept-card:hover { border-color: #cbd5e1; background: #f8fafc; }
 .dept-card:last-child { margin-bottom: 0; }
@@ -116,11 +244,13 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .dept-card-switch { font-size: 0.72rem; font-weight: 600; color: #6366f1; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; }
 .dept-card-switch svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ==================== স্ট্যাটistik লিস্ট ==================== */
 .stats-list { display: flex; flex-direction: column; gap: 12px; }
 .stat-item { display: flex; justify-content: space-between; align-items: center; }
 .stat-label { font-size: 0.78rem; color: #64748b; }
 .stat-value { font-size: 0.82rem; font-weight: 700; color: #0f172a; }
 
+/* ==================== নোটিফিকেশন ==================== */
 .notification-wrapper { position: relative; }
 .notification-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 360px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 10px 40px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.06); z-index: 200; display: none; flex-direction: column; max-height: 480px; overflow: hidden; }
 .notification-dropdown.show { display: flex; }
@@ -151,29 +281,43 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .notification-delete svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .notification-empty { text-align: center; padding: 32px 16px; color: #94a3b8; font-size: 0.85rem; }
 
+/* ==================== টোস্ট ==================== */
+/* fixed bottom-right, slide-in animation, z-index 1000                */
 .toast { position: fixed; bottom: 24px; right: 24px; background: #0f172a; color: #ffffff; padding: 14px 20px; border-radius: 12px; font-size: 0.88rem; font-weight: 500; box-shadow: 0 8px 24px rgba(15,23,42,0.2); transform: translateY(120%); transition: transform 0.3s ease, visibility 0.3s ease; visibility: hidden; z-index: 1000; max-width: 360px; }
 .toast.show { transform: translateY(0); visibility: visible; }
 .toast.success { background: #059669; }
 
+/* ==================== মোডাল ==================== */
+/* fixed overlay, center flex, bg rgba(15,23,42,0.45), z-index 900    */
 .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.45); z-index: 900; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-overlay.show { display: flex; }
+
+/* modal card: white, radius 14px, max-width 460px, scrollable         */
 .modal-card { background: #ffffff; border-radius: 14px; border: 1px solid #e2e8f0; width: 100%; max-width: 460px; max-height: 90vh; overflow: auto; box-shadow: 0 10px 40px rgba(15,23,42,0.15); }
+
+/* modal header: flex between, padding 16px 20px, border-bottom        */
 .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #f1f5f9; }
 .modal-title { font-size: 1rem; font-weight: 700; color: #0f172a; }
 .modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: transparent; cursor: pointer; font-size: 1.1rem; color: #64748b; }
 .modal-close:hover { background: #f8fafc; color: #0f172a; }
 .modal-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+
+/* form fields */
 .field-label { font-size: 0.78rem; font-weight: 700; color: #475569; }
 .field-input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.85rem; outline: none; background: #ffffff; }
 .field-input:focus { border-color: #0f172a; box-shadow: 0 0 0 3px rgba(15,23,42,0.08); }
 .field-textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
 .modal-footer { display: flex; justify-content: flex-end; gap: 10px; padding: 12px 20px 16px; }
+
+/* modal buttons */
 .modal-btn { padding: 10px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; }
 .modal-btn.primary { background: #0f172a; color: #ffffff; }
 .modal-btn.primary:hover { background: #1e293b; }
 .modal-btn.secondary { background: #f1f5f9; color: #475569; }
 .modal-btn.secondary:hover { background: #e2e8f0; }
 
+/* ---------- প্রোফাইল মোডাল ---------- */
+/* max-width: 420px — narrower than generic modal (460px)             */
 .profile-modal { max-width: 420px; }
 .profile-modal-body { display: flex; flex-direction: column; align-items: center; gap: 6px; padding-top: 8px; }
 .profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: #334155; }
@@ -182,24 +326,34 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .profile-details { width: 100%; margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
 .profile-detail-item { display: flex; justify-content: space-between; padding: 8px 10px; border-radius: 8px; background: #f8fafc; border: 1px solid #f1f5f9; }
 .profile-detail-label { font-size: 0.78rem; color: #64748b; }
-.profile-detail-value { font-size: 0.85rem; font-weight: 600; color: #0f172a; }
+.profile-detail-value { font-size: 0.85rem; color: #0f172a; font-weight: 600; }
 .profile-stats { display: flex; gap: 10px; width: 100%; margin-top: 12px; }
 .profile-stat { flex: 1; padding: 10px; border-radius: 10px; background: #f8fafc; border: 1px solid #e1e7ef; text-align: center; }
 .profile-stat-value { display: block; font-size: 1.1rem; font-weight: 700; color: #0f172a; }
 .profile-stat-label { font-size: 0.72rem; color: #64748b; }
 
+/* ==================== এম্পটি স্টেট ==================== */
 .empty-state { text-align: center; padding: 36px 20px; color: #94a3b8; }
 .empty-state svg { width: 40px; height: 40px; stroke: #cbd5e1; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 10px; }
 .empty-state-title { font-size: 0.88rem; font-weight: 700; color: #475569; margin-bottom: 4px; }
 .empty-state-desc { font-size: 0.78rem; }
 
+/* ==================== মেসেজিং লেআউট ==================== */
+/* 2 কলাম: 280px sidebar + 1fr chat, radius 14px, shadow             */
 .messaging-layout { display: grid; grid-template-columns: 280px 1fr; gap: 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.03); min-height: 520px; }
+
+/* ---------- মেসেজিং সাইডবার ---------- */
+/* border-right: 1px — separator from chat                            */
+/* background: #fafbfc — very subtle differentiation from main        */
 .messaging-sidebar { border-right: 1px solid #e2e8f0; background: #fafbfc; display: flex; flex-direction: column; }
 .messaging-sidebar-header { padding: 16px 18px; border-bottom: 1px solid #f1f5f9; }
 .messaging-sidebar-title { font-size: 0.9rem; font-weight: 700; color: #0f172a; }
 .messaging-search { margin-top: 10px; width: 100%; padding: 8px 10px; border-radius: 8px; border: 1.5px solid #e2e8f0; font-size: 0.82rem; background: #ffffff; outline: none; }
 .messaging-search:focus { border-color: #0f172a; }
 .messaging-list { flex: 1; overflow-y: auto; }
+
+/* ---------- মেসেজিং কন্ট্যাক্ট ---------- */
+/* border-bottom: 1px #f8fafc — very light separator                 */
 .messaging-contact { display: flex; align-items: center; gap: 12px; padding: 12px 18px; cursor: pointer; transition: background 0.15s; border-bottom: 1px solid #f8fafc; }
 .messaging-contact:hover { background: #f1f5f9; }
 .messaging-contact.active { background: #f1f5f9; }
@@ -207,28 +361,64 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .messaging-contact-info { flex: 1; min-width: 0; }
 .messaging-contact-name { font-size: 0.85rem; font-weight: 600; color: #0f172a; }
 .messaging-contact-preview { font-size: 0.75rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- মেসেজিং মেইন ---------- */
+/* flex-direction: column — header + messages + input vertically     */
 .messaging-main { display: flex; flex-direction: column; }
-.messaging-main-header { padding: 14px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 10px; }
-.messaging-main-header-info { flex: 1; }
-.messaging-main-header-name { font-size: 0.92rem; font-weight: 700; color: #0f172a; }
-.messaging-main-header-status { font-size: 0.72rem; color: #16a34a; font-weight: 600; }
+
+/* ---------- প্লেইসহোল্ডার ---------- */
+/* flex: 1 — fills remaining space vertically                          */
+/* align-items: center, justify-content: center — truly centered      */
+.messaging-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; color: #94a3b8; }
+.messaging-placeholder-icon { width: 64px; height: 64px; border-radius: 50%; background: #f8fafc; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.messaging-placeholder-icon svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.messaging-placeholder-title { font-size: 1rem; font-weight: 700; color: #475569; margin-bottom: 4px; }
+.messaging-placeholder-desc { font-size: 0.85rem; }
+
+/* ---------- চ্যাট হেডার ---------- */
+/* padding: 14px 20px —上下 14px,左右 20px                           */
+.messaging-chat-header { padding: 14px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 10px; }
+.messaging-chat-header-info { flex: 1; }
+.messaging-chat-header-name { font-size: 0.92rem; font-weight: 700; color: #0f172a; }
+.messaging-chat-header-status { font-size: 0.72rem; color: #16a34a; font-weight: 600; }
+
+/* ---------- মেসেজ এরিয়া ---------- */
+/* flex: 1 — fills remaining space, overflow-y auto — scrollable      */
 .messaging-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+
+/* ---------- মেসেজ বাবল ---------- */
+/* max-width: 70% — chat bubble max width, natural width below        */
+/* border-bottom-right-radius: 4px — sent bubble "tail" effect        */
 .messaging-bubble { max-width: 70%; padding: 10px 14px; border-radius: 12px; font-size: 0.85rem; line-height: 1.4; }
 .messaging-bubble.sent { align-self: flex-end; background: #0f172a; color: #ffffff; border-bottom-right-radius: 4px; }
 .messaging-bubble.received { align-self: flex-start; background: #f1f5f9; color: #0f172a; border-bottom-left-radius: 4px; }
+
+/* ---------- ইনপুট এরিয়া ---------- */
+/* border-top: 1px — separator from messages                          */
 .messaging-input-area { padding: 12px 20px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; }
 .messaging-input { flex: 1; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.85rem; outline: none; }
 .messaging-input:focus { border-color: #0f172a; }
 .messaging-send { padding: 10px 16px; border-radius: 10px; background: #0f172a; color: #ffffff; border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .messaging-send:hover { background: #1e293b; }
 
+/* ==================== রেসপন্সিভ ==================== */
+
+/* ---------- 1200px ---------- */
+/* sidebar-right হাইড, content max-width নাল */
 @media (max-width: 1200px) {
     .content { max-width: none; }
 }
+
+/* ---------- 1024px ---------- */
+/* dept-header column, stats-list 2 কলাম */
 @media (max-width: 1024px) {
     .dept-header { flex-direction: column; gap: 12px; align-items: flex-start; }
     .stats-list { grid-template-columns: 1fr 1fr; }
 }
+
+/* ---------- 768px (Mobile cutoff) ---------- */
+/* sidebar relative full-width, main-area margin-left 0,              */
+/* topbar-center hidden, messaging 1 কলাম                             */
 @media (max-width: 768px) {
     .sidebar { width: 100%; position: relative; top: 0; }
     .main-area { margin-left: 0; }

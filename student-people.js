@@ -1,14 +1,22 @@
+/* ============================================ */
+/* Student People JS - iShare IUBAT               */
+/* পিপল পেজ: প্রোফাইল রেন্ডার, সার্চ, পেজিনেশন, নোটিফ */
+/* ============================================ */
+
+/* localStorage কী */
 const STORAGE_KEY = 'ishare_announcements';
 const NOTES_KEY = 'ishare_notes';
 const DEPT_KEY = 'ishare_departments';
 const NOTIF_KEY = 'ishare_notifications';
 
+/* XSS প্রতিরোধ: HTML এস্কেপ */
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
+/* টাইম স্ট্যাম্প থেকে রেডেবল টাইম ফরম্যাট */
 function formatTime(timestamp) {
     if (!timestamp) return '';
     const diff = Date.now() - timestamp;
@@ -22,18 +30,22 @@ function formatTime(timestamp) {
     return new Date(timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+/* অ্যানাউন্সমেন্ট লোড */
 function getAnnouncements() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
 }
 
+/* নোট লোড */
 function getNotes() {
     try { return JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'); } catch { return []; }
 }
 
+/* ডিপার্টমেন্ট লোড */
 function getDepartments() {
     try { return JSON.parse(localStorage.getItem(DEPT_KEY) || '[]'); } catch { return []; }
 }
 
+/* টোস্ট মেসেজ দেখাও */
 function showToast(message, type) {
     type = type || 'success';
     const toast = document.getElementById('toast');
@@ -43,24 +55,29 @@ function showToast(message, type) {
     setTimeout(function() { toast.classList.remove('show'); }, 3500);
 }
 
+/* নোটিফিকেশন লোড */
 function getNotifications() {
     try { return JSON.parse(localStorage.getItem(NOTIF_KEY) || '[]'); } catch { return []; }
 }
 
+/* নোটিফিকেশন সেভ */
 function saveNotifications(notifications) {
     localStorage.setItem(NOTIF_KEY, JSON.stringify(notifications));
 }
 
+/* বর্তমান ইউজারের ডাউনলোড কাউন্ট */
 function getUserDownloads() {
     try { return parseInt(localStorage.getItem('ishare_user_downloads') || '0', 10); } catch { return 0; }
 }
 
+/* বর্তমান ইউজারের নোট লিস্ট */
 function getUserNotes() {
     const notes = getNotes();
     const userId = localStorage.getItem('ishare_user_id');
     return notes.filter(function(n) { return n.authorId === userId; });
 }
 
+/* নোটিফিকেশন ব্যেজ আপডেট */
 function updateBadge() {
     const notifications = getNotifications();
     const unreadCount = notifications.filter(n => !n.read).length;
@@ -73,6 +90,7 @@ function updateBadge() {
     }
 }
 
+/* নোটিফিকেশন লিস্ট রেন্ডার */
 function renderNotifications() {
     const notifications = getNotifications();
     const listEl = document.getElementById('notificationList');
@@ -80,17 +98,17 @@ function renderNotifications() {
         listEl.innerHTML = '<div class="notification-empty">No notifications yet.</div>';
         return;
     }
-    const iconMap = { system: '&#9881;', user: '&#128100;', alert: '&#9888;', info: '&#8505;' };
+    const iconMap = { system: '⚙', user: '👤', alert: '⚠', info: 'ℹ' };
     listEl.innerHTML = notifications.slice(0, 20).map(n => {
         return '<div class="notification-item ' + (n.read ? '' : 'unread') + '" data-id="' + n.id + '">' +
-            '<div class="notification-icon ' + (n.type || 'system') + '">' + (iconMap[n.type] || '&#128276;') + '</div>' +
+            '<div class="notification-icon ' + (n.type || 'system') + '">' + (iconMap[n.type] || '🔔') + '</div>' +
             '<div class="notification-body">' +
                 '<div class="notification-title">' + escapeHtml(n.title) + '</div>' +
                 '<div class="notification-message">' + escapeHtml(n.message) + '</div>' +
                 '<div class="notification-time">' + formatTime(n.time) + '</div>' +
             '</div>' +
             '<button class="notification-delete" data-id="' + n.id + '" title="Delete notification">' +
-                '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>' +
+                '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4"/></svg>' +
             '</button>' +
         '</div>';
     }).join('');
@@ -122,6 +140,7 @@ function renderNotifications() {
     });
 }
 
+/* নোটিফিকেশন এনশ্যুর */
 function ensureNotifications() {
     const currentUserId = localStorage.getItem('ishare_user_id');
     const currentUserDept = localStorage.getItem('ishare_user_department');
@@ -136,6 +155,7 @@ function ensureNotifications() {
         existingMap[n.id] = n;
     });
 
+    /* অ্যানাউন্সমেন্ট থেকে নোটিফ */
     announcements.forEach(function(a) {
         const id = 'announcement-' + a.id;
         const existing = existingMap[id];
@@ -149,6 +169,7 @@ function ensureNotifications() {
         });
     });
 
+    /* নোট থেকে নোটিফ */
     notes.forEach(function(note) {
         if (note.authorId !== currentUserId && note.department === currentUserDept) {
             const id = 'note-' + note.id;
@@ -169,19 +190,23 @@ function ensureNotifications() {
     return notifications;
 }
 
+/* সব পিপল ডেটা */
 let allPeople = [];
 let filteredPeople = [];
 let currentPage = 1;
 const pageSize = 6;
 
+/* অ্যাকাউন্ট লোড */
 function getAccounts() {
     try { return JSON.parse(localStorage.getItem('ishare_accounts') || '[]'); } catch { return []; }
 }
 
+/* ইনিশিয়ালস */
 function getInitials(name) {
     return (name || 'U').split(' ').map(function(n) { return n[0]; }).join('').toUpperCase().slice(0, 2);
 }
 
+/* পিপল গ্রিড রেন্ডার */
 function renderPeople(people) {
     const grid = document.getElementById('peopleGrid');
     if (!grid) return;
@@ -189,7 +214,7 @@ function renderPeople(people) {
     const pageItems = people.slice(start, start + pageSize);
 
     if (pageItems.length === 0) {
-        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="empty-state-title">No people found</div><div class="empty-state-desc">Try adjusting your search or filters.</div></div>';
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4v2a4 4 0 0 0 4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="empty-state-title">No people found</div><div class="empty-state-desc">Try adjusting your search or filters.</div></div>';
         document.getElementById('peoplePagination').style.display = 'none';
         return;
     }
@@ -220,6 +245,7 @@ function renderPeople(people) {
         '</div>';
     }).join('');
 
+    /* প্রোফাইল ভিউ বাটন */
     grid.querySelectorAll('.people-view-profile-btn').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -238,6 +264,7 @@ function renderPeople(people) {
         });
     });
 
+    /* মেসেজ বাটন */
     grid.querySelectorAll('.people-msg').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -256,6 +283,7 @@ function renderPeople(people) {
     renderPagination(people.length);
 }
 
+/* পেজিনেশন রেন্ডার */
 function renderPagination(total) {
     const totalPages = Math.max(1, Math.ceil(total / pageSize));
     const container = document.getElementById('peoplePagination');
@@ -303,6 +331,7 @@ function renderPagination(total) {
     container.appendChild(next);
 }
 
+/* ফিল্টার অ্যাপ্লাই */
 function applyFilters() {
     const query = (document.getElementById('peopleSearch').value || '').toLowerCase();
     const currentUserDept = localStorage.getItem('ishare_user_department') || '';
@@ -322,11 +351,13 @@ function applyFilters() {
     renderPeople(filteredPeople);
 }
 
+/* প্রোফাইল মোডাল ক্লোজ */
 function closeProfileModal() {
     const modal = document.getElementById('profileModal');
     if (modal) modal.classList.remove('show');
 }
 
+/* প্রোফাইল মোডাল ওপেন */
 function openProfileModal(person) {
     const modal = document.getElementById('profileModal');
     if (!modal) return;
@@ -389,6 +420,7 @@ function openProfileModal(person) {
     modal.classList.add('show');
 }
 
+/* ডমContentLoaded: পেজ ইনিশিয়ালাইজ */
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('ishare_user_id');
     const userName = localStorage.getItem('ishare_user_name');

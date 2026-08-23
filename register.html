@@ -1,43 +1,74 @@
+<!-- ============================================ -->
+<!-- iShare - Create Account (Registration) Page   -->
+<!-- ============================================ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- মেটা সেটিংস: charset, viewport, পেজ টাইটেল -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account - iShare</title>
+
+    <!-- গুগল ফন্টস: Playfair Display ও Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- রেজিস্ট্রেশন পেজের CSS স্টাইল -->
     <style>
+        /* গ্লোবাল রিসেট */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* বডি: ব্যাকগ্রাউন্ড #0a0a0a, ফুল হাইট, ফ্লেক্স সেন্টার */
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; min-height: 100vh; display: flex; align-items: center; justify-content: center; color: #1a1a1a; padding: 20px; }
 
+        /* রেজিস্ট্রেশন কন্টেইনার: ম্যাক্স-width 520px */
         .register-container { width: 100%; max-width: 520px; padding: 20px; }
+
+        /* রেজিস্ট্রেশন কার্ড: সাদা, রাউন্ডেড 24px, শ্যাডো */
         .register-card { background: #ffffff; border: 1px solid #eef0f3; border-radius: 24px; padding: 48px 40px 40px; box-shadow: 0 1px 2px rgba(0,0,0,0.02), 0 4px 12px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.03); }
 
+        /* ব্যাক লিংক: লগিন পেজে ফিরে যাওয়ার লিংক */
         .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #475569; text-decoration: none; margin-bottom: 24px; transition: color 0.2s; }
         .back-link:hover { color: #0f172a; }
         .back-link svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+        /* লোগো আইকন */
         .logo-icon { width: 52px; height: 52px; background: #0f172a; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; box-shadow: 0 4px 12px rgba(15,23,42,0.12); }
         .logo-icon svg { width: 26px; height: 26px; fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* ব্র্যান্ড নাম */
         .brand-name { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-size: 2.2rem; font-weight: 700; color: #0f172a; letter-spacing: -0.5px; margin-bottom: 4px; text-align: center; }
         .brand-subtitle { font-size: 0.7rem; font-weight: 700; letter-spacing: 2.5px; color: #475569; text-transform: uppercase; margin-bottom: 24px; text-align: center; }
+
+        /* পেজ টাইটেল: Create Account */
         .page-title { font-size: 1.1rem; font-weight: 700; color: #0f172a; text-align: center; margin-bottom: 4px; }
         .page-subtitle { font-size: 0.85rem; color: #64748b; text-align: center; margin-bottom: 28px; }
 
+        /* ফর্ম রো: দুই কলামে ইনপুট */
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .form-group { margin-bottom: 16px; }
         .form-group.full { grid-column: 1 / -1; }
+
+        /* ফর্ম লেবেল */
         .form-label { display: block; font-size: 0.82rem; font-weight: 600; color: #334155; margin-bottom: 6px; letter-spacing: -0.1px; }
+
+        /* ইনপুট র্যাপার */
         .input-wrapper { position: relative; }
         .input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; pointer-events: none; opacity: 0.4; }
         .input-icon svg { width: 15px; height: 15px; fill: none; stroke: #475569; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* ইনপুট, সিলেক্ট, টেক্সটএরিয়া */
         .form-input, .form-select, .form-textarea { width: 100%; padding: 12px 40px 12px 40px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 0.9rem; color: #0f172a; background: #f8fafc; transition: all 0.2s; outline: none; }
         .form-textarea { padding: 12px 16px; min-height: 100px; resize: vertical; }
         .form-input::placeholder, .form-textarea::placeholder { color: #94a3b8; }
         .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #0f172a; background: #ffffff; box-shadow: 0 0 0 3px rgba(15,23,42,0.06); }
+
+        /* কাস্টম ড্রপডাউন সিলেক্ট (ডিপার্টমেন্ট সিলেক্ট) */
         .form-select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; cursor: pointer; }
 
+        /* কাস্টম সিলেক্ট ট্রিগার */
         .custom-select { position: relative; width: 100%; }
         .custom-select-trigger { width: 100%; padding: 12px 36px 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; user-select: none; }
         .custom-select-trigger:hover { border-color: #cbd5e1; }
@@ -46,8 +77,12 @@
         .custom-select-trigger .placeholder { color: #94a3b8; }
         .custom-select-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
         .custom-select-trigger.open .custom-select-arrow { transform: rotate(180deg); }
+
+        /* কাস্টম সিলেক্ট ওপশন লিস্ট */
         .custom-select-options { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 100; display: none; max-height: 240px; overflow-y: auto; }
         .custom-select-options.open { display: block; }
+
+        /* সিলেক্ট ওপশন আইটেম */
         .custom-select-option { padding: 11px 16px; font-size: 0.88rem; color: #334155; cursor: pointer; transition: all 0.15s; border-bottom: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 2px; }
         .custom-select-option:last-child { border-bottom: none; }
         .custom-select-option:hover { background: #f8fafc; color: #0f172a; }
@@ -57,6 +92,7 @@
         .custom-select-option:hover .dept-full { color: #94a3b8; }
         .custom-select-option.selected .dept-full { color: rgba(255,255,255,0.7); }
 
+        /* রেডিও গ্রুপ: স্টুডেন্ট/ফ্যাকাল্টি সিলেক্ট */
         .radio-group { display: flex; gap: 12px; }
         .radio-option { flex: 1; position: relative; }
         .radio-option input { position: absolute; opacity: 0; pointer-events: none; }
@@ -67,27 +103,35 @@
         .radio-option input:checked + .radio-label .radio-icon { opacity: 1; }
         .radio-option input:focus + .radio-label { box-shadow: 0 0 0 3px rgba(15,23,42,0.06); }
 
+        /* সাবমিট বাটন */
         .submit-btn { width: 100%; padding: 14px 24px; background: #0f172a; color: #ffffff; border: none; border-radius: 11px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; margin-top: 24px; box-shadow: 0 2px 8px rgba(15,23,42,0.15); }
         .submit-btn:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(15,23,42,0.2); }
         .submit-btn svg { width: 16px; height: 16px; fill: none; stroke: #ffffff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 
+        /* ফুটার */
         .footer { margin-top: 16px; font-size: 0.68rem; color: #94a3b8; font-weight: 500; text-align: center; }
 
+        /* টোস্ট নোটিফিকেশন */
         .toast { position: fixed; top: 20px; right: 20px; background: #0f172a; color: #ffffff; padding: 14px 20px; border-radius: 12px; font-size: 0.88rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transform: translateX(120%); transition: transform 0.3s ease; z-index: 1000; max-width: 360px; }
         .toast.show { transform: translateX(0); }
         .toast.success { background: #059669; }
 
+        /* রেসপন্সিভ: ছোট স্ক্রিনে ফর্ম রো এক কলামে */
         @media (max-width: 520px) { .register-card { padding: 36px 28px 28px; } .brand-name { font-size: 1.8rem; } .form-row { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+    <!-- রেজিস্ট্রেশন কন্টেইনার -->
     <div class="register-container">
         <div class="register-card">
+
+            <!-- ব্যাক লিংক: লগিন পেজে ফিরে যাওয়ার বাটন -->
             <a href="index.html" class="back-link">
                 <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
                 Back to Login
             </a>
 
+            <!-- লোগো -->
             <div class="logo-icon">
                 <svg viewBox="0 0 24 24"><path d="M12 2L2 9l10 7 10-7-10-7z"/><path d="M7 12l5 3.5 5-3.5"/><path d="M12 16v4"/><circle cx="12" cy="21" r="1"/></svg>
             </div>
@@ -96,7 +140,9 @@
             <h2 class="page-title">Create Account</h2>
             <p class="page-subtitle">Join iShare and start sharing notes with your classmates.</p>
 
+            <!-- রেজিস্ট্রেশন ফর্ম: নাম, ID, ইমেইল, পাসওয়ার্ড, ডিপার্টমেন্ট -->
             <form id="register-form" onsubmit="event.preventDefault(); handleRegistration();">
+                <!-- ফুল নেম -->
                 <div class="form-group full">
                     <label class="form-label">Full Name</label>
                     <div class="input-wrapper">
@@ -107,6 +153,7 @@
                     </div>
                 </div>
 
+                <!-- ইউনিভার্সিটি ID ও ডিপার্টমেন্ট (দুই কলাম) -->
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">University ID</label>
@@ -119,6 +166,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Department</label>
+                        <!-- কাস্টম ড্রপডাউন: ডিপার্টমেন্ট সিলেক্ট -->
                         <div class="custom-select" id="department-select">
                             <div class="custom-select-trigger" id="dept-trigger">
                                 <span id="dept-selected-text" class="placeholder">Select your department</span>
@@ -130,6 +178,7 @@
                     </div>
                 </div>
 
+                <!-- ইউনিভার্সিটি ইমেইল -->
                 <div class="form-group full">
                     <label class="form-label">University Email</label>
                     <div class="input-wrapper">
@@ -140,6 +189,7 @@
                     </div>
                 </div>
 
+                <!-- পাসওয়ার্ড ও কনফার্ম পাসওয়ার্ড (দুই কলাম) -->
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Password</label>
@@ -161,26 +211,34 @@
                     </div>
                 </div>
 
+                <!-- একাডেমিক ইন্টিগ্রিটি গাইডলাইন চেকবক্স -->
                 <div class="form-group full" style="margin-top: 8px; margin-bottom: 20px;">
                     <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #334155; cursor: pointer; font-weight: 500;">
                         <input type="checkbox" id="agree" style="width: 16px; height: 16px; accent-color: #0f172a; cursor: pointer;">
-                            <span>I agree to uphold the <a href="academic-guidelines.html" target="_blank">Academic Integrity Guidelines</a> and library policies.</span>
+                        <span>I agree to uphold the <a href="academic-guidelines.html" target="_blank">Academic Integrity Guidelines</a> and library policies.</span>
                     </label>
                 </div>
 
+                <!-- অ্যাকাউন্ট তৈরি বাটন -->
                 <button type="submit" class="submit-btn">
                     Create Account
                     <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </button>
             </form>
 
+            <!-- ফুটার -->
             <div class="footer">© 2026 iShare - IUBAT</div>
         </div>
     </div>
 
+    <!-- টোস্ট মেসেজ ডিসপ্লে এলিমেন্ট -->
     <div class="toast" id="toast"></div>
 
+    <!-- ============================================ -->
+    <!-- রেজিস্ট্রেশন পেজের JavaScript                      -->
+    <!-- ============================================ -->
     <script>
+        // টোস্ট মেসেজ শো করা: সাকসেস/এরর টাইপের নোটিফিকেশন
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -189,6 +247,7 @@
             setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
+        // রেজিস্ট্রেশন হ্যান্ডলার: সব ফিল্ড ভ্যালিডেট করে অ্যাকাউন্ট তৈরি
         function handleRegistration() {
             const fullname = document.getElementById('fullname').value.trim();
             const studentId = document.getElementById('student-id').value.trim();
@@ -198,6 +257,7 @@
             const confirmPassword = document.getElementById('confirm-password').value;
             const agree = document.getElementById('agree').checked;
 
+            // সব ফিল্ডের ভ্যালিডেশন চেক
             if (!fullname) { alert('Please enter your full name'); return; }
             if (!studentId) { alert('Please enter your University ID'); return; }
             if (!email) { alert('Please enter your email'); return; }
@@ -207,6 +267,7 @@
             if (password !== confirmPassword) { alert('Passwords do not match'); return; }
             if (!agree) { alert('Please agree to the Academic Integrity Guidelines and library policies'); return; }
 
+            // অ্যাকাউন্ট অবজেক্ট তৈরি
             const account = {
                 fullname,
                 studentId,
@@ -218,7 +279,9 @@
                 status: 'active'
             };
 
+            // localStorage থেকে বিদ্যমান অ্যাকাউন্টগুলো লোড
             let accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+            // ডুপ্লিকেট ID চেক
             if (accounts.find(a => a.studentId === studentId)) {
                 alert('An account with this University ID already exists. Please login instead.');
                 return;
@@ -226,6 +289,7 @@
             accounts.push(account);
             localStorage.setItem('ishare_accounts', JSON.stringify(accounts));
 
+            // লগইন তথ্য সেভ করো
             localStorage.setItem('ishare_user_id', studentId);
             localStorage.setItem('ishare_user_password', password);
             localStorage.setItem('ishare_user_type', 'Student');
@@ -236,9 +300,12 @@
             setTimeout(() => { window.location.href = 'student-home.html'; }, 1500);
         }
 
+        // কাস্টম ড্রপডাউন সিলেক্টের ভেরিয়েবল
         let trigger, optionsContainer, selectedText, hiddenInput;
 
+        // ডিপার্টমেন্ট লোড ও রেন্ডার ফাংশন
         function getEnabledDepartments() {
+            // ডিফল্ট ডিপার্টমেন্ট লিস্ট
             const defaultDepts = [
                 { code: 'BCSE', name: 'Computer Science & Engineering' },
                 { code: 'BSEEE', name: 'Electrical & Electronic Engineering' },
@@ -253,6 +320,7 @@
             ];
 
             try {
+                // localStorage থেকে সেভ করা ডিপার্টমেন্ট লোড
                 const saved = JSON.parse(localStorage.getItem('ishare_departments') || 'null');
                 if (!saved || !Array.isArray(saved) || saved.length === 0) {
                     localStorage.setItem('ishare_departments', JSON.stringify(defaultDepts));
@@ -260,6 +328,7 @@
                     return;
                 }
 
+                // এনেবলড ডিপার্টমেন্ট ফিল্টার
                 const enabledCodes = new Set(saved.filter(d => d.enabled !== false).map(d => d.code));
                 const optionsContainer = document.getElementById('dept-options');
                 const existingOptions = optionsContainer.querySelectorAll('.custom-select-option');
@@ -274,6 +343,7 @@
                         opt.querySelector('.dept-short').textContent = dept.code;
                         opt.style.display = enabledCodes.has(dept.code) ? '' : 'none';
                     } else {
+                        // নতুন ডিপার্টমেন্ট অ্যাড করা
                         const option = document.createElement('div');
                         option.className = 'custom-select-option';
                         option.setAttribute('data-value', dept.code);
@@ -295,6 +365,7 @@
                     }
                 });
 
+                // সিলেক্টেড ডিপার্টমেন্ট চেক
                 const selectedOption = document.querySelector('.custom-select-option.selected');
                 const selectedCode = selectedOption ? selectedOption.getAttribute('data-value') : null;
                 if (selectedCode && !enabledCodes.has(selectedCode)) {
@@ -307,6 +378,7 @@
                 renderDeptOptions(defaultDepts);
             }
 
+            // ডিপার্টমেন্ট ওপশন রেন্ডার
             function renderDeptOptions(depts) {
                 const optionsContainer = document.getElementById('dept-options');
                 optionsContainer.innerHTML = '';
@@ -332,6 +404,7 @@
             }
         }
 
+        // ডম লোড হওয়ার পর সব সিলেক্ট ইন্সটল
         document.addEventListener('DOMContentLoaded', function() {
             trigger = document.getElementById('dept-trigger');
             optionsContainer = document.getElementById('dept-options');
@@ -348,9 +421,7 @@
                 }
             });
 
-            document.addEventListener('click', function() {
-                closeAllSelects();
-            });
+            document.addEventListener('click', function() { closeAllSelects(); });
 
             function closeAllSelects() {
                 optionsContainer.classList.remove('open');

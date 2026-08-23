@@ -1,16 +1,27 @@
+<!-- ============================================ -->
+<!-- People - iShare IUBAT                          -->
+<!-- পিপল ডিরেক্টরি: ছাত্র-ছাত্রীদের-directory           -->
+<!-- ============================================ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- মেটা সেটিংস -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>People - iShare IUBAT</title>
+
+    <!-- গুগল ফন্টস -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- স্টুডেন্ট হোম CSS (শেয়ার করা) ও পিপল পেজ CSS -->
     <link rel="stylesheet" href="student-home.css">
     <link rel="stylesheet" href="student-people.css">
 </head>
 <body>
+    <!-- ==================== টপবার ==================== -->
     <header class="topbar">
         <div class="topbar-left">
             <a href="#" class="topbar-logo">
@@ -25,8 +36,9 @@
         </div>
         <div class="topbar-center">
             <div class="topbar-search-wrapper">
-                <svg class="topbar-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" class="topbar-search" placeholder="Find by name, skill, research...">
+                <svg class="topbar-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <!-- পিপল সার্চ: নাম, স্কিল, রিসার্চ দিয়ে সার্চ -->
+                <input type="text" class="topbar-search" placeholder="Find by name, skill, research..." id="peopleSearch">
             </div>
         </div>
         <div class="topbar-actions">
@@ -56,6 +68,7 @@
         </div>
     </header>
 
+    <!-- ==================== লেআউট ==================== -->
     <div class="layout">
         <aside class="sidebar">
             <div class="sidebar-profile">
@@ -92,11 +105,13 @@
 
         <div class="main-area">
             <main class="content">
+                <!-- পিপল পেজ: ব্রেডক্রাম, টাইটেল, সাবটাইটেল -->
                 <div class="people-page">
                     <div class="people-breadcrumb">Department / <span id="deptName">CSE Department</span></div>
                     <h1 class="people-title">People Directory</h1>
-                    <p class="people-subtitle">Connect with student scholars, researchers, and peers across academic departments. Discover collaborative study opportunities within the student community.</p>
+                    <p class="people-subtitle">Connect with student scholars, researchers, and peers across academic departments.</p>
 
+                    <!-- টুলবার: সার্চ ও ভিউ টগল -->
                     <div class="people-toolbar">
                         <div class="people-search">
                             <svg class="people-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -109,8 +124,10 @@
                         </div>
                     </div>
 
+                    <!-- পিপল গ্রিড: সব প্রোফাইল কার্ড -->
                     <div class="people-grid" id="peopleGrid"></div>
 
+                    <!-- পেজিনেশন:-previous, next, পেজ নম্বর -->
                     <div class="people-pagination" id="peoplePagination">
                         <button class="page-btn" type="button" id="prevPage">&lt;</button>
                         <button class="page-btn active" type="button" data-page="1">1</button>
@@ -125,8 +142,10 @@
         </div>
     </div>
 
+    <!-- টোস্ট -->
     <div class="toast" id="toast"></div>
 
+    <!-- প্রোফাইল মোডাল -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-card profile-modal">
             <div class="modal-header">
@@ -137,7 +156,6 @@
                 <div class="profile-avatar" id="profileModalAvatar">TP</div>
                 <div class="profile-name" id="profileModalName">Student</div>
                 <div class="profile-dept" id="profileModalDept">Student</div>
-
                 <div class="profile-details">
                     <div class="profile-detail-item">
                         <span class="profile-detail-label">Student ID</span>
@@ -156,7 +174,6 @@
                         <span class="profile-detail-value" id="profileModalEmail">-</span>
                     </div>
                 </div>
-
                 <div class="profile-stats">
                     <div class="profile-stat">
                         <span class="profile-stat-value" id="profileModalNotes">0</span>
@@ -171,6 +188,7 @@
         </div>
     </div>
 
+    <!-- পিপল পেজের JavaScript -->
     <script src="student-people.js"></script>
 </body>
 </html>

@@ -1,14 +1,25 @@
+<!-- ============================================ -->
+<!-- Student View - iShare IUBAT                     -->
+<!-- স্টুডেন্ট ভিউ: অ্যাডমিনের জন্য রিড-অনলি ভিউ          -->
+<!-- ============================================ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- মেটা সেটিংস -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student View - iShare IUBAT</title>
+
+    <!-- গুগল ফন্টস -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- স্টুডেন্ট হোম CSS ও স্টুডেন্ট ভিউ স্টাইল -->
     <link rel="stylesheet" href="student-home.css">
     <style>
+        /* অ্যাডমিন ভিউ ব্যানার: গ্যাডিয়েন্ট ব্যাকগ্রাউন্ড */
         .admin-view-banner { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid #e2e8f0; }
         .admin-view-banner-left { display: flex; align-items: center; gap: 12px; }
         .admin-view-badge { background: #dc2626; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
@@ -16,23 +27,35 @@
         .admin-view-select { padding: 8px 12px; border-radius: 8px; border: 1.5px solid #e2e8f0; font-size: 0.82rem; background: #ffffff; color: #0f172a; font-weight: 600; cursor: pointer; outline: none; }
         .admin-view-select:focus { border-color: #0f172a; }
         .readonly-badge { background: #fefce8; color: #ca8a04; padding: 4px 12px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; }
+
+        /* স্টুডেন্ট ভিউ কন্টেইনার */
         .student-view-container { padding: 28px 32px; max-width: 900px; width: 100%; margin: 0 auto; }
         .student-view-header { margin-bottom: 24px; }
         .student-view-header h1 { font-size: 1.75rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; margin-bottom: 4px; }
         .student-view-header p { font-size: 0.88rem; color: #64748b; }
+
+        /* স্ট্যাটistik গ্রিড */
         .student-view-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
         .student-view-stat { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; }
         .student-view-stat-label { font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
         .student-view-stat-value { font-size: 1.5rem; font-weight: 800; color: #0f172a; }
+
+        /* সেকশন */
         .student-view-section { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px 24px; margin-bottom: 20px; }
         .student-view-section-title { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 16px; }
+
+        /* নোটিস */
         .student-view-notice { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fde68a; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; }
         .student-view-notice-title { font-size: 0.85rem; font-weight: 700; color: #92400e; margin-bottom: 4px; }
         .student-view-notice-desc { font-size: 0.78rem; color: #64748b; }
         .student-view-empty { text-align: center; padding: 32px 20px; color: #94a3b8; font-size: 0.85rem; }
+
+        /* নোট */
         .student-view-note { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; }
         .student-view-note-title { font-size: 0.92rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
         .student-view-note-meta { font-size: 0.78rem; color: #64748b; }
+
+        /* প্রোফাইল মোডাল */
         .student-view-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.5); z-index: 300; display: none; align-items: center; justify-content: center; padding: 24px; }
         .student-view-overlay.show { display: flex; }
         .student-view-modal { background: #ffffff; border-radius: 16px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(15,23,42,0.2); }
@@ -52,16 +75,18 @@
     </style>
 </head>
 <body>
+    <!-- অ্যাডমিন ভিউ ব্যানার -->
     <div class="admin-view-banner">
         <div class="admin-view-banner-left">
             <span class="admin-view-badge">Admin View Mode</span>
             <span class="admin-view-title">Student View - Read Only</span>
         </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Menu">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    </button>
-                    <select class="admin-view-select" id="studentSelector">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <!-- স্টুডেন্ট অ্যাকাউন্ট সিলেক্টর -->
+            <select class="admin-view-select" id="studentSelector">
                 <option value="">Select Student Account</option>
             </select>
             <span class="readonly-badge">Read Only</span>
@@ -69,6 +94,7 @@
         </div>
     </div>
 
+    <!-- ==================== লেআউট ==================== -->
     <div class="layout">
         <aside class="sidebar">
             <div class="sidebar-profile">
@@ -107,6 +133,7 @@
                         <p id="deptDesc">Student view for department</p>
                     </div>
 
+                    <!-- স্ট্যাটistik -->
                     <div class="student-view-stats">
                         <div class="student-view-stat">
                             <div class="student-view-stat-label">Active Course Codes</div>
@@ -122,11 +149,13 @@
                         </div>
                     </div>
 
+                    <!-- নোটিশ -->
                     <div class="student-view-section">
                         <div class="student-view-section-title">Notices & Announcements</div>
                         <div id="noticeContainer"></div>
                     </div>
 
+                    <!-- নোটস -->
                     <div class="student-view-section">
                         <div class="student-view-section-title">Notes</div>
                         <div id="notesContainer"></div>
@@ -136,8 +165,10 @@
         </div>
     </div>
 
+    <!-- টোস্ট -->
     <div class="toast" id="toast"></div>
 
+    <!-- প্রোফাইল মোডাল -->
     <div class="student-view-overlay" id="profileModal">
         <div class="student-view-modal">
             <div class="student-view-modal-header">
@@ -149,16 +180,14 @@
         </div>
     </div>
 
+    <!-- ============================================ -->
+    <!-- স্টুডেন্ট ভিউ JavaScript                                -->
+    <!-- ============================================ -->
     <script>
         const NOTES_KEY = 'ishare_notes';
         const STORAGE_KEY = 'ishare_announcements';
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
+        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
         function formatTime(timestamp) {
             if (!timestamp) return '';
             const diff = Date.now() - timestamp;
@@ -171,73 +200,42 @@
             if (days < 7) return days + 'd ago';
             return new Date(timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
+        function getNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'); } catch { return []; } }
+        function getAnnouncements() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; } }
+        function showToast(message, type) { type = type || 'success'; const toast = document.getElementById('toast'); toast.textContent = message; toast.className = 'toast ' + type; setTimeout(function() { toast.classList.add('show'); }, 10); setTimeout(function() { toast.classList.remove('show'); }, 3500); }
 
-        function getNotes() {
-            try { return JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'); } catch { return []; }
-        }
-
-        function getAnnouncements() {
-            try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
-        }
-
-        function showToast(message, type) {
-            type = type || 'success';
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast ' + type;
-            setTimeout(function() { toast.classList.add('show'); }, 10);
-            setTimeout(function() { toast.classList.remove('show'); }, 3500);
-        }
-
+        // অ্যানাউন্সমেন্ট রেন্ডার
         function renderNotices() {
             const container = document.getElementById('noticeContainer');
             if (!container) return;
             const announcements = getAnnouncements();
-            if (!Array.isArray(announcements) || announcements.length === 0) {
-                container.innerHTML = '<div class="student-view-empty">No announcements yet.</div>';
-                return;
-            }
+            if (!Array.isArray(announcements) || announcements.length === 0) { container.innerHTML = '<div class="student-view-empty">No announcements yet.</div>'; return; }
             container.innerHTML = announcements.map(function(a) {
                 const time = a.createdAt ? new Date(a.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
-                return '<div class="student-view-notice">' +
-                    '<div class="student-view-notice-title">' + escapeHtml(a.title || '') + '</div>' +
-                    '<div class="student-view-notice-desc">' + escapeHtml(a.body || '') + ' <span style="color:#94a3b8;font-size:0.72rem;">· ' + escapeHtml(time) + '</span></div>' +
-                '</div>';
+                return '<div class="student-view-notice"><div class="student-view-notice-title">' + escapeHtml(a.title || '') + '</div><div class="student-view-notice-desc">' + escapeHtml(a.body || '') + ' <span style="color:#94a3b8;font-size:0.72rem;">· ' + escapeHtml(time) + '</span></div></div>';
             }).join('');
         }
 
+        // নোট রেন্ডার
         function renderNotes(notes) {
             const notesContainer = document.getElementById('notesContainer');
             if (!notesContainer) return;
             const visibleNotes = notes.filter(function(n) { return n.department === currentViewDept; });
-            if (!visibleNotes || visibleNotes.length === 0) {
-                notesContainer.innerHTML = '<div class="student-view-empty">No notes found for this department.</div>';
-                return;
-            }
+            if (!visibleNotes || visibleNotes.length === 0) { notesContainer.innerHTML = '<div class="student-view-empty">No notes found for this department.</div>'; return; }
             notesContainer.innerHTML = visibleNotes.map(function(note) {
                 const fileIconClass = note.fileType === 'pdf' ? 'pdf' : note.fileType === 'doc' ? 'doc' : note.fileType === 'slides' ? 'slides' : 'code';
                 const timeText = note.createdAt ? formatTime(note.createdAt) : '';
-                return '<div class="student-view-note">' +
-                    '<div class="student-view-note-title">' + escapeHtml(note.title || 'Untitled') + '</div>' +
-                    '<div class="student-view-note-meta">' +
-                        escapeHtml(note.courseCode || '') + ' · ' + escapeHtml(timeText) + ' · by ' + escapeHtml(note.author || '') +
-                    '</div>' +
-                    (note.description ? '<div style="font-size:0.82rem;color:#475569;margin-top:6px;">' + escapeHtml(note.description) + '</div>' : '') +
-                '</div>';
+                return '<div class="student-view-note"><div class="student-view-note-title">' + escapeHtml(note.title || 'Untitled') + '</div><div class="student-view-note-meta">' + escapeHtml(note.courseCode || '') + ' · ' + escapeHtml(timeText) + ' · by ' + escapeHtml(note.author || '') + '</div>' + (note.description ? '<div style="font-size:0.82rem;color:#475569;margin-top:6px;">' + escapeHtml(note.description) + '</div>' : '') + '</div>';
             }).join('');
         }
 
+        // স্ট্যাটistik আপডেট
         function updateStats() {
             const notes = getNotes();
             const deptNotes = notes.filter(function(n) { return n.department === currentViewDept; });
             const courseCodes = new Set();
-            deptNotes.forEach(function(n) {
-                if (n.courseCode && n.courseCode.trim()) {
-                    courseCodes.add(n.courseCode.trim().toUpperCase());
-                }
-            });
+            deptNotes.forEach(function(n) { if (n.courseCode && n.courseCode.trim()) { courseCodes.add(n.courseCode.trim().toUpperCase()); } });
             const totalDownloads = deptNotes.reduce(function(sum, n) { return sum + (n.downloads || 0); }, 0);
-
             const activeEl = document.getElementById('activeCourseCodesStat');
             const docsEl = document.getElementById('totalStudyDocumentsStat');
             const dlEl = document.getElementById('totalDownloadsStat');
@@ -246,38 +244,18 @@
             if (dlEl) dlEl.textContent = totalDownloads;
         }
 
-        function closeProfileModal() {
-            const modal = document.getElementById('profileModal');
-            if (modal) modal.classList.remove('show');
-        }
-
+        // প্রোফাইল মোডাল
+        function closeProfileModal() { const modal = document.getElementById('profileModal'); if (modal) modal.classList.remove('show'); }
         function openProfileModal() {
             const modal = document.getElementById('profileModal');
             if (!modal) return;
             const body = document.getElementById('profileModalBody');
             if (!body) return;
-            body.innerHTML = '<div style="text-align:center;padding:20px 0;">' +
-                '<div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#f1f5f9,#e2e8f0);border:2px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:#334155;margin:0 auto 12px;">' + (currentViewName || 'ST').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) + '</div>' +
-                '<div style="font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:4px;">' + escapeHtml(currentViewName || 'Student') + '</div>' +
-                '<div style="font-size:0.82rem;color:#64748b;margin-bottom:20px;">' + escapeHtml(currentViewDept || 'Student') + '</div>' +
-                '<div style="display:flex;flex-direction:column;gap:12px;text-align:left;">' +
-                    '<div style="display:flex;justify-content:space-between;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;"><span style="font-size:0.78rem;color:#64748b;">Student ID</span><span style="font-size:0.85rem;color:#0f172a;font-weight:600;">' + escapeHtml(currentViewId || '-') + '</span></div>' +
-                    '<div style="display:flex;justify-content:space-between;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;"><span style="font-size:0.78rem;color:#64748b;">Department</span><span style="font-size:0.85rem;color:#0f172a;font-weight:600;">' + escapeHtml(currentViewDept || '-') + '</span></div>' +
-                    '<div style="display:flex;justify-content:space-between;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;"><span style="font-size:0.78rem;color:#64748b;">Account Type</span><span style="font-size:0.85rem;color:#0f172a;font-weight:600;">Student</span></div>' +
-                '</div>' +
-            '</div>';
+            body.innerHTML = '<div style="text-align:center;padding:20px 0;"><div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#f1f5f9,#e2e8f0);border:2px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:#334155;margin:0 auto 12px;">' + (currentViewName || 'ST').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) + '</div><div style="font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:4px;">' + escapeHtml(currentViewName || 'Student') + '</div><div style="font-size:0.82rem;color:#64748b;margin-bottom:20px;">' + escapeHtml(currentViewDept || 'Student') + '</div><div style="display:flex;flex-direction:column;gap:12px;text-align:left;">' + '<div style="display:flex;justify-content:space-between;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;"><span style="font-size:0.78rem;color:#64748b;">Student ID</span><span style="font-size:0.85rem;color:#0f172a;font-weight:600;">' + escapeHtml(currentViewId || '-') + '</span></div>' + '<div style="display:flex;justify-content:space-between;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;"><span style="font-size:0.78rem;color:#64748b;">Department</span><span style="font-size:0.85rem;color:#0f172a;font-weight:600;">' + escapeHtml(currentViewDept || '-') + '</span></div>' + '<div style="display:flex;justify-content:space-between;padding:10px 12px;border-radius:10px;background:#f8fafc;border:1px solid #f1f5f9;"><span style="font-size:0.78rem;color:#64748b;">Account Type</span><span style="font-size:0.85rem;color:#0f172a;font-weight:600;">Student</span></div></div></div>';
             modal.classList.add('show');
         }
 
-        document.getElementById('closeProfileModal').addEventListener('click', closeProfileModal);
-        document.getElementById('profileModal').addEventListener('click', function(e) { if (e.target === this) closeProfileModal(); });
-
-        document.getElementById('sidebarLogoutBtn').addEventListener('click', function() {
-            if (confirm('Exit Student View and return to Admin Dashboard?')) {
-                window.location.href = 'admin-dashboard.html';
-            }
-        });
-
+        // স্টুডেন্ট ভিউ লোড
         let currentViewId = '';
         let currentViewName = '';
         let currentViewDept = '';
@@ -286,85 +264,55 @@
             currentViewId = studentId;
             currentViewName = studentName;
             currentViewDept = studentDept;
-
             const initials = (studentName || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
             document.getElementById('sidebarAvatar').textContent = initials || 'ST';
             document.getElementById('sidebarName').textContent = studentName || 'Student';
             document.getElementById('sidebarDept').textContent = (studentDept || 'Student').slice(0, 25);
             document.getElementById('deptTitle').textContent = studentDept || 'Department';
             document.getElementById('deptDesc').textContent = 'Viewing student dashboard for ' + (studentName || 'Student');
-
             updateStats();
             renderNotices();
             renderNotes(getNotes());
         }
 
+        // ডমContentLoaded
         document.addEventListener('DOMContentLoaded', function() {
             const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
             const selector = document.getElementById('studentSelector');
-            
             accounts.filter(function(a) { return (a.accountType || '').toLowerCase() === 'student'; }).forEach(function(a) {
                 const option = document.createElement('option');
                 option.value = a.studentId;
                 option.textContent = a.fullname + ' (' + a.department + ')';
                 selector.appendChild(option);
             });
-
             selector.addEventListener('change', function() {
                 const studentId = this.value;
                 if (!studentId) return;
                 const account = accounts.find(function(a) { return a.studentId === studentId; });
-                if (account) {
-                    loadStudentView(account.studentId, account.fullname, account.department);
-                }
+                if (account) { loadStudentView(account.studentId, account.fullname, account.department); }
             });
-
             if (accounts.length > 0) {
                 const firstStudent = accounts.find(function(a) { return (a.accountType || '').toLowerCase() === 'student'; });
-                if (firstStudent) {
-                    selector.value = firstStudent.studentId;
-                    loadStudentView(firstStudent.studentId, firstStudent.fullname, firstStudent.department);
-                }
+                if (firstStudent) { selector.value = firstStudent.studentId; loadStudentView(firstStudent.studentId, firstStudent.fullname, firstStudent.department); }
             }
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeProfileModal(); });
 
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') closeProfileModal();
+            // প্রোফাইল মোডাল
+            document.getElementById('closeProfileModal').addEventListener('click', closeProfileModal);
+            document.getElementById('profileModal').addEventListener('click', function(e) { if (e.target === this) closeProfileModal(); });
+            document.getElementById('sidebarLogoutBtn').addEventListener('click', function() {
+                if (confirm('Exit Student View and return to Admin Dashboard?')) { window.location.href = 'admin-dashboard.html'; }
             });
 
+            // মোবাইল সাইডবার
             (function() {
                 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
                 const sidebar = document.querySelector('.sidebar');
                 const overlay = document.getElementById('mobileSidebarOverlay');
-
-                function closeMobileSidebar() {
-                    if (sidebar) sidebar.classList.remove('open');
-                    if (overlay) overlay.classList.remove('show');
-                    document.body.style.overflow = '';
-                }
-
-                if (mobileMenuBtn) {
-                    mobileMenuBtn.addEventListener('click', function() {
-                        if (sidebar && sidebar.classList.contains('open')) {
-                            closeMobileSidebar();
-                        } else {
-                            if (sidebar) sidebar.classList.add('open');
-                            if (overlay) overlay.classList.add('show');
-                            document.body.style.overflow = 'hidden';
-                        }
-                    });
-                }
-
-                if (overlay) {
-                    overlay.addEventListener('click', closeMobileSidebar);
-                }
-
-                document.querySelectorAll('.sidebar-nav .nav-item, .sidebar-logout').forEach(function(item) {
-                    item.addEventListener('click', function() {
-                        if (window.innerWidth <= 768) {
-                            closeMobileSidebar();
-                        }
-                    });
-                });
+                function closeMobileSidebar() { if (sidebar) sidebar.classList.remove('open'); if (overlay) overlay.classList.remove('show'); document.body.style.overflow = ''; }
+                if (mobileMenuBtn) { mobileMenuBtn.addEventListener('click', function() { if (sidebar && sidebar.classList.contains('open')) { closeMobileSidebar(); } else { if (sidebar) sidebar.classList.add('open'); if (overlay) overlay.classList.add('show'); document.body.style.overflow = 'hidden'; } }); }
+                if (overlay) { overlay.addEventListener('click', closeMobileSidebar); }
+                document.querySelectorAll('.sidebar-nav .nav-item, .sidebar-logout').forEach(function(item) { item.addEventListener('click', function() { if (window.innerWidth <= 768) { closeMobileSidebar(); } }); });
             })();
         });
     </script>

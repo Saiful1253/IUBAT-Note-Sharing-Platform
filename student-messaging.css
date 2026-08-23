@@ -1,40 +1,166 @@
+/* ========================================================= */
+/* Student Messaging CSS - iShare IUBAT                      */
+/*                                                          */
+/* এই CSS ফাইলের পুরো কাজটি নিচে ধাপে ধাপে ব্যাখ্যা করা হলো: */
+/*                                                          */
+/* ১. গ্লোবাল রিসেট:                                          */
+/*    margin/padding সব শূন্য, box-sizing border-box নিয়েছে।    */
+/*    এটি width/height calculation-এ padding+border অন্তর্ভুক্ত  */
+/*    করে, layout inconsistency prevent করে।                     */
+/*                                                          */
+/* ২. বডি:                                                   */
+/*    font-family: Inter + system fallbacks — modern sans-serif  */
+/*    background: #ffffff — pure white, clean flat design        */
+/*    min-height: 100vh — full viewport, flex grow possible      */
+/*    color: #1a1a1a — near-black, comfortable reading           */
+/*                                                          */
+/* ৩. টপবার (.topbar):                                      */
+/*    sticky top + height 64px — scroll করলেও header fixed       */
+/*    justify-content: space-between — বামে logo, ডানে actions   */
+/*    padding: 12px 32px —上下 12px,左右 32px spacing           */
+/*    z-index: 50 — sidebar (100) এর নিচ, content এর উপর         */
+/*                                                          */
+/* ৪. লেয়াউট (.layout):                                    */
+/*    flex: row (ডিফল্ট) — sidebar (left, fixed 260px) +         */
+/*    main-area (right, flex:1) side-by-side বসে                 */
+/*    min-height: calc(100vh - 64px) — topbar height বাদ          */
+/*                                                          */
+/* ৫. মেইন এরিয়া (.main-area):                              */
+/*    flex: 1 — remaining space নেবে, grow করবে                  */
+/*    margin-left: 260px — sidebar occupies left side             */
+/*    justify-content: center — content horizontally center        */
+/*    padding: 28px 32px —上下 28px,左右 32px spacing           */
+/*                                                          */
+/* ৬. মেসেজিং লেআউট (.messaging-layout):                   */
+/*    grid-template-columns: 280px 1fr — contact list fixed,     */
+/*    chat fills remaining space                                 */
+/*    border-radius: 14px, overflow: hidden — card container      */
+/*    box-shadow — elevation effect                               */
+/*    min-height: 520px — minimum chat area height                 */
+/*                                                          */
+/* ৭. মেসেজিং সাইডবার:                                    */
+/*    width 280px (from grid), border-right separator             */
+/*    background: #fafbfc — very light gray, subtle contrast      */
+/*    flex column: header + search + contact list (overflow-y auto)*/
+/*                                                          */
+/* ৮. মেইন চ্যাট (.messaging-main):                         */
+/*    flex column: chat-header + messages(flex:1) + input-area   */
+/*    messages: overflow-y auto — scrollable message list         */
+/*    বাবল: max-width 70%, sent right(dark), received left(gray) */
+/* ========================================================= */
+
+/* ---------- গ্লোবাল রিসেট ---------- */
+/* সব ট্যাগের margin/padding শূন্য, box-sizing border-box            */
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ---------- বডি ---------- */
+/* font-family: Inter + system fallbacks — modern sans-serif         */
+/* background: #ffffff — pure white, clean student theme             */
+/* min-height: 100vh — full viewport height, flex grow possible      */
+/* color: #1a1a1a — near-black, softer than pure black, comfortable  */
 body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #ffffff; min-height: 100vh; color: #1a1a1a; }
 
+/* ==================== টপবার ==================== */
+/* sticky top — scroll করলেও header fixed থাকবে                      */
+/* height: 64px — standard header height                              */
+/* padding: 12px 32px —上下 12px,左右 32px horizontal spacing       */
+/* border-bottom: 1px #e2e8f0 — subtle divider from content           */
+/* justify-content: space-between — logo/actions opposite ends        */
+/* z-index: 50 — sidebar (100) এর নিচ, overlay (99) এর উপের           */
 .topbar { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; height: 64px; }
+
+/* ---------- টপবার বাম ---------- */
+/* flex-shrink: 0 — logo area shrink না করবে                         */
 .topbar-left { display: flex; align-items: center; gap: 16px; }
+
+/* ---------- লোগো ---------- */
+/* flex row, gap 10px, no underline — brand identity                  */
 .topbar-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+/* ---------- লোগো আইকন ---------- */
+/* 32x32px square, bg #0f172a (dark navy), radius 8px               */
+/* box-shadow নয়, because student pages less elevation opted         */
 .topbar-logo-icon { width: 32px; height: 32px; background: #0f172a; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 .topbar-logo-icon svg { width: 18px; height: 18px; fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- লোগো টেক্সট ---------- */
+/* font-family: Playfair Display — elegant serif brand font           */
+/* font-size: 1.1rem (17.6px) — slightly smaller than admin           */
 .topbar-logo-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #0f172a; }
 .topbar-logo-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 1px; color: #64748b; text-transform: uppercase; }
-.topbar-dept { display: flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 600; color: #0f172a; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: background 0.15s; }
-.topbar-dept:hover { background: #f8fafc; }
-.topbar-dept svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- টপবার সেন্টার ---------- */
+/* flex: 1 — remaining space নেবে, grow করবে                         */
+/* max-width: 480px — search box excessively wide না হবে             */
+/* margin: 0 24px —左右 24px gap from left/right items               */
 .topbar-center { flex: 1; max-width: 480px; margin: 0 24px; }
+
+/* ---------- সার্চ ---------- */
+/* padding: 10px 16px 10px 40px — left 40px icon space holder        */
+/* focus: border #0f172a, box-shadow 3px ring — focus indicator       */
 .topbar-search { width: 100%; padding: 10px 16px 10px 40px; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.85rem; background: #f8fafc; outline: none; transition: all 0.2s; }
 .topbar-search:focus { border-color: #0f172a; background: #ffffff; box-shadow: 0 0 0 3px rgba(15,23,42,0.08); }
 .topbar-search-wrapper { position: relative; }
 .topbar-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; fill: none; stroke: #94a3b8; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- টপবার অ্যাকশন ---------- */
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
+
+/* ---------- AI বাটন ---------- */
+/* dark bg #0f172a, white text, radius 10px                          */
+/* hover: translateY(-1px) lift + shadow — 3D button feel             */
 .topbar-ai-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 10px; background: #0f172a; color: #ffffff; border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .topbar-ai-btn:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15,23,42,0.2); }
 .topbar-ai-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- আইকন বাটন ---------- */
+/* position: relative — badge positioning এর জন্য parent context      */
+/* width/height: 40px, border-radius: 10px — touch-friendly           */
 .topbar-icon-btn { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid #e2e8f0; background: #ffffff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; position: relative; color: #64748b; }
 .topbar-icon-btn:hover { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
 .topbar-icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- নোটিফিকেশন ব্যাজ ---------- */
+/* position: absolute — parent .topbar-icon-btn এর relative respect এ */
+/* top: -4px, right: -4px — button-এর কোণায় বাইরে বসে                */
+/* min-width: 18px —最少 width, number digit অনুযায়ী expand হবে       */
+/* border-radius: 9px — half height = perfect pill/circle             */
 .topbar-badge { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: #dc2626; color: #ffffff; font-size: 0.68rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; position: absolute; top: -4px; right: -4px; }
+
+/* ---------- অ্যাভাটার ---------- */
+/* width/height: 40px, border-radius: 50% — circle avatar            */
+/* background: linear-gradient — no image fallback gradient            */
+/* border: 2px #e2e8f0 — subtle border                                */
+/* overflow: hidden — image/content crop হবে                           */
+/* hover: translateY(-1px) lift + box-shadow — elevation effect        */
 .topbar-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); border: 2px solid #e2e8f0; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #334155; cursor: pointer; overflow: hidden; transition: all 0.2s; }
 .topbar-avatar:hover { border-color: #0f172a; color: #0f172a; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(15,23,42,0.15); }
 
+/* ==================== লেআউট ==================== */
+/* flex: row (ডিফল্ট) — sidebar(left) + main-area(right) horizontally */
+/* min-height: calc(100vh - 64px) — topbar height বাদ leaving viewport */
 .layout { display: flex; min-height: calc(100vh - 64px); }
+
+/* ---------- সাইডবার ---------- */
+/* width: 260px — fixed sidebar width                                  */
+/* position: fixed — scroll করলেও sidebar fixed stays                 */
+/* left: 0, top: 64px (below topbar), bottom: 0 — full height         */
+/* z-index: 100 — above topbar (50), above content                    */
+/* border-right: 1px #e2e8f0 — light separator from main content      */
 .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; position: fixed; left: 0; top: 64px; bottom: 0; z-index: 100; }
+
+/* ---------- সাইডবার প্রোফাইল ---------- */
+/* border-bottom: 1px #f1f5f9 — light separator from navigation       */
 .sidebar-profile { padding: 20px; border-bottom: 1px solid #f1f5f9; }
 .sidebar-profile-card { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: #f8fafc; border: 1px solid #f1f5f9; }
 .sidebar-avatar { width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: #334155; flex-shrink: 0; }
 .sidebar-profile-info { flex: 1; min-width: 0; }
 .sidebar-profile-name { font-size: 0.85rem; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sidebar-profile-dept { font-size: 0.72rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+
+/* ---------- সাইডবার নেভ ---------- */
+/* flex: 1 — remaining space নেবে, expand করবে                       */
+/* overflow-y: auto — নেভিগেশন ITEM বেশি হলে scroll দেখাবে          */
 .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
 .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: #475569; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; text-decoration: none; border: none; background: none; width: 100%; text-align: left; }
 .nav-item:hover { background: #f8fafc; color: #0f172a; }
@@ -43,64 +169,134 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .nav-item .nav-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .nav-item.active .nav-icon { opacity: 1; }
 .nav-item .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; margin-left: auto; }
+
+/* ---------- সাইডবার ফুটার ---------- */
 .sidebar-footer { padding: 12px; border-top: 1px solid #f1f5f9; }
 .sidebar-logout { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 500; color: #ef4444; cursor: pointer; transition: all 0.15s; border: none; background: none; width: 100%; text-align: left; }
 .sidebar-logout:hover { background: #fef2f2; color: #dc2626; }
 .sidebar-logout svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
+/* ==================== মেইন এরিয়া ==================== */
+/* flex: 1 — remaining space নেবে, grow করবে                          */
+/* margin-left: 260px — sidebar width offset, content right side      */
+/* min-height: calc(100vh - 64px) — full viewport minus header        */
+/* justify-content: center — horizontally center the content          */
+/* padding: 28px 32px —上下 28px,左右 32px generous spacing          */
 .main-area { flex: 1; margin-left: 260px; min-height: calc(100vh - 64px); display: flex; justify-content: center; padding: 28px 32px; }
 .content { max-width: 1200px; width: 100%; }
 
+/* ==================== নোটিফিকেশন ==================== */
+/* position: relative — dropdown parent context সৃষ্টি করবে            */
 .notification-wrapper { position: relative; }
+
+/* position: absolute — wrapper এর right:0 corner-এ বসবে              */
+/* top: calc(100% + 8px) — button-এর নিচে 8px gap দিয়ে বসবে        */
+/* width: 360px — fixed width dropdown                                */
+/* max-height: 480px — বেশি নোটিফিকেশন হলে scroll দেখাবে            */
+/* z-index: 200 — sidebar(100), topbar(50), overlay(99) সবের উপরে   */
+/* box-shadow: 2-layer — elevation effect, dropdown highlight করে    */
+/* display: none → flex — hidden by default, .show class-এ appear     */
 .notification-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 360px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 10px 40px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.06); z-index: 200; display: none; flex-direction: column; max-height: 480px; overflow: hidden; }
 .notification-dropdown.show { display: flex; }
+
+/* ---------- নোটিফিকেশন হেডার ---------- */
+/* justify-content: space-between — title বামে, actions ডানে        */
+/* border-bottom: 1px #f1f5f9 — light separator                      */
 .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f1f5f9; }
 .notification-header h3 { font-size: 0.9rem; font-weight: 700; color: #0f172a; }
 .notification-header-actions { display: flex; align-items: center; gap: 8px; }
+
+/* ---------- সব রিড / সব ডিলিট ---------- */
+/* background: none; border: none — button reset করে                 */
 .mark-all-read { font-size: 0.75rem; font-weight: 600; color: #0f172a; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
 .mark-all-read:hover { background: #f1f5f9; }
 .delete-all { font-size: 0.75rem; font-weight: 600; color: #dc2626; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.15s; }
 .delete-all:hover { background: #fef2f2; }
+
+/* ---------- নোটিফিকেশন লিস্ট ---------- */
+/* max-height: 420px — dropdown height এর ভিতরে scrollable           */
+/* overflow-y: auto — vertical scroll only                            */
 .notification-list { overflow-y: auto; max-height: 420px; }
+
+/* ---------- নোটিফিকেশন আইটেম ---------- */
+/* border-bottom: 1px #f8fafc — very light separator                 */
+/* position: relative — delete button absolute position করতে চাইবে     */
 .notification-item { display: flex; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #f8fafc; cursor: pointer; transition: background 0.15s; position: relative; }
 .notification-item:last-child { border-bottom: none; }
 .notification-item:hover { background: #fafbfc; }
 .notification-item.unread { background: #f8fafc; }
+
+/* ---------- নোটিফিকেশন আইকন ---------- */
+/* width/height: 32px — small icon box                                */
+/* border-radius: 8px — slightly rounded                              */
+/* variant classes: system/user/alert/info — colored per type         */
 .notification-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem; }
 .notification-icon.system { background: #f0f9ff; color: #0284c7; }
 .notification-icon.user { background: #f0fdf4; color: #16a34a; }
 .notification-icon.alert { background: #fefce8; color: #ca8a04; }
 .notification-icon.info { background: #fef2f2; color: #dc2626; }
+
+/* ---------- নোটিফিকেশন বডি ---------- */
+/* flex: 1 — remaining space নেবে, grow করবে                         */
+/* min-width: 0 — flexbox overflow ellipsis-এর জন্য necessary         */
 .notification-body { flex: 1; min-width: 0; }
 .notification-title { font-size: 0.82rem; font-weight: 600; color: #0f172a; margin-bottom: 2px; line-height: 1.3; }
 .notification-message { font-size: 0.78rem; color: #64748b; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .notification-time { font-size: 0.72rem; color: #94a3b8; font-weight: 500; margin-top: 4px; }
+
+/* ---------- নোটিফিকেশন ডিলিট ---------- */
+/* opacity: 0 — hidden by default                                     */
+/* .notification-item:hover .notification-delete → hover-এ opacity 1 */
 .notification-delete { width: 28px; height: 28px; border-radius: 6px; border: none; background: transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: #94a3b8; transition: all 0.15s; flex-shrink: 0; align-self: center; opacity: 0; }
 .notification-item:hover .notification-delete { opacity: 1; }
 .notification-delete:hover { background: #fef2f2; color: #dc2626; }
 .notification-delete svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- নোটিফিকেশন এম্পটি ---------- */
 .notification-empty { text-align: center; padding: 32px 16px; color: #94a3b8; font-size: 0.85rem; }
 
+/* ==================== টোস্ট ==================== */
+/* fixed bottom-right, slide-in animation, z-index 1000                */
+/* transform: translateY(120%) — hidden below viewport                 */
+/* visibility: hidden — screen reader-এ নয়, animation যুক্ত           */
 .toast { position: fixed; bottom: 24px; right: 24px; background: #0f172a; color: #ffffff; padding: 14px 20px; border-radius: 12px; font-size: 0.88rem; font-weight: 500; box-shadow: 0 8px 24px rgba(15,23,42,0.2); transform: translateY(120%); transition: transform 0.3s ease, visibility 0.3s ease; visibility: hidden; z-index: 1000; max-width: 360px; }
 .toast.show { transform: translateY(0); visibility: visible; }
 .toast.success { background: #059669; }
 
+/* ==================== এম্পটি স্টেট ==================== */
 .empty-state { text-align: center; padding: 36px 20px; color: #94a3b8; }
 .empty-state svg { width: 40px; height: 40px; stroke: #cbd5e1; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 10px; }
 .empty-state-title { font-size: 0.88rem; font-weight: 700; color: #475569; margin-bottom: 4px; }
 .empty-state-desc { font-size: 0.78rem; }
 
+/* ==================== পেজ হেডার ==================== */
 .page-header { margin-bottom: 24px; }
 .page-title { font-size: 1.75rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; margin-bottom: 4px; }
 .page-subtitle { font-size: 0.88rem; color: #64748b; font-weight: 400; }
 
+/* ==================== মেসেজিং লেআউট ==================== */
+/* 280px fixed sidebar + 1fr chat, radius 14px, shadow               */
+/* grid-template-columns: 280px 1fr — contact list fixed width,      */
+/* chat area fills remaining space flexibly                           */
+/* gap: 0 — no gap, border-right provides visual separation          */
+/* overflow: hidden — child border-radius respect করবে               */
+/* min-height: 520px — minimum chat display height                    */
 .messaging-layout { display: grid; grid-template-columns: 280px 1fr; gap: 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 2px 8px rgba(0,0,0,0.03); min-height: 520px; }
+
+/* ---------- মেসেজিং সাইডবার ---------- */
+/* border-right: 1px #e2e8f0 — separator from chat area              */
+/* background: #fafbfc — very light gray, subtle contrast            */
+/* flex column: header + search + list (flex:1, overflow-y auto)     */
 .messaging-sidebar { border-right: 1px solid #e2e8f0; background: #fafbfc; display: flex; flex-direction: column; }
 .messaging-sidebar-header { padding: 16px 18px; border-bottom: 1px solid #f1f5f9; }
 .messaging-sidebar-title { font-size: 0.9rem; font-weight: 700; color: #0f172a; }
 .messaging-search { margin-top: 10px; width: 100%; padding: 8px 10px; border-radius: 8px; border: 1.5px solid #e2e8f0; font-size: 0.82rem; background: #ffffff; outline: none; }
 .messaging-search:focus { border-color: #0f172a; }
 .messaging-list { flex: 1; overflow-y: auto; }
+
+/* ---------- কন্ট্যাক্ট ---------- */
+/* border-bottom: 1px #f8fafc — very light separator                 */
+/* cursor: pointer — clickable to open conversation                   */
 .messaging-contact { display: flex; align-items: center; gap: 12px; padding: 12px 18px; cursor: pointer; transition: background 0.15s; border-bottom: 1px solid #f8fafc; }
 .messaging-contact:hover { background: #f1f5f9; }
 .messaging-contact.active { background: #f1f5f9; }
@@ -108,34 +304,69 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .messaging-contact-info { flex: 1; min-width: 0; }
 .messaging-contact-name { font-size: 0.85rem; font-weight: 600; color: #0f172a; }
 .messaging-contact-preview { font-size: 0.75rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- মেইন চ্যাট ---------- */
+/* flex-direction: column — header + messages + input vertically     */
 .messaging-main { display: flex; flex-direction: column; }
+
+/* ---------- প্লেইসহোল্ডার ---------- */
+/* flex: 1 — fills remaining space vertically                          */
+/* align-items: center, justify-content: center — truly centered      */
 .messaging-placeholder { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; color: #94a3b8; }
 .messaging-placeholder-icon { width: 64px; height: 64px; border-radius: 50%; background: #f8fafc; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
 .messaging-placeholder-icon svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .messaging-placeholder-title { font-size: 1rem; font-weight: 700; color: #475569; margin-bottom: 4px; }
 .messaging-placeholder-desc { font-size: 0.85rem; }
+
+/* ---------- চ্যাট হেডার ---------- */
+/* padding: 14px 20px —上下 14px,左右 20px                           */
+/* border-bottom: 1px #e2e8f0 — separator from messages              */
 .messaging-chat-header { padding: 14px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 10px; }
 .messaging-chat-header-info { flex: 1; }
 .messaging-chat-header-name { font-size: 0.92rem; font-weight: 700; color: #0f172a; }
 .messaging-chat-header-status { font-size: 0.72rem; color: #16a34a; font-weight: 600; }
+
+/* ---------- মেসেজ ---------- */
+/* flex: 1 — fills remaining space, grow করবে                        */
+/* overflow-y: auto — বেশি মেসেজ হলে scroll দেখাবে                  */
+/* flex-direction: column — messages vertically stacked               */
+/* gap: 10px — message-to-message spacing                             */
 .messaging-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+
+/* ---------- বাবল ---------- */
+/* max-width: 70% — chat bubble max width, natural width below        */
+/* border-radius: 12px — rounded bubble                               */
+/* border-bottom-right-radius: 4px — sent bubble asymmetric tail     */
 .messaging-bubble { max-width: 70%; padding: 10px 14px; border-radius: 12px; font-size: 0.85rem; line-height: 1.4; }
 .messaging-bubble.sent { align-self: flex-end; background: #0f172a; color: #ffffff; border-bottom-right-radius: 4px; }
 .messaging-bubble.received { align-self: flex-start; background: #f1f5f9; color: #0f172a; border-bottom-left-radius: 4px; }
+
+/* ---------- ইনপুট এরিয়া ---------- */
+/* border-top: 1px #e2e8f0 — separator from messages                 */
+/* display: flex — input + send button horizontally                   */
 .messaging-input-area { padding: 12px 20px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; }
 .messaging-input { flex: 1; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 0.85rem; outline: none; }
 .messaging-input:focus { border-color: #0f172a; }
 .messaging-send { padding: 10px 16px; border-radius: 10px; background: #0f172a; color: #ffffff; border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .messaging-send:hover { background: #1e293b; }
 
+/* ==================== রেসপন্সিভ ==================== */
+
+/* ---------- 1200px ---------- */
+/* sidebar-right হাইড, content max-width নাল                        */
 @media (max-width: 1200px) {
-    .sidebar-right { display: none; }
     .content { max-width: none; }
 }
+
+/* ---------- 1024px ---------- */
+/* messaging 1 কলাম, sidebar হাইড                                  */
 @media (max-width: 1024px) {
     .messaging-layout { grid-template-columns: 1fr; }
     .messaging-sidebar { display: none; }
 }
+
+/* ---------- 768px (Mobile) ---------- */
+/* sidebar full-width relative, main margin-left 0, padding 20px     */
 @media (max-width: 768px) {
     .sidebar { width: 100%; position: relative; top: 0; }
     .main-area { margin-left: 0; flex-direction: column; }

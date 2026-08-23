@@ -1,17 +1,31 @@
+<!-- ============================================ -->
+<!-- Admin Dashboard - iShare IUBAT                -->
+<!-- অ্যাডমিন ড্যাশবোর্ড: প্ল্যাটফর্ম ওভারভিউ          -->
+<!-- ============================================ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- মেটা ট্যাগ ও টাইটেল -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - iShare IUBAT</title>
+
+    <!-- গুগল ফন্টস -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- অ্যাডমিন ড্যাশবোর্ড CSS -->
     <link rel="stylesheet" href="admin-dashboard.css">
 </head>
 <body>
+    <!-- মেইন ড্যাশবোর্ড র‍্যাপার: সাইডবার + কনটেন্ট -->
     <div class="dashboard-wrapper">
+
+        <!-- ==================== সাইডবার ==================== -->
         <aside class="sidebar">
+            <!-- সাইডবার হেডার: লোগো ও ব্র্যান্ড -->
             <div class="sidebar-header">
                 <div class="sidebar-logo">
                     <div class="sidebar-logo-icon">
@@ -23,31 +37,45 @@
                     </div>
                 </div>
             </div>
+
+            <!-- সাইডবার নেভিগেশন: অ্যাডমিন গভর্ন্যান্স মেনু -->
             <nav class="sidebar-nav">
                 <div class="nav-section-title">Admin Governance</div>
+
+                <!-- প্ল্যাটফর্ম ওভারভিউ (বর্তমান পেজ) -->
                 <button class="nav-item">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
                     Platform Overview
                 </button>
+
+                <!-- ইউজার ম্যানেজমেন্ট পেজে লিংক -->
                 <button class="nav-item" type="button" onclick="window.location.href='user-management.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                     User Management
                 </button>
+
+                <!-- ডিপার্টমেন্ট কন্ট্রোল পেজে লিংক -->
                 <button class="nav-item" type="button" onclick="window.location.href='department-controls.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
                     Department Controls
                 </button>
+
+                <!-- অ্যানাউন্সমেন্ট ম্যানেজমেন্ট পেজে লিংক -->
                 <button class="nav-item" type="button" onclick="window.location.href='announcement-management.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
                     Announcement Management
                     <span class="nav-badge">0</span>
                 </button>
+
+                <!-- স্টুডেন্ট ভিউ মোডে যাওয়ার লিংক -->
                 <button class="nav-item" type="button" onclick="window.location.href='student-view.html'">
                     <span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
                     Student View
                     <span class="nav-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
                 </button>
             </nav>
+
+            <!-- সাইডবার ফুটার: AI অ্যাসিস্ট্যান্ট ও লগআউট -->
             <div class="sidebar-footer">
                 <div class="sidebar-ai">
                     <div class="sidebar-ai-icon">
@@ -64,8 +92,13 @@
                 </button>
             </div>
         </aside>
+
+        <!-- মোবাইল সাইডবার ওভারলে -->
         <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
+
+        <!-- ==================== মেইন কনটেন্ট ==================== -->
         <main class="main-content">
+            <!-- টপবার: AI অ্যাসিস্ট্যান্ট, নোটিফিকেশন, প্রোফাইল -->
             <header class="topbar">
                 <div class="topbar-left">
                     <button class="topbar-btn primary">
@@ -74,9 +107,12 @@
                     </button>
                 </div>
                 <div class="topbar-actions">
+                    <!-- মোবাইল মেনু বাটন -->
                     <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Menu">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                     </button>
+
+                    <!-- নোটিফিকেশন ড্রপডাউন -->
                     <div class="notification-wrapper" id="notificationWrapper">
                         <button class="topbar-icon-btn" id="notificationBtn" title="Notifications">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
@@ -95,15 +131,23 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- অ্যাডমিন অ্যাভাটার -->
                     <div class="topbar-avatar" title="User Menu">SI</div>
                 </div>
             </header>
+
+            <!-- কনটেন্ট এরিয়া: প্ল্যাটফর্ম ওভারভিউ -->
             <div class="content-area">
+                <!-- পেজ হেডার -->
                 <div class="page-header">
                     <h1 class="page-title">Platform Overview</h1>
                     <p class="page-subtitle">High-level metrics and system health indicators.</p>
                 </div>
+
+                <!-- স্ট্যাট Cardinals গ্রিড: ৪টা মেট্রিক -->
                 <div class="stats-grid">
+                    <!-- টোটাল অ্যাক্টিভ ইউজার -->
                     <div class="stat-card">
                         <div class="stat-card-header">
                             <span class="stat-label">Total Active Users</span>
@@ -116,6 +160,8 @@
                         </div>
                         <div class="stat-sub" id="userSub">No registered users yet</div>
                     </div>
+
+                    <!-- সিস্টেম আপটাইম -->
                     <div class="stat-card">
                         <div class="stat-card-header">
                             <span class="stat-label">System Uptime</span>
@@ -129,6 +175,8 @@
                             <span id="uptimeText">Checking...</span>
                         </div>
                     </div>
+
+                    <!-- টোটাল নোটস -->
                     <div class="stat-card">
                         <div class="stat-card-header">
                             <span class="stat-label">Total Notes</span>
@@ -139,6 +187,8 @@
                         <div class="stat-value" id="totalNotes">0</div>
                         <div class="stat-sub" id="notesSub">No notes uploaded yet</div>
                     </div>
+
+                    <!-- স্টোরেজ ইউটিলাইজেশন -->
                     <div class="stat-card">
                         <div class="stat-card-header">
                             <span class="stat-label">Storage Utilization</span>
@@ -155,11 +205,14 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- ড্যাশবোর্ড গ্রিড: টেবিল + QUICK ACTION -->
                 <div class="dashboard-grid">
+                    <!-- রিসেন্ট ইউজার অ্যাক্টিভিটি টেবিল -->
                     <div class="panel">
                         <div class="panel-header">
                             <h3 class="panel-title">Recent User Activity</h3>
-                                <a href="user-management.html" class="panel-link">View Full Directory
+                            <a href="user-management.html" class="panel-link">View Full Directory
                                 <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                             </a>
                         </div>
@@ -177,7 +230,10 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- রাইট সাইড: QUICK ACTION + SECURITY AUDIT LOG -->
                     <div style="display:flex;flex-direction:column;gap:20px;">
+                        <!-- QUICK ACTION বাটন -->
                         <div class="panel">
                             <div class="panel-header">
                                 <h3 class="panel-title">Quick Actions</h3>
@@ -197,6 +253,8 @@
                                 </button>
                             </div>
                         </div>
+
+                        <!-- সিকিউরিটি অডিট লগ -->
                         <div class="panel">
                             <div class="panel-header">
                                 <h3 class="panel-title">Security Audit Log</h3>
@@ -211,23 +269,31 @@
         </main>
     </div>
 
+    <!-- ============================================ -->
+    <!-- অ্যাডমিন ড্যাশবোর্ডের JavaScript                    -->
+    <!-- ============================================ -->
     <script>
+        // ডম কনটেন্ট লোড হওয়ার পর সব লজিক এক্সিকিউট
         document.addEventListener('DOMContentLoaded', function() {
+            // localStorage থেকে লগইন করা ইউজার তথ্য পড়া
             const userId = localStorage.getItem('ishare_user_id');
             const userType = localStorage.getItem('ishare_user_type');
             const userName = localStorage.getItem('ishare_user_name');
 
+            // অ্যাডমিন নন হলে লগিন পেজে রিডাইরেক্ট
             if (!userId || userType !== 'Admin') {
                 window.location.href = 'index.html';
                 return;
             }
 
+            // অ্যাভাটারে ইউজারের initials দেখাও
             if (userName) {
                 const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
                 const avatar = document.querySelector('.topbar-avatar');
                 if (avatar) avatar.textContent = initials || 'U';
             }
 
+            // সাইডবার অ্যাকটিভ নেভিগেশন আইটেম সেট
             const page = window.location.pathname.split('/').pop() || 'admin-dashboard.html';
             const pageMap = {
                 'admin-dashboard.html': 'Platform Overview',
@@ -244,6 +310,7 @@
                 }
             });
 
+            // মোবাইল সাইডবার ওপেন/ক্লোজ
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.getElementById('mobileSidebarOverlay');
@@ -253,7 +320,6 @@
                 if (overlay) overlay.classList.add('show');
                 document.body.style.overflow = 'hidden';
             }
-
             function closeMobileSidebar() {
                 if (sidebar) sidebar.classList.remove('open');
                 if (overlay) overlay.classList.remove('show');
@@ -262,30 +328,25 @@
 
             if (mobileMenuBtn) {
                 mobileMenuBtn.addEventListener('click', function() {
-                    if (sidebar && sidebar.classList.contains('open')) {
-                        closeMobileSidebar();
-                    } else {
-                        openMobileSidebar();
-                    }
+                    if (sidebar && sidebar.classList.contains('open')) { closeMobileSidebar(); }
+                    else { openMobileSidebar(); }
                 });
             }
+            if (overlay) { overlay.addEventListener('click', closeMobileSidebar); }
 
-            if (overlay) {
-                overlay.addEventListener('click', closeMobileSidebar);
-            }
-
+            // সাইডবার আইটেম ক্লিক করলে মোবাইল সাইডবার ক্লোজ
             document.querySelectorAll('.sidebar-nav .nav-item, .sidebar-bottom-item').forEach(function(item) {
                 item.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        closeMobileSidebar();
-                    }
+                    if (window.innerWidth <= 768) { closeMobileSidebar(); }
                 });
             });
 
+            // ==================== স্ট্যাট Cardinals আপডেট ====================
             const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
             const activeAccounts = accounts.filter(a => a.status === 'active');
             const deptSet = new Set(accounts.map(a => a.department).filter(Boolean));
 
+            // অ্যাক্টিভ ইউজার কাউন্ট
             document.getElementById('activeUsers').textContent = activeAccounts.length.toLocaleString();
 
             const userChange = document.getElementById('userChange');
@@ -301,17 +362,17 @@
                 if (userSub) userSub.textContent = 'No registered users yet';
             }
 
+            // টোটাল নোটস কাউন্ট
             const notes = JSON.parse(localStorage.getItem('ishare_notes') || '[]');
             const totalNotesEl = document.getElementById('totalNotes');
             const notesSubEl = document.getElementById('notesSub');
             if (totalNotesEl) totalNotesEl.textContent = notes.length.toLocaleString();
             if (notesSubEl) notesSubEl.textContent = notes.length > 0 ? `Across ${new Set(notes.map(n => n.department).filter(Boolean)).size} departments` : 'No notes uploaded yet';
 
+            // স্টোরেজ ব্যবহারের গণনা (data URL নোটসের সাইজ)
             let totalStorageBytes = 0;
             notes.forEach(function(n) {
-                if (n.url && n.url.startsWith('data:')) {
-                    totalStorageBytes += n.url.length * 2;
-                }
+                if (n.url && n.url.startsWith('data:')) { totalStorageBytes += n.url.length * 2; }
             });
             const totalStorageMB = (totalStorageBytes / (1024 * 1024)).toFixed(2);
             const storageUsedEl = document.getElementById('storageUsed');
@@ -323,6 +384,7 @@
             if (storageSubEl) storageSubEl.textContent = totalStorageMB > 0 ? `${notes.length} notes uploaded` : 'No data uploaded yet';
             if (storageFillEl) storageFillEl.style.width = storagePercent + '%';
 
+            // ==================== অ্যাক্টিভিটি টেবিল রেন্ডার ====================
             const tableBody = document.getElementById('activityTableBody');
             if (tableBody) {
                 if (accounts.length === 0) {
@@ -353,6 +415,7 @@
             }
         });
 
+        // ==================== নোটিফিকেশন সিস্টেম ====================
         (function() {
             const STORAGE_KEY = 'ishare_notifications';
             const notificationBtn = document.getElementById('notificationBtn');
@@ -363,23 +426,17 @@
             const deleteAllBtn = document.getElementById('deleteAllNotifications');
             const notificationWrapper = document.getElementById('notificationWrapper');
 
+            // localStorage থেকে নোটিফিকেশনগুলো লোড
             function getNotifications() {
-                try {
-                    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-                } catch {
-                    return [];
-                }
+                try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
             }
+            function saveNotifications(notifications) { localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications)); }
 
-            function saveNotifications(notifications) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
-            }
-
+            // ডেমো নোটিফিকেশন জেনারেট (অ্যাকাউন্ট রেজিস্ট্রেশন নোটিফিকেশন)
             function generateDemoNotifications() {
                 const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
                 const notifications = [];
                 const now = Date.now();
-
                 accounts.slice(0, 3).forEach((acc, index) => {
                     notifications.push({
                         id: 'user-' + acc.id + '-' + index,
@@ -390,45 +447,35 @@
                         read: false
                     });
                 });
-
                 if (notifications.length === 0) {
                     notifications.push({
-                        id: 'system-1',
-                        title: 'No new registrations yet',
+                        id: 'system-1', title: 'No new registrations yet',
                         message: 'When a new user registers, their details will appear here automatically.',
-                        type: 'system',
-                        time: now - 1000 * 60 * 30,
-                        read: false
+                        type: 'system', time: now - 1000 * 60 * 30, read: false
                     });
                 }
-
                 return notifications;
             }
 
+            // নোটিফিকেশন এনশার গ্যারেন্টি
             function ensureNotifications() {
                 let notifications = getNotifications();
-                if (notifications.length === 0) {
-                    notifications = generateDemoNotifications();
-                    saveNotifications(notifications);
-                }
+                if (notifications.length === 0) { notifications = generateDemoNotifications(); saveNotifications(notifications); }
                 return notifications;
             }
 
-            function getUnreadCount(notifications) {
-                return notifications.filter(n => !n.read).length;
-            }
+            // আনরিড কাউন্ট
+            function getUnreadCount(notifications) { return notifications.filter(n => !n.read).length; }
 
+            // ব্যাজ আপডেট
             function updateBadge() {
                 const notifications = getNotifications();
                 const unreadCount = getUnreadCount(notifications);
-                if (unreadCount > 0) {
-                    notificationBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-                    notificationBadge.style.display = 'inline-flex';
-                } else {
-                    notificationBadge.style.display = 'none';
-                }
+                if (unreadCount > 0) { notificationBadge.textContent = unreadCount > 99 ? '99+' : unreadCount; notificationBadge.style.display = 'inline-flex'; }
+                else { notificationBadge.style.display = 'none'; }
             }
 
+            // টাইম ফরম্যাট: "Just now", "5m ago", "2h ago", "3d ago"
             function formatTime(timestamp) {
                 const diff = Date.now() - timestamp;
                 const minutes = Math.floor(diff / 60000);
@@ -440,20 +487,12 @@
                 return days + 'd ago';
             }
 
+            // নোটিফিকেশন রেন্ডার
             function renderNotifications() {
                 const notifications = getNotifications();
-                if (notifications.length === 0) {
-                    notificationList.innerHTML = '<div class="notification-empty">No notifications yet.</div>';
-                    return;
-                }
-
+                if (notifications.length === 0) { notificationList.innerHTML = '<div class="notification-empty">No notifications yet.</div>'; return; }
                 notificationList.innerHTML = notifications.slice(0, 20).map(n => {
-                    const iconMap = {
-                        system: '⚙',
-                        user: '👤',
-                        alert: '⚠',
-                        info: 'ℹ'
-                    };
+                    const iconMap = { system: '⚙', user: '👤', alert: '⚠', info: 'ℹ' };
                     const icon = iconMap[n.type] || '🔔';
                     return `<div class="notification-item ${n.read ? '' : 'unread'}" data-id="${n.id}">
                         <div class="notification-icon ${n.type}">${icon}</div>
@@ -474,160 +513,76 @@
                         const id = this.getAttribute('data-id');
                         const notifications = getNotifications();
                         const target = notifications.find(n => n.id === id);
-                        if (target && !target.read) {
-                            target.read = true;
-                            saveNotifications(notifications);
-                            updateBadge();
-                            this.classList.remove('unread');
-                        }
+                        if (target && !target.read) { target.read = true; saveNotifications(notifications); updateBadge(); this.classList.remove('unread'); }
                     });
                 });
-
                 notificationList.querySelectorAll('.notification-delete').forEach(btn => {
                     btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const id = this.getAttribute('data-id');
-                        deleteNotification(id);
+                        e.stopPropagation(); const id = this.getAttribute('data-id'); deleteNotification(id);
                     });
                 });
             }
 
-            function deleteNotification(id) {
-                let notifications = getNotifications();
-                notifications = notifications.filter(n => n.id !== id);
-                saveNotifications(notifications);
-                updateBadge();
-                renderNotifications();
-            }
-
-            function deleteAllNotifications() {
-                saveNotifications([]);
-                updateBadge();
-                renderNotifications();
-            }
+            function deleteNotification(id) { let notifications = getNotifications(); notifications = notifications.filter(n => n.id !== id); saveNotifications(notifications); updateBadge(); renderNotifications(); }
+            function deleteAllNotifications() { saveNotifications([]); updateBadge(); renderNotifications(); }
 
             function toggleDropdown(e) {
                 e.stopPropagation();
                 const isShown = notificationDropdown.classList.contains('show');
-                if (isShown) {
-                    notificationDropdown.classList.remove('show');
-                } else {
-                    renderNotifications();
-                    notificationDropdown.classList.add('show');
-                }
+                if (isShown) { notificationDropdown.classList.remove('show'); }
+                else { renderNotifications(); notificationDropdown.classList.add('show'); }
             }
-
-            function closeDropdown() {
-                notificationDropdown.classList.remove('show');
-            }
+            function closeDropdown() { notificationDropdown.classList.remove('show'); }
 
             function markAllAsRead() {
-                const notifications = getNotifications();
-                let changed = false;
-                notifications.forEach(n => {
-                    if (!n.read) {
-                        n.read = true;
-                        changed = true;
-                    }
-                });
-                if (changed) {
-                    saveNotifications(notifications);
-                    updateBadge();
-                    renderNotifications();
-                }
+                const notifications = getNotifications(); let changed = false;
+                notifications.forEach(n => { if (!n.read) { n.read = true; changed = true; } });
+                if (changed) { saveNotifications(notifications); updateBadge(); renderNotifications(); }
             }
 
-            if (notificationBtn) {
-                notificationBtn.addEventListener('click', toggleDropdown);
-            }
-
-            if (markAllReadBtn) {
-                markAllReadBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    markAllAsRead();
-                });
-            }
-
-            if (deleteAllBtn) {
-                deleteAllBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (confirm('Delete all notifications? This cannot be undone.')) {
-                        deleteAllNotifications();
-                    }
-                });
-            }
-
-            document.addEventListener('click', function(e) {
-                if (!notificationWrapper.contains(e.target)) {
-                    closeDropdown();
-                }
-            });
+            if (notificationBtn) notificationBtn.addEventListener('click', toggleDropdown);
+            if (markAllReadBtn) markAllReadBtn.addEventListener('click', function(e) { e.stopPropagation(); markAllAsRead(); });
+            if (deleteAllBtn) deleteAllBtn.addEventListener('click', function(e) { e.stopPropagation(); if (confirm('Delete all notifications? This cannot be undone.')) { deleteAllNotifications(); } });
+            document.addEventListener('click', function(e) { if (!notificationWrapper.contains(e.target)) { closeDropdown(); } });
 
             ensureNotifications();
             updateBadge();
 
+            // ==================== সিস্টেম হেলথ চেক ====================
             const sessionStart = Date.now();
             const uptimeEl = document.getElementById('uptime');
             const uptimeDot = document.getElementById('uptimeDot');
             const uptimeText = document.getElementById('uptimeText');
 
             function checkSystemHealth() {
-                const checks = [];
-                let passed = 0;
-
-                try {
-                    localStorage.setItem('ishare_health_check', 'ok');
-                    localStorage.removeItem('ishare_health_check');
-                    checks.push({ name: 'LocalStorage', status: 'pass' });
-                    passed++;
-                } catch (e) {
-                    checks.push({ name: 'LocalStorage', status: 'fail' });
-                }
-
-                if (document.readyState === 'complete' || document.readyState === 'interactive') {
-                    checks.push({ name: 'Page Load', status: 'pass' });
-                    passed++;
-                } else {
-                    checks.push({ name: 'Page Load', status: 'fail' });
-                }
-
+                const checks = []; let passed = 0;
+                try { localStorage.setItem('ishare_health_check', 'ok'); localStorage.removeItem('ishare_health_check'); checks.push({ name: 'LocalStorage', status: 'pass' }); passed++; }
+                catch (e) { checks.push({ name: 'LocalStorage', status: 'fail' }); }
+                if (document.readyState === 'complete' || document.readyState === 'interactive') { checks.push({ name: 'Page Load', status: 'pass' }); passed++; }
+                else { checks.push({ name: 'Page Load', status: 'fail' }); }
                 const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
-                if (Array.isArray(accounts)) {
-                    checks.push({ name: 'User Data', status: 'pass' });
-                    passed++;
-                } else {
-                    checks.push({ name: 'User Data', status: 'fail' });
-                }
-
+                if (Array.isArray(accounts)) { checks.push({ name: 'User Data', status: 'pass' }); passed++; }
+                else { checks.push({ name: 'User Data', status: 'fail' }); }
                 const notes = JSON.parse(localStorage.getItem('ishare_notes') || '[]');
-                if (Array.isArray(notes)) {
-                    checks.push({ name: 'Notes Data', status: 'pass' });
-                    passed++;
-                } else {
-                    checks.push({ name: 'Notes Data', status: 'fail' });
-                }
+                if (Array.isArray(notes)) { checks.push({ name: 'Notes Data', status: 'pass' }); passed++; }
+                else { checks.push({ name: 'Notes Data', status: 'fail' }); }
 
                 const healthPercent = Math.round((passed / checks.length) * 100);
                 const allOperational = passed === checks.length;
-
                 if (uptimeEl) uptimeEl.textContent = healthPercent + '.9%';
-                if (uptimeDot) {
-                    uptimeDot.style.background = allOperational ? '#16a34a' : '#dc2626';
-                }
-                if (uptimeText) {
-                    uptimeText.textContent = allOperational ? 'All Systems Operational' : passed + '/' + checks.length + ' Systems Healthy';
-                }
+                if (uptimeDot) uptimeDot.style.background = allOperational ? '#16a34a' : '#dc2626';
+                if (uptimeText) uptimeText.textContent = allOperational ? 'All Systems Operational' : passed + '/' + checks.length + ' Systems Healthy';
             }
 
             checkSystemHealth();
-            setInterval(checkSystemHealth, 30000);
+            setInterval(checkSystemHealth, 30000); // ৩০ সেকেন্ডে সবচেয়ে আপডেট হেলথ চেক
 
+            // ==================== অডিট লগ ====================
             function addAuditLog(message, type) {
                 type = type || 'info';
                 const container = document.getElementById('auditLogContainer');
                 const emptyState = document.getElementById('auditEmptyState');
                 if (emptyState) emptyState.style.display = 'none';
-                
                 const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 const logEntry = document.createElement('div');
                 logEntry.className = 'audit-log-entry';
@@ -635,23 +590,17 @@
                 container.insertBefore(logEntry, container.firstChild);
             }
 
+            // এক্সপোর্ট অথডাট বাটন: সব ইউজার ডাটা JSON অ্যাক্সপোর্ট
             const exportBtn = document.getElementById('exportAuthDataBtn');
             if (exportBtn) {
                 exportBtn.addEventListener('click', function() {
                     const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
-                    if (accounts.length === 0) {
-                        addAuditLog('Export failed: No user data available', 'error');
-                        return;
-                    }
+                    if (accounts.length === 0) { addAuditLog('Export failed: No user data available', 'error'); return; }
                     const blob = new Blob([JSON.stringify(accounts, null, 2)], { type: 'application/json' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'ishare_auth_data_' + new Date().toISOString().slice(0, 10) + '.json';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                    a.href = url; a.download = 'ishare_auth_data_' + new Date().toISOString().slice(0, 10) + '.json';
+                    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
                     addAuditLog('Exported ' + accounts.length + ' user records', 'success');
                 });
             }
