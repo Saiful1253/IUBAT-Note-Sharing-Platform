@@ -156,7 +156,7 @@
                         <div class="stat-value" id="activeUsers">0</div>
                         <div class="stat-change" id="userChange" style="display:none;">
                             <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
-                            +4.2%
+                            <span id="userChangeText">+0%</span>
                         </div>
                         <div class="stat-sub" id="userSub">No registered users yet</div>
                     </div>
@@ -342,25 +342,38 @@
             });
 
             // ==================== স্ট্যাট Cardinals আপডেট ====================
-            const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
-            const activeAccounts = accounts.filter(a => a.status === 'active');
-            const deptSet = new Set(accounts.map(a => a.department).filter(Boolean));
+            function updateActiveUsersStats() {
+                const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+                const activeAccounts = accounts.filter(a => a.status === 'active');
+                const deptSet = new Set(accounts.map(a => a.department).filter(Boolean));
 
-            // অ্যাক্টিভ ইউজার কাউন্ট
-            document.getElementById('activeUsers').textContent = activeAccounts.length.toLocaleString();
+                const activeUsersEl = document.getElementById('activeUsers');
+                const userChange = document.getElementById('userChange');
+                const userChangeText = document.getElementById('userChangeText');
+                const userSub = document.getElementById('userSub');
 
-            const userChange = document.getElementById('userChange');
-            const userSub = document.getElementById('userSub');
-            if (activeAccounts.length > 0) {
-                if (userChange) userChange.style.display = 'flex';
-                if (userSub) {
-                    const deptCount = deptSet.size;
-                    userSub.textContent = deptCount > 0 ? `Active across ${deptCount} ${deptCount === 1 ? 'department' : 'departments'}` : 'Active users found';
+                if (activeUsersEl) activeUsersEl.textContent = activeAccounts.length.toLocaleString();
+
+                if (activeAccounts.length > 0) {
+                    if (userChange) userChange.style.display = 'flex';
+                    if (userChangeText) {
+                        const prevActive = parseInt(localStorage.getItem('ishare_prev_active') || '0', 10);
+                        const change = prevActive > 0 ? ((activeAccounts.length - prevActive) / prevActive) * 100 : 0;
+                        userChangeText.textContent = (change >= 0 ? '+' : '') + change.toFixed(1) + '%';
+                        localStorage.setItem('ishare_prev_active', activeAccounts.length.toString());
+                    }
+                    if (userSub) {
+                        const deptCount = deptSet.size;
+                        userSub.textContent = deptCount > 0 ? `Active across ${deptCount} ${deptCount === 1 ? 'department' : 'departments'}` : 'Active users found';
+                    }
+                } else {
+                    if (userChange) userChange.style.display = 'none';
+                    if (userSub) userSub.textContent = 'No registered users yet';
                 }
-            } else {
-                if (userChange) userChange.style.display = 'none';
-                if (userSub) userSub.textContent = 'No registered users yet';
             }
+
+            updateActiveUsersStats();
+            setInterval(updateActiveUsersStats, 5000);
 
             // টোটাল নোটস কাউন্ট
             const notes = JSON.parse(localStorage.getItem('ishare_notes') || '[]');
