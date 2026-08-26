@@ -397,39 +397,7 @@
             if (storageSubEl) storageSubEl.textContent = totalStorageMB > 0 ? `${notes.length} notes uploaded` : 'No data uploaded yet';
             if (storageFillEl) storageFillEl.style.width = storagePercent + '%';
 
-            // ==================== অ্যাক্টিভিটি টেবিল রেন্ডার ====================
-            const tableBody = document.getElementById('activityTableBody');
-            if (tableBody) {
-                if (accounts.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:24px;">No registered users yet.</td></tr>';
-                } else {
-                    tableBody.innerHTML = accounts.slice(0, 8).map(acc => {
-                        const initials = acc.fullname.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-                        const roleClass = (acc.accountType || 'student').toLowerCase();
-                        const deptShort = acc.department || 'N/A';
-                        const userId = encodeURIComponent(acc.studentId || acc.id || '');
-                        return `<tr>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="user-avatar">${initials}</div>
-                                    <div class="user-info">
-                                        <span class="user-name">${acc.fullname}</span>
-                                        <span class="user-email">${acc.email || ''}</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span style="font-weight:500;">• ${deptShort}</span></td>
-                            <td><span class="role-tag ${roleClass}">${acc.accountType || 'Student'}</span></td>
-                            <td><span class="status-tag active"><span class="status-dot"></span>${acc.status || 'Active'}</span></td>
-                            <td><a href="user-management.html?user=${userId}" class="manage-link">Manage →</a></td>
-                        </tr>`;
-                    }).join('');
-                }
-            }
-        });
-
-        // ==================== নোটিফিকেশন সিস্টেম ====================
-        (function() {
+            // ==================== নোটিফিকেশন সিস্টেম ====================
             const STORAGE_KEY = 'ishare_notifications';
             const notificationBtn = document.getElementById('notificationBtn');
             const notificationBadge = document.getElementById('notificationBadge');
@@ -438,6 +406,20 @@
             const markAllReadBtn = document.getElementById('markAllRead');
             const deleteAllBtn = document.getElementById('deleteAllNotifications');
             const notificationWrapper = document.getElementById('notificationWrapper');
+
+            function isUserOnline(userId) {
+                const onlineUserId = localStorage.getItem('ishare_user_id');
+                const onlineStatus = localStorage.getItem('ishare_user_online');
+                const lastSeen = localStorage.getItem('ishare_user_last_seen');
+                if (!onlineUserId || onlineUserId !== userId) {
+                    return false;
+                }
+                if (onlineStatus === 'true' && lastSeen) {
+                    const diff = Date.now() - parseInt(lastSeen, 10);
+                    return diff < 60000;
+                }
+                return false;
+            }
 
             // localStorage থেকে নোটিফিকেশনগুলো লোড
             function getNotifications() {
@@ -590,6 +572,46 @@
             checkSystemHealth();
             setInterval(checkSystemHealth, 30000); // ৩০ সেকেন্ডে সবচেয়ে আপডেট হেলথ চেক
 
+            // Auto-refresh recent activity every 10 seconds
+            function renderRecentUserActivity() {
+                const tableBody = document.getElementById('activityTableBody');
+                if (!tableBody) return;
+                const accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
+                if (accounts.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:24px;">No registered users yet.</td></tr>';
+                    return;
+                }
+                const onlineAccounts = accounts.filter(acc => isUserOnline(acc.studentId || acc.id));
+                if (onlineAccounts.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:24px;">No users online right now.</td></tr>';
+                    return;
+                }
+                tableBody.innerHTML = onlineAccounts.slice(0, 8).map(acc => {
+                    const initials = acc.fullname.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                    const roleClass = (acc.accountType || 'student').toLowerCase();
+                    const deptShort = acc.department || 'N/A';
+                    const userId = encodeURIComponent(acc.studentId || acc.id || '');
+                    return `<tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="user-avatar">${initials}</div>
+                                <div class="user-info">
+                                    <span class="user-name">${acc.fullname}</span>
+                                    <span class="user-email">${acc.email || ''}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span style="font-weight:500;">• ${deptShort}</span></td>
+                        <td><span class="role-tag ${roleClass}">${acc.accountType || 'Student'}</span></td>
+                        <td><span class="status-tag online"><span class="status-dot"></span>ONLINE</span></td>
+                        <td><a href="user-management.html?user=${userId}" class="manage-link">Manage →</a></td>
+                    </tr>`;
+                }).join('');
+            }
+
+            renderRecentUserActivity();
+            setInterval(renderRecentUserActivity, 10000);
+
             // ==================== অডিট লগ ====================
             function addAuditLog(message, type) {
                 type = type || 'info';
@@ -637,5 +659,6 @@
             addAuditLog('Admin dashboard loaded successfully', 'success');
         })();
     </script>
+    <script src="ai-assistant.js"></script>
 </body>
 </html>

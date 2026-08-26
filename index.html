@@ -198,6 +198,8 @@
                 localStorage.setItem('ishare_user_type', 'Student');
                 localStorage.setItem('ishare_user_name', account.fullname);
                 localStorage.setItem('ishare_user_department', account.department || '');
+                localStorage.setItem('ishare_user_online', 'true');
+                localStorage.setItem('ishare_user_last_seen', Date.now().toString());
                 // স্টুডেন্ট হোম পেজে রিডাইরেক্ট
                 window.location.href = 'student-home.html';
             } else {

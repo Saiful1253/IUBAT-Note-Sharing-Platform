@@ -97,7 +97,26 @@ function renderStatusBadge(user) {
     if (status === 'suspended') {
         return '<span class="status-badge suspended"><span class="status-dot"></span>SUSPENDED</span>';
     }
-    return '<span class="status-badge active"><span class="status-dot"></span>ACTIVE</span>';
+    const onlineStatus = isUserOnline(user.id);
+    if (onlineStatus) {
+        return '<span class="status-badge online"><span class="status-dot"></span>ONLINE</span>';
+    }
+    return '<span class="status-badge offline"><span class="status-dot"></span>OFFLINE</span>';
+}
+
+/* চেক如果一个ユーザーがオンラインかどうか */
+function isUserOnline(userId) {
+    const onlineUserId = localStorage.getItem('ishare_user_id');
+    const onlineStatus = localStorage.getItem('ishare_user_online');
+    const lastSeen = localStorage.getItem('ishare_user_last_seen');
+    if (!onlineUserId || onlineUserId !== userId) {
+        return false;
+    }
+    if (onlineStatus === 'true' && lastSeen) {
+        const diff = Date.now() - parseInt(lastSeen, 10);
+        return diff < 60000;
+    }
+    return false;
 }
 
 /* অ্যাকশন বাটন রেন্ডার: Discipline, Suspend, Reactivate, Delete */

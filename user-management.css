@@ -159,6 +159,8 @@ tbody tr.flagged-row:hover { background: #fee2e2; }
 .status-badge.active { background: #f0fdf4; color: #16a34a; }
 .status-badge.suspended { background: #fef2f2; color: #dc2626; }
 .status-badge.system { background: #f1f5f9; color: #64748b; }
+.status-badge.online { background: #f0fdf4; color: #16a34a; }
+.status-badge.offline { background: #f1f5f9; color: #64748b; }
 .status-badge .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
 /* ---------- অ্যাকশন সেল ---------- */

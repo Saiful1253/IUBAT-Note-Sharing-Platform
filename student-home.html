@@ -879,10 +879,25 @@
                         localStorage.removeItem('ishare_user_department');
                         localStorage.removeItem('ishare_user_email');
                         localStorage.removeItem('ishare_user_downloads');
+                        localStorage.removeItem('ishare_user_online');
+                        localStorage.removeItem('ishare_user_last_seen');
                         window.location.href = 'index.html';
                     }
                 });
             }
+
+            // Stay online: update last seen every 30 seconds
+            setInterval(function() {
+                if (localStorage.getItem('ishare_user_id')) {
+                    localStorage.setItem('ishare_user_online', 'true');
+                    localStorage.setItem('ishare_user_last_seen', Date.now().toString());
+                }
+            }, 30000);
+
+            // Mark offline when closing tab
+            window.addEventListener('beforeunload', function() {
+                localStorage.removeItem('ishare_user_online');
+            });
 
             // হোম সার্চ
             const homeSearch = document.getElementById('homeSearch');
@@ -895,5 +910,6 @@
             renderNotes(getNotes());
         });
     </script>
+    <script src="ai-assistant.js"></script>
 </body>
 </html>
