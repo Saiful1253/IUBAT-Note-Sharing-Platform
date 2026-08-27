@@ -248,7 +248,7 @@
         }
 
         // রেজিস্ট্রেশন হ্যান্ডলার: সব ফিল্ড ভ্যালিডেট করে অ্যাকাউন্ট তৈরি
-        function handleRegistration() {
+        async function handleRegistration() {
             const fullname = document.getElementById('fullname').value.trim();
             const studentId = document.getElementById('student-id').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -257,7 +257,6 @@
             const confirmPassword = document.getElementById('confirm-password').value;
             const agree = document.getElementById('agree').checked;
 
-            // সব ফিল্ডের ভ্যালিডেশন চেক
             if (!fullname) { alert('Please enter your full name'); return; }
             if (!studentId) { alert('Please enter your University ID'); return; }
             if (!email) { alert('Please enter your email'); return; }
@@ -267,37 +266,27 @@
             if (password !== confirmPassword) { alert('Passwords do not match'); return; }
             if (!agree) { alert('Please agree to the Academic Integrity Guidelines and library policies'); return; }
 
-            // অ্যাকাউন্ট অবজেক্ট তৈরি
-            const account = {
-                fullname,
-                studentId,
-                email,
-                department,
-                password,
-                accountType: 'student',
-                createdAt: new Date().toISOString(),
-                status: 'active'
-            };
-
-            // localStorage থেকে বিদ্যমান অ্যাকাউন্টগুলো লোড
-            let accounts = JSON.parse(localStorage.getItem('ishare_accounts') || '[]');
-            // ডুপ্লিকেট ID চেক
-            if (accounts.find(a => a.studentId === studentId)) {
-                alert('An account with this University ID already exists. Please login instead.');
-                return;
+            try {
+                const response = await fetch('http://localhost:3001/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ studentId, fullname, email, department, password })
+                });
+                const result = await response.json();
+                if (!result.success) {
+                    alert(result.message || 'Registration failed');
+                    return;
+                }
+                localStorage.setItem('ishare_user_id', studentId);
+                localStorage.setItem('ishare_user_password', password);
+                localStorage.setItem('ishare_user_type', 'Student');
+                localStorage.setItem('ishare_user_name', fullname);
+                localStorage.setItem('ishare_user_department', department);
+                showToast('Registration successful! Redirecting to student home...', 'success');
+                setTimeout(() => { window.location.href = 'student-home.html'; }, 1500);
+            } catch (err) {
+                alert('Registration failed. Please try again.');
             }
-            accounts.push(account);
-            localStorage.setItem('ishare_accounts', JSON.stringify(accounts));
-
-            // লগইন তথ্য সেভ করো
-            localStorage.setItem('ishare_user_id', studentId);
-            localStorage.setItem('ishare_user_password', password);
-            localStorage.setItem('ishare_user_type', 'Student');
-            localStorage.setItem('ishare_user_name', fullname);
-            localStorage.setItem('ishare_user_department', department);
-
-            showToast('Registration successful! Redirecting to student home...', 'success');
-            setTimeout(() => { window.location.href = 'student-home.html'; }, 1500);
         }
 
         // কাস্টম ড্রপডাউন সিলেক্টের ভেরিয়েবল

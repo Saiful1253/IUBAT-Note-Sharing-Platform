@@ -130,6 +130,7 @@ async function initDb() {
   try {
     await pool.query('CREATE DATABASE IF NOT EXISTS ishare_db');
     await pool.query('USE ishare_db');
+    await pool.query(`CREATE TABLE IF NOT EXISTS registrations (id INT PRIMARY KEY AUTO_INCREMENT, studentId VARCHAR(50) UNIQUE NOT NULL, fullname VARCHAR(100) NOT NULL, email VARCHAR(100) NOT NULL, department VARCHAR(100) NOT NULL, registeredAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, status VARCHAR(20) DEFAULT 'completed')`);
     await pool.query(`CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY AUTO_INCREMENT, studentId VARCHAR(50) UNIQUE NOT NULL, fullname VARCHAR(100) NOT NULL, email VARCHAR(100) UNIQUE NOT NULL, department VARCHAR(100) NOT NULL, password VARCHAR(255) NOT NULL, accountType VARCHAR(20) DEFAULT 'student', status VARCHAR(20) DEFAULT 'active', createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`);
     await pool.query(`CREATE TABLE IF NOT EXISTS notes (id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255) NOT NULL, courseCode VARCHAR(50), description TEXT, fileType VARCHAR(20), url VARCHAR(500), authorId INT, author VARCHAR(100), department VARCHAR(100), downloads INT DEFAULT 0, likes INT DEFAULT 0, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`);
     await pool.query(`CREATE TABLE IF NOT EXISTS announcements (id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255) NOT NULL, body TEXT, createdBy VARCHAR(100), createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`);
@@ -170,6 +171,10 @@ app.post('/api/auth/register', async (req, res) => {
         const [result] = await pool.query(
           'INSERT INTO users (studentId, fullname, email, department, password) VALUES (?, ?, ?, ?, ?)',
           [studentId, fullname, email, department, hashed]
+        );
+        await pool.query(
+          'INSERT INTO registrations (studentId, fullname, email, department, status) VALUES (?, ?, ?, ?, ?)',
+          [studentId, fullname, email, department, 'completed']
         );
         const token = jwt.sign({ id: result.insertId, studentId, email, department, accountType: 'student' }, JWT_SECRET, { expiresIn: '7d' });
         return res.json({ success: true, data: { token, user: { id: result.insertId, studentId, fullname, email, department, accountType: 'student' } } });
