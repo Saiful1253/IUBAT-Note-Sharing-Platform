@@ -99,6 +99,212 @@
     };
   }
 
+  function getUserProfile() {
+    var userId = localStorage.getItem('ishare_user_id');
+    var userName = localStorage.getItem('ishare_user_name');
+    var userDept = localStorage.getItem('ishare_user_department');
+    var accounts = getAccounts();
+    var account = accounts.find(function(a) { return a.studentId === userId; });
+    return {
+      userId: userId,
+      name: userName,
+      department: userDept,
+      email: account ? account.email : '',
+      accountType: localStorage.getItem('ishare_user_type') || 'Student'
+    };
+  }
+
+  function getCurrentUserNotes() {
+    var userId = localStorage.getItem('ishare_user_id');
+    var notes = getNotes();
+    return notes.filter(function(n) { return n.authorId === userId; });
+  }
+
+  function getSmartSuggestions() {
+    var suggestions = [];
+    var stats = getPlatformStats();
+    var user = getUserProfile();
+    var notes = getNotes();
+    var userDept = user.department;
+    var userNotes = getCurrentUserNotes();
+
+    if (userNotes.length === 0 && user.accountType === 'Student') {
+      suggestions.push('You haven\'t posted any notes yet. Share your first note to help classmates!');
+    }
+    if (userNotes.length > 0 && userNotes.length < 3) {
+      suggestions.push('Great start! You\'ve posted ' + userNotes.length + ' notes. Keep sharing to build your profile.');
+    }
+    var deptNotes = userDept ? notes.filter(function(n) { return n.department === userDept; }) : notes;
+    if (deptNotes.length === 0) {
+      suggestions.push('No notes in your department yet. Be the first to post!');
+    }
+    var popularNotes = notes.filter(function(n) { return (n.downloads || 0) > 5; });
+    if (popularNotes.length > 0) {
+      suggestions.push('There are ' + popularNotes.length + ' popular notes with 5+ downloads. Check them out!');
+    }
+    var unreadNotifs = getNotifications().filter(function(n) { return !n.read; });
+    if (unreadNotifs.length > 0) {
+      suggestions.push('You have ' + unreadNotifs.length + ' unread notification(s).');
+    }
+    if (user.accountType === 'Student') {
+      suggestions.push('Tip: Use "recommend notes" to get personalized suggestions based on your department.');
+    }
+    return suggestions.slice(0, 3);
+  }
+
+  function generateChatSummary() {
+    var history = getHistory();
+    if (history.length === 0) return 'No conversation history yet. Start chatting with Gemma!';
+    var userMessages = history.filter(function(m) { return m.role === 'user'; });
+    var assistantMessages = history.filter(function(m) { return m.role === 'assistant'; });
+    var topics = [];
+    userMessages.forEach(function(m) {
+      var lower = m.text.toLowerCase();
+      if (lower.indexOf('note') !== -1) topics.push('notes');
+      if (lower.indexOf('user') !== -1) topics.push('users');
+      if (lower.indexOf('department') !== -1) topics.push('departments');
+      if (lower.indexOf('announcement') !== -1) topics.push('announcements');
+      if (lower.indexOf('dashboard') !== -1 || lower.indexOf('stat') !== -1) topics.push('dashboard stats');
+      if (lower.indexOf('health') !== -1) topics.push('system health');
+      if (lower.indexOf('search') !== -1) topics.push('search');
+      if (lower.indexOf('summar') !== -1) topics.push('summarization');
+      if (lower.indexOf('plagiar') !== -1) topics.push('plagiarism');
+      if (lower.indexOf('recommend') !== -1) topics.push('recommendations');
+    });
+    var uniqueTopics = [];
+    topics.forEach(function(t) { if (uniqueTopics.indexOf(t) === -1) uniqueTopics.push(t); });
+    var summary = 'Conversation Summary:\n';
+    summary += '- Total messages: ' + history.length + '\n';
+    summary += '- Your questions: ' + userMessages.length + '\n';
+    summary += '- My replies: ' + assistantMessages.length + '\n';
+    if (uniqueTopics.length > 0) {
+      summary += '- Topics discussed: ' + uniqueTopics.join(', ') + '\n';
+    }
+    summary += '\nRecent activity:';
+    var recent = history.slice(-4);
+    recent.forEach(function(m) {
+      summary += '\n' + (m.role === 'user' ? 'You' : 'Gemma') + ': ' + m.text.slice(0, 60) + (m.text.length > 60 ? '...' : '');
+    });
+    return summary;
+  }
+
+  function aiSearchNotes(query) {
+    var notes = getNotes();
+    var currentUserDept = localStorage.getItem('ishare_user_department');
+    var deptFiltered = currentUserDept ? notes.filter(function(n) { return n.department === currentUserDept; }) : notes;
+    var lowerQuery = (query || '').toLowerCase();
+    var results = deptFiltered.filter(function(n) {
+      return (n.title || '').toLowerCase().indexOf(lowerQuery) !== -1 ||
+        (n.courseCode || '').toLowerCase().indexOf(lowerQuery) !== -1 ||
+        (n.description || '').toLowerCase().indexOf(lowerQuery) !== -1 ||
+        (n.author || '').toLowerCase().indexOf(lowerQuery) !== -1;
+    });
+    return results.slice(0, 5);
+  }
+
+  function aiSearchUsers(query) {
+    var accounts = getAccounts();
+    var lowerQuery = (query || '').toLowerCase();
+    return accounts.filter(function(a) {
+      return (a.fullname || '').toLowerCase().indexOf(lowerQuery) !== -1 ||
+        (a.studentId || '').toLowerCase().indexOf(lowerQuery) !== -1 ||
+        (a.department || '').toLowerCase().indexOf(lowerQuery) !== -1;
+    }).slice(0, 5);
+  }
+
+  function aiSearchAnnouncements(query) {
+    var announcements = getAnnouncements();
+    var lowerQuery = (query || '').toLowerCase();
+    return announcements.filter(function(a) {
+      return (a.title || '').toLowerCase().indexOf(lowerQuery) !== -1 ||
+        (a.body || '').toLowerCase().indexOf(lowerQuery) !== -1;
+    }).slice(0, 5);
+  }
+
+  function summarizeNoteText(text) {
+    if (!text || text.trim().length === 0) return 'No content to summarize.';
+    var words = text.trim().split(/\s+/);
+    var sentences = text.split(/[.!?]+/).filter(function(s) { return s.trim().length > 0; });
+    if (sentences.length <= 2) {
+      return 'Summary: ' + text.trim().slice(0, 150) + (text.trim().length > 150 ? '...' : '');
+    }
+    var summary = 'Key Points:\n';
+    var keyPoints = sentences.slice(0, 3).map(function(s) { return '- ' + s.trim(); });
+    summary += keyPoints.join('\n');
+    if (sentences.length > 3) {
+      summary += '\n... and ' + (sentences.length - 3) + ' more point(s).';
+    }
+    return summary;
+  }
+
+  function checkPlagiarism(noteId) {
+    var notes = getNotes();
+    var targetNote = notes.find(function(n) { return n.id === noteId; });
+    if (!targetNote) return 'Note not found. Provide a valid note ID or title.';
+    var targetText = ((targetNote.title || '') + ' ' + (targetNote.description || '')).toLowerCase();
+    var targetWords = targetText.split(/\s+/).filter(function(w) { return w.length > 3; });
+    var similarNotes = [];
+    notes.forEach(function(n) {
+      if (n.id === noteId) return;
+      var otherText = ((n.title || '') + ' ' + (n.description || '')).toLowerCase();
+      var otherWords = otherText.split(/\s+/).filter(function(w) { return w.length > 3; });
+      var commonWords = targetWords.filter(function(w) { return otherWords.indexOf(w) !== -1; });
+      var similarity = targetWords.length > 0 ? Math.round((commonWords.length / targetWords.length) * 100) : 0;
+      if (similarity > 20) {
+        similarNotes.push({ title: n.title || 'Untitled', author: n.author || 'Unknown', similarity: similarity, courseCode: n.courseCode || '' });
+      }
+    });
+    similarNotes.sort(function(a, b) { return b.similarity - a.similarity; });
+    if (similarNotes.length === 0) {
+      return 'Plagiarism Check Result:\n- No similar notes found.\n- This content appears to be unique.\n- Similarity: 0%';
+    }
+    var result = 'Plagiarism Check Result:\n';
+    result += 'Found ' + similarNotes.length + ' similar note(s):\n\n';
+    similarNotes.slice(0, 3).forEach(function(s) {
+      result += '- "' + s.title + '" by ' + s.author + ' (' + s.courseCode + ')\n';
+      result += '  Similarity: ' + s.similarity + '%\n';
+    });
+    var avgSimilarity = Math.round(similarNotes.reduce(function(sum, s) { return sum + s.similarity; }, 0) / similarNotes.length);
+    result += '\nOverall Similarity: ' + avgSimilarity + '%\n';
+    if (avgSimilarity > 50) {
+      result += 'Warning: High similarity detected. Please review and ensure original work.';
+    } else if (avgSimilarity > 30) {
+      result += 'Note: Moderate similarity. Consider adding more original content.';
+    } else {
+      result += 'Status: Acceptable similarity level.';
+    }
+    return result;
+  }
+
+  function getRecommendations() {
+    var user = getUserProfile();
+    var notes = getNotes();
+    var userDept = user.department;
+    var userId = user.userId;
+    var likedNotes = getUserLikedNotes();
+    var userNoteIds = getCurrentUserNotes().map(function(n) { return n.id; });
+    var recommended = [];
+
+    if (userDept) {
+      var deptNotes = notes.filter(function(n) { return n.department === userDept && n.authorId !== userId; });
+      deptNotes.sort(function(a, b) { return (b.downloads || 0) - (a.downloads || 0); });
+      recommended = recommended.concat(deptNotes.slice(0, 3));
+    }
+    var popularNotes = notes.filter(function(n) { return (n.likes || 0) > 2 && recommended.indexOf(n) === -1; });
+    popularNotes.sort(function(a, b) { return (b.likes || 0) - (a.likes || 0); });
+    recommended = recommended.concat(popularNotes.slice(0, 2));
+    if (likedNotes.length > 0) {
+      var likedNoteObjects = notes.filter(function(n) { return likedNotes.indexOf(userId + '::' + n.id) !== -1; });
+      likedNoteObjects.forEach(function(ln) {
+        var similar = notes.filter(function(n) {
+          return n.courseCode === ln.courseCode && n.id !== ln.id && recommended.indexOf(n) === -1;
+        });
+        recommended = recommended.concat(similar.slice(0, 1));
+      });
+    }
+    return recommended.slice(0, 5);
+  }
+
   function checkSystemHealth() {
     var checks = [];
     var passed = 0;
@@ -151,7 +357,7 @@
   var localResponses = {
     'hello': 'Hello! I am Gemma, your AI assistant. I can answer almost anything — from platform help to general questions. What would you like to ask?',
     'hi': 'Hi! I am Gemma. Ask me anything — platform questions, study tips, admin tasks, or general knowledge.',
-    'help': 'I can help you with:\n- Platform navigation & features\n- Notes, downloads, posting\n- Admin dashboard, users, departments\n- Announcements & notifications\n- General questions\n\nTry asking naturally.',
+    'help': 'I can help you with:\n- Platform navigation & features\n- Notes, downloads, posting\n- Admin dashboard, users, departments\n- Announcements & notifications\n- AI Search (notes, users, announcements)\n- Note Summarization\n- Plagiarism Detection\n- AI Recommendations\n- General questions\n\nTry asking naturally.',
     'dashboard stats': '📊 Platform Overview:\n\n' +
       '👥 Total Users: ' + getPlatformStats().users + '\n' +
       '✅ Active Users: ' + getPlatformStats().activeUsers + '\n' +
@@ -229,11 +435,87 @@
       '• Use "export users" for backup\n' +
       '• Pin important announcements\n' +
       '• Review flagged users weekly',
+    'chat history summary': '📋 Chat History Summary:\n\n' + generateChatSummary(),
+    'smart suggestions': '💡 Smart Suggestions:\n\n' + getSmartSuggestions().map(function(s) { return '- ' + s; }).join('\n'),
+    'ai search': '🔍 AI Search:\n\nI can search across notes, users, and announcements.\n\nTry asking:\n- "Search notes for CSE321"\n- "Search users named Ahmed"\n- "Search announcements about exam"\n\nWhat would you like to search for?',
+    'note summarization': '📝 Note Summarization:\n\nI can summarize note content into key points.\n\nUsage:\n- "Summarize note [title or ID]"\n- "Give me a summary of [topic]"\n\nTry it with a note title or topic!',
+    'plagiarism detection': '🔍 Plagiarism Detection:\n\nI can check if a note has similar content to other notes.\n\nUsage:\n- "Check plagiarism for note [title or ID]"\n- "Is this note original?"\n\nNote: This is a basic similarity check based on word overlap.',
+    'ai recommendations': '🎯 AI Recommendations:\n\nHere are some notes recommended for you based on your department and interests:\n\n' + getRecommendations().map(function(n, i) {
+      return (i + 1) + '. "' + (n.title || 'Untitled') + '" by ' + (n.author || 'Unknown') + ' (' + (n.courseCode || 'General') + ') - ' + (n.downloads || 0) + ' downloads';
+    }).join('\n') + '\n\nClick on any note in the feed to download it!',
     'default': ''
   };
 
   function getLocalResponse(message) {
     var lower = message.toLowerCase().trim();
+
+    if (lower.indexOf('summary') !== -1 && (lower.indexOf('chat') !== -1 || lower.indexOf('history') !== -1 || lower.indexOf('conversation') !== -1)) {
+      return localResponses['chat history summary'];
+    }
+    if (lower.indexOf('suggestion') !== -1 || lower.indexOf('smart tip') !== -1 || lower.indexOf('recommendation') !== -1 && lower.indexOf('note') === -1) {
+      return localResponses['smart suggestions'];
+    }
+    if (lower.indexOf('search note') !== -1 || lower.indexOf('find note') !== -1 || lower.indexOf('look for note') !== -1) {
+      var noteQuery = lower.replace(/search note|find note|look for note|for|notes|note/gi, '').trim();
+      var noteResults = aiSearchNotes(noteQuery);
+      if (noteResults.length === 0) return 'No notes found matching "' + noteQuery + '". Try a different keyword.';
+      var noteReply = '🔍 Found ' + noteResults.length + ' note(s):\n\n';
+      noteResults.forEach(function(n, i) {
+        noteReply += (i + 1) + '. "' + (n.title || 'Untitled') + '" by ' + (n.author || 'Unknown') + ' (' + (n.courseCode || 'General') + ')\n';
+      });
+      noteReply += '\nGo to the Home page to view and download these notes.';
+      return noteReply;
+    }
+    if (lower.indexOf('search user') !== -1 || lower.indexOf('find user') !== -1 || lower.indexOf('look for user') !== -1) {
+      var userQuery = lower.replace(/search user|find user|look for user|for|users|user/gi, '').trim();
+      var userResults = aiSearchUsers(userQuery);
+      if (userResults.length === 0) return 'No users found matching "' + userQuery + '".';
+      var userReply = '👥 Found ' + userResults.length + ' user(s):\n\n';
+      userResults.forEach(function(u, i) {
+        userReply += (i + 1) + '. ' + (u.fullname || 'Unknown') + ' (' + (u.studentId || 'N/A') + ') - ' + (u.department || 'N/A') + '\n';
+      });
+      return userReply;
+    }
+    if (lower.indexOf('search announcement') !== -1 || lower.indexOf('find announcement') !== -1 || lower.indexOf('look for announcement') !== -1) {
+      var annQuery = lower.replace(/search announcement|find announcement|look for announcement|for|announcements|announcement|notice/gi, '').trim();
+      var annResults = aiSearchAnnouncements(annQuery);
+      if (annResults.length === 0) return 'No announcements found matching "' + annQuery + '".';
+      var annReply = '📢 Found ' + annResults.length + ' announcement(s):\n\n';
+      annResults.forEach(function(a, i) {
+        annReply += (i + 1) + '. ' + (a.title || 'Untitled') + '\n' + (a.body || '').slice(0, 80) + '\n\n';
+      });
+      return annReply;
+    }
+    if (lower.indexOf('summarize') !== -1 || lower.indexOf('summary of') !== -1 || lower.indexOf('summarise') !== -1) {
+      var summaryQuery = lower.replace(/summarize|summary of|summarise|note|notes|for|about/gi, '').trim();
+      var notes = getNotes();
+      var targetNote = notes.find(function(n) {
+        return (n.title || '').toLowerCase().indexOf(summaryQuery) !== -1 || n.id === summaryQuery;
+      });
+      if (!targetNote) {
+        return 'Note not found. Try "summarize [note title]" or "summarize [note ID]".\n\nAvailable notes:\n' + notes.slice(0, 5).map(function(n, i) {
+          return (i + 1) + '. ' + (n.title || 'Untitled') + ' (ID: ' + n.id + ')';
+        }).join('\n');
+      }
+      var summaryText = ((targetNote.description || '') + ' ' + (targetNote.title || '')).trim();
+      return '📝 Summary of "' + (targetNote.title || 'Untitled') + '":\n\n' + summarizeNoteText(summaryText) + '\n\nCourse: ' + (targetNote.courseCode || 'N/A') + '\nAuthor: ' + (targetNote.author || 'Unknown');
+    }
+    if (lower.indexOf('plagiarism') !== -1 || lower.indexOf('plagiar') !== -1 || lower.indexOf('check similarity') !== -1 || lower.indexOf('originality') !== -1) {
+      var plagQuery = lower.replace(/plagiarism|plagiar|check|for|note|notes|similarity|originality|is this/gi, '').trim();
+      var notes = getNotes();
+      var targetNote = notes.find(function(n) {
+        return (n.title || '').toLowerCase().indexOf(plagQuery) !== -1 || n.id === plagQuery;
+      });
+      if (!targetNote) {
+        return 'Please specify a note. Usage: "check plagiarism for [note title or ID]".\n\nYour notes:\n' + getCurrentUserNotes().slice(0, 5).map(function(n, i) {
+          return (i + 1) + '. ' + (n.title || 'Untitled') + ' (ID: ' + n.id + ')';
+        }).join('\n');
+      }
+      return checkPlagiarism(targetNote.id);
+    }
+    if (lower.indexOf('recommend') !== -1 || lower.indexOf('suggestion') !== -1 && lower.indexOf('smart') === -1) {
+      return localResponses['ai recommendations'];
+    }
     if (lower.indexOf('dashboard') !== -1 || lower.indexOf('overview') !== -1 || lower.indexOf('stats') !== -1) {
       return localResponses['dashboard stats'];
     }
@@ -317,6 +599,14 @@
         ? 'Hi! I am Gemma, your admin assistant.\nI can answer almost any question about iShare. Try asking naturally!'
         : 'Hi! I am Gemma, your AI assistant.\nI can answer almost any question. Try asking naturally!';
       messagesContainer.innerHTML = '<div class="ai-chat-empty"><div class="ai-chat-empty-icon">&#128172;</div>' + welcomeText.replace(/\n/g, '<br>') + '</div>';
+      var smartDiv = document.createElement('div');
+      smartDiv.className = 'ai-chat-smart-suggestions';
+      var suggestions = getSmartSuggestions();
+      if (suggestions.length > 0) {
+        smartDiv.innerHTML = '<div class="ai-chat-suggestions-title">💡 Smart Suggestions</div>' +
+          suggestions.map(function(s) { return '<div class="ai-chat-suggestion-item">' + s + '</div>'; }).join('');
+        messagesContainer.appendChild(smartDiv);
+      }
       return;
     }
     messagesContainer.innerHTML = '';
@@ -343,7 +633,7 @@
         actions = ['Dashboard stats', 'System health', 'All users', 'Departments', 'Announcements'];
       }
     } else {
-      actions = ['Find notes', 'How to post', 'How to download', 'Profile help', 'Search notes'];
+      actions = ['Find notes', 'How to post', 'How to download', 'Profile help', 'Search notes', 'Summarize note', 'Check plagiarism', 'Recommend notes'];
     }
 
     quickActionsEl.innerHTML = actions.map(function(action) {
